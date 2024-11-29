@@ -3,6 +3,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const session = require('express-session');
+const connection = require('./config/database');
 
 const app = express();
 const port = process.env.PORT || 3000;
