@@ -5,7 +5,7 @@ const passport = require('passport');
 const session = require('express-session');
 const connection = require('./config/database');
 const configViewEngine = require('./config/viewEngine');
-
+const userRoutes = require('./routes/user');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -24,6 +24,12 @@ app.use(session({
 }))
 
 app.use(cookieParser());
+
+app.use(passport.initialize());
+require('./config/passport')(passport); 
+
+//routes
+app.use('/user', userRoutes);
 
 app.use((req, res, next) => {
     next(new MyError(404, 'Page not found', "The page you're looking for doesn't exist."))
