@@ -25,8 +25,18 @@ app.use(session({
 
 app.use(cookieParser());
 
-// Route declarations
+app.use((req, res, next) => {
+    next(new MyError(404, 'Page not found', "The page you're looking for doesn't exist."))
+});
 
+app.use((err, req, res, next) => {
+    statusCode = err.statusCode || 500,
+    res.status(statusCode).render('error', {
+        statusCode: statusCode,
+        message: err.message,
+        desc: err.desc
+    });
+});
 // Connect to database and start server
 (async () => {
     try {

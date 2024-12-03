@@ -15,8 +15,6 @@ const userSchema = new mongoose.Schema({
         },
     },    
     role: { type: String, enum: ['admin', 'user'], default: 'user' },
-    googleId: { type: String, default: null },
-    facebookId: { type: String, default: null },
     loginMethod: { type: String, enum: ['email', 'google', 'facebook'], required: true, default: 'email' },
     emailToken: { type: String, default: null  },
     isVerified: { type: Boolean, default: false },
