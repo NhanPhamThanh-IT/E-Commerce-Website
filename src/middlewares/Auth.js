@@ -9,7 +9,7 @@ const attachJwtToken = (req, res, next) => {
         // Retrieve the JWT token from a cookie named 'token'
         const token = req.cookies?.token;
         if (!token) {
-            return next(new MyError(401, 'JWT token is missing.'));
+            return next(new MyError(401, 'Unauthorized','JWT token is missing.'));
         }
         // Attach the token to the Authorization header as a Bearer token
         req.headers['authorization'] = `Bearer ${token}`;
@@ -58,10 +58,19 @@ const facebookAuth = (req, res, next) => {
         next();
     })(req, res, next);
 };
-
+const isAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated && req.isAuthenticated()) { // For session-based auth
+        return next();
+    }
+    if (req.user) { // For JWT-based auth
+        return next();
+    }
+    return next(new MyError(401, 'Unauthorized', 'You must be logged in to access this resource.'));
+};
 module.exports = {
     attachJwtToken,
     jwtAuth,
     googleAuth,
-    facebookAuth
+    facebookAuth,
+    isAuthenticated,
 };

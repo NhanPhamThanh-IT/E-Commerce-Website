@@ -34,7 +34,8 @@ router.get(
     }
 )
 router.use(Auth.attachJwtToken);
-router.use(Auth.jwtAuth);
+router.use(Auth.jwtAuth)
+router.use(Auth.isAuthenticated);
 // router.get('/user/profile', userController.getUserByID);
 router.get('/profile',  (req, res) => {
     console.log('req.user >>', req.user);
