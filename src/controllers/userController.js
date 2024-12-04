@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const userService = require('../services/userService');
 const MyError = require('../cerror');
+require('dotenv').config();
 const createUser = async (req, res) => {
     const schema = Joi.object({
         name: Joi.string().min(3).max(50).required(),
@@ -42,7 +43,7 @@ const handleLogin = async (req, res, next) => {
         res.cookie('token', result.access_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            maxAge: 24 * 60 * 60 * 1000,
+            maxAge: process.env.COOKIE_MAX_AGE,
         });
         res.status(200).json(result);
         //res.redirect('/')
@@ -53,16 +54,21 @@ const handleLogin = async (req, res, next) => {
 };
 
 const handleLogout = (req, res) => {
-    res.clearCookie('userid'); // cookie for Facebook/Google login
+    // res.clearCookie('userid');
+    res.clearCookie('connect.sid'); // clear session cookie - passport
+    req.logout(function(err) { // passport session logout
+        if (err) { return next(err); }
+    });
     res.cookie('token', 'deleted', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         maxAge: 0,
     });
-    res.redirect('/');
+    res.redirect('/user/login');
 };
 
 const getUserByID = async (req, res) => {
+    //const userid = req.cookies.userid || req.user.id;
     const result = await userService.getUserByIDService(req.user.id);
     if (result) {
         res.status(200).json(result);

@@ -6,6 +6,7 @@ const session = require('express-session');
 const connection = require('./config/database');
 const configViewEngine = require('./config/viewEngine');
 const userRoutes = require('./routes/user');
+const MyError = require('./cerror');    
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -20,12 +21,13 @@ configViewEngine(app);
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: false, // -> needed for middleware to attachJwtToken
 }))
 
 app.use(cookieParser());
 
 app.use(passport.initialize());
+app.use(passport.session());
 require('./config/passport')(passport); 
 
 //routes

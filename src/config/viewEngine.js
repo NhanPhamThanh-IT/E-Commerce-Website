@@ -5,7 +5,7 @@ const hbs = require('express-handlebars');
 const configViewEngine = (app) => {
     app.engine('hbs', hbs.engine({
         extname: 'hbs',
-        defaultLayout: 'main',
+        defaultLayout: 'index', // main -> index
         layoutsDir: path.join(__dirname, '../views/layouts'), // Đường dẫn tuyệt đối
         partialsDir: path.join(__dirname, '../views/partials'), // Đường dẫn tuyệt đối
         helpers: {
