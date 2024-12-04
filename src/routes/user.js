@@ -5,6 +5,7 @@ require('dotenv').config();
 const userController = require('../controllers/userController');
 const Auth = require('../middlewares/Auth');
 
+router.post('/register', userController.createUser);
 router.post('/login', userController.handleLogin);
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
 router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }))
@@ -33,7 +34,7 @@ router.get(
     }
 )
 router.use(Auth.attachJwtToken);
-router.use(Auth.passportAuth);
+router.use(Auth.jwtAuth);
 // router.get('/user/profile', userController.getUserByID);
 router.get('/profile',  (req, res) => {
     console.log('req.user >>', req.user);

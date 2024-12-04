@@ -8,7 +8,7 @@ const createUserService = async (userData) => {
     try {
         const user = await User.findOne({email: userData.email})
         if (user){
-            return next(new MyError(403, 'Registration failed', `User with email ${userData.email} exists. Please use another email.`))
+            throw new MyError(403, 'Registration failed', `User with email ${userData.email} exists. Please use another email.`)
         }
         const saltRounds = 10;
         const hashPassword  = await bcrypt.hash(userData.password, saltRounds);
@@ -20,8 +20,7 @@ const createUserService = async (userData) => {
         return result;
 
     } catch (error) {
-        console.log(error);
-        return next(new MyError(error.message))
+        throw new MyError(500, error.message, error.desc || 'An unexpected error occurred.');
     }
 }
 
@@ -30,7 +29,7 @@ const handleLoginService = async (userData) => {
         const user = await User.findOne({email: userData.email})
         if (user){
             if (user.loginMethod !== 'email'){
-                return next(new MyError(400, 'Login failed', 'Account must be logged in using Google/Facebook'))
+                throw new MyError(400, 'Login failed', 'Account must be logged in using Google/Facebook')
             }
             const isMatch = bcrypt.compare(userData.password, user.password);
             if (isMatch){
@@ -54,26 +53,30 @@ const handleLoginService = async (userData) => {
                 }
             }
             else{
-                return next(new MyError(404, 'Authentication failed', 'Password is not true'))
+                throw new MyError(404, 'Authentication failed', 'Password is not true')
             }
         }
         else{
-            return next(new MyError(404, 'Authentication failed',  'Email/Password is not found'))
+            throw new MyError(404, 'Authentication failed',  'Email/Password is not found')
         }
     } catch (error) {
         console.log(error);
-        return next(new MyError(error.message))
+        throw new MyError(500, error.message, error.desc || 'An unexpected error occurred.');
     }
 }
 
 const getUserByIDService = async (id) => {
     try {
         const result  = await User.findById(id);
-        return result;
-
+        if (result){
+            return result;
+        }  
+        else{
+            throw new MyError(400, 'User not found')
+        }
     } catch (error) {
         console.log(error);
-        return next(new MyError(error.message))
+        throw new MyError(500, error.message, error.desc || 'An unexpected error occurred.');
     }
 }
 
