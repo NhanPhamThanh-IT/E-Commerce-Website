@@ -1,35 +1,32 @@
-<div class="container py-5">
+<div class="container mx-auto px-4">
     <h1 class="text-4xl font-bold text-center mb-6 text-blue-600">Product List</h1>
 
-    <div class="row g-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {{#each products}}
-        <div class="col-md-4">
-            <div class="card shadow-lg rounded-lg overflow-hidden">
-                <img src="{{this.images}}" class="card-img-top object-cover w-full h-64" alt="{{this.name}}">
-                <div class="card-body bg-white">
-                    <h5 class="card-title text-xl font-semibold text-gray-800">{{this.name}}</h5>
-                    <p class="card-text text-sm text-gray-600">{{this.description}}</p>
-                    <div class="flex justify-between items-center mt-4">
-                        <p class="text-xl text-green-500 font-bold">{{this.price}} VND</p>
-                        <p class="text-sm text-gray-500">Stock: {{this.stock_quantity}}</p>
-                    </div>
-                    <div class="flex justify-between mt-3">
-                        <span class="badge bg-primary">{{this.category_id.name}}</span>
-                        <a href="/product/{{this._id}}" class="btn btn-primary text-white w-full mt-2">View Details</a>
-                    </div>
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <img src="{{this.images}}" class="w-full h-64 object-cover" alt="{{this.name}}">
+            <div class="p-4">
+                <h5 class="text-lg font-semibold text-gray-800">{{this.name}}</h5>
+                <p class="text-sm text-gray-600 text-justify mt-2">{{this.description}}</p>
+                <div class="flex justify-between items-center mt-4">
+                    <p class="text-xl text-green-500 font-semibold">{{this.price}} VND</p>
+                    <p class="text-sm text-gray-500">Stock: {{this.stock_quantity}}</p>
+                </div>
+                <div class="mt-4">
+                    <a href="product/{{this._id}}" class="block font-bold no-underline text-center bg-blue-600 text-white py-2 rounded-lg hover:no-underline hover:bg-blue-700">View Details</a>
                 </div>
             </div>
         </div>
         {{/each}}
     </div>
 
-    <div class="flex justify-center mt-4">
+    <div class="flex justify-center mt-6 space-x-4">
         {{#if (gt currentPage 1)}}
-        <a href="/admin/products?page={{subtract currentPage 1}}" class="btn btn-secondary">Previous</a>
+        <a href="products?page={{subtract currentPage 1}}" class="font-bold no-underline px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 hover:no-underline">Previous</a>
         {{/if}}
         
         {{#if (lt currentPage totalPages)}}
-        <a href="/admin/products?page={{add currentPage 1}}" class="btn btn-secondary ml-2">Next</a>
+        <a href="products?page={{add currentPage 1}}" class="font-bold no-underline px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 hover:no-underline">Next</a>
         {{/if}}
     </div>
 </div>
