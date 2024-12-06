@@ -18,6 +18,10 @@ const handlebars = exphbs.create({
     partialsDir: __dirname + '/views/partials/',
 });
 
+handlebars.handlebars.registerHelper('subtract', (a, b) => a - b);
+handlebars.handlebars.registerHelper('add', (a, b) => a + b);
+handlebars.handlebars.registerHelper('gt', (a, b) => a > b);
+handlebars.handlebars.registerHelper('lt', (a, b) => a < b);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

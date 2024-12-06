@@ -1,15 +1,15 @@
 const Product = require('../models/productModel');
 
-exports.list = (req, res) => {
-    const product = Product;
-    const data = {
-        products: product,
-    };
-    res.render('products/index', { data });
+exports.getProducts = async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 6;
+    const skip = (page - 1) * limit;
+    const totalProducts = Product.length;
+    const products = Product.slice(skip, skip + limit);
+    res.render('products/index', {
+        products,
+        currentPage: page,
+        totalPages: Math.ceil(totalProducts / limit),
+    });
 };
 
-exports.create = (req, res) => {
-    const { name, price } = req.body;
-    Product.create({ name, price: parseFloat(price) });
-    res.redirect('/products');
-};

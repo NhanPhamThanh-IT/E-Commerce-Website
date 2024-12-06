@@ -2,7 +2,7 @@
     <h1 class="text-4xl font-bold text-center mb-6 text-blue-600">Product List</h1>
 
     <div class="row g-4">
-        {{#each data.products}}
+        {{#each products}}
         <div class="col-md-4">
             <div class="card shadow-lg rounded-lg overflow-hidden">
                 <img src="{{this.images}}" class="card-img-top object-cover w-full h-64" alt="{{this.name}}">
@@ -21,5 +21,15 @@
             </div>
         </div>
         {{/each}}
+    </div>
+
+    <div class="flex justify-center mt-4">
+        {{#if (gt currentPage 1)}}
+        <a href="/admin/products?page={{subtract currentPage 1}}" class="btn btn-secondary">Previous</a>
+        {{/if}}
+        
+        {{#if (lt currentPage totalPages)}}
+        <a href="/admin/products?page={{add currentPage 1}}" class="btn btn-secondary ml-2">Next</a>
+        {{/if}}
     </div>
 </div>
