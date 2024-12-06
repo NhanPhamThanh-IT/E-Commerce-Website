@@ -1,8 +1,11 @@
 const Product = require('../models/productModel');
 
 exports.list = (req, res) => {
-    const products = Product.findAll();
-    res.render('products/list', { title: 'Product List', products });
+    const product = Product;
+    const data = {
+        products: product,
+    };
+    res.render('products/index', { data });
 };
 
 exports.create = (req, res) => {
