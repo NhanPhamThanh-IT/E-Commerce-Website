@@ -20,7 +20,6 @@ exports.index = async (req, res) => {
             totalPages,
             currentPage: page
         };
-        console.log('Data:', data);
         res.render('users/index', data);
     } catch (error) {
         console.error('Error fetching users:', error);
