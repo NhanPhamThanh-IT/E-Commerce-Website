@@ -1,7 +1,7 @@
 const path = require('path');
 const express = require('express');
 const exphbs = require('express-handlebars');
-const homeRoutes = require('./routes/home');
+const homeRoutes = require('./routes/dashboard');
 const userRoutes = require('./routes/user');
 const productRoutes = require('./routes/product');
 // const connectDB = require('./config/database');
