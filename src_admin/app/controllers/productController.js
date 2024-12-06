@@ -2,7 +2,7 @@ const Product = require('../models/product');
 
 exports.list = (req, res) => {
     const products = Product.findAll();
-    res.render('product/list', { title: 'Product List', products });
+    res.render('products/list', { title: 'Product List', products });
 };
 
 exports.create = (req, res) => {

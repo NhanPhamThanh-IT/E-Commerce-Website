@@ -4,6 +4,8 @@ const exphbs = require('express-handlebars');
 const homeRoutes = require('./routes/dashboard');
 const userRoutes = require('./routes/user');
 const productRoutes = require('./routes/product');
+const orderRoutes = require('./routes/order');
+const profileRoutes = require('./routes/profile');
 // const connectDB = require('./config/database');
 
 // connectDB();
@@ -23,8 +25,10 @@ app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use('/', homeRoutes);
-app.use('/products', productRoutes);
 app.use('/users', userRoutes);
+app.use('/products', productRoutes);
+app.use('/orders', orderRoutes);
+app.use('/profile', profileRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
