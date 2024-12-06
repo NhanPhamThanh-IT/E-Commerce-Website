@@ -5,7 +5,7 @@ const fakeData = [
         email: "admin@example.com",
         password: "hashed_password_123",  // Ensure this is hashed properly using bcrypt or similar
         role: "admin",
-        emailToken: "abc12345token",  // Be mindful of token generation and expiration
+        emailToken: "abc12345token",  
         isVerified: true,
         loginMethod: "email",
         cart: [],
