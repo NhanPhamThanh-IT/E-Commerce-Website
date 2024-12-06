@@ -24,17 +24,16 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// Set the handlebars engine with the correct callback function
-app.engine('handlebars', handlebars.engine); // Pass the 'engine' method here
+app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
 
 
-app.use('/', homeRoutes);
-app.use('/users', userRoutes);
-app.use('/products', productRoutes);
-app.use('/orders', orderRoutes);
-app.use('/profile', profileRoutes);
+app.use('/admin', homeRoutes);
+app.use('/admin/users', userRoutes);
+app.use('/admin/products', productRoutes);
+app.use('/admin/orders', orderRoutes);
+app.use('/admin/profile', profileRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
