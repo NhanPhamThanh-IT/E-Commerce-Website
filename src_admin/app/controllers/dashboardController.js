@@ -6,5 +6,5 @@ exports.index = (req, res) => {
         
     };
 
-    res.render('home/index', fakeData);
+    res.render('dashboard/index', fakeData);
 };
