@@ -30,7 +30,7 @@ const fakeData = [
         "_id": "648fa1c7e4b0b1c3c5a9d003",
         name: "Jane Smith",
         email: "jane.smith@example.com",
-        password: "hashed_password_789",  // Ensure this is hashed properly
+        password: "hashed_password_789",  
         role: "user",
         emailToken: "ghi54321token",
         isVerified: true,
