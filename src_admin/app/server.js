@@ -12,17 +12,23 @@ const profileRoutes = require('./routes/profile');
 
 const app = express();
 
+const handlebars = exphbs.create({
+    defaultLayout: 'main',
+    layoutsDir: __dirname + '/views/layouts/',
+    partialsDir: __dirname + '/views/partials/',
+});
+
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.engine('handlebars', exphbs.engine({
-  defaultLayout: 'main',
-  layoutsDir: __dirname + '/views/layouts/',
-  partialsDir: __dirname + '/views/partials/'
-}));
+
+// Set the handlebars engine with the correct callback function
+app.engine('handlebars', handlebars.engine); // Pass the 'engine' method here
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
+
 
 app.use('/', homeRoutes);
 app.use('/users', userRoutes);
