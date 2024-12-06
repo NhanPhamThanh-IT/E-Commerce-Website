@@ -1,0 +1,66 @@
+<div class="flex-1 flex flex-col">
+    <header class="h-16 bg-white shadow flex items-center justify-between px-6">
+        <h1 class="text-lg font-semibold">Welcome, Admin!</h1>
+        <div>
+            <button class="py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Logout</button>
+        </div>
+    </header>
+    <main class="flex-1 p-6 overflow-y-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-white shadow rounded-lg p-6">
+                <h2 class="text-lg font-bold">Users</h2>
+                <p class="text-gray-600">Total: {{users}}</p>
+            </div>
+            <div class="bg-white shadow rounded-lg p-6">
+                <h2 class="text-lg font-bold">Products</h2>
+                <p class="text-gray-600">Total: {{products}}</p>
+            </div>
+            <div class="bg-white shadow rounded-lg p-6">
+                <h2 class="text-lg font-bold">Orders</h2>
+                <p class="text-gray-600">Total: {{orders}}</p>
+            </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg p-6 mt-6">
+            <h2 class="text-lg font-bold mb-4">Performance Overview</h2>
+            <canvas id="dashboardChart" class="w-full h-64"></canvas>
+        </div>
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const ctx = document.getElementById('dashboardChart').getContext('2d');
+
+        const data = {
+            labels: ['Users', 'Products', 'Orders'],
+            datasets: [
+                {
+                    label: 'Metrics',
+                    data: [250, 500, 150],
+                    backgroundColor: ['#4F46E5', '#10B981', '#F59E0B'],
+                    borderColor: ['#3B82F6', '#059669', '#D97706'],
+                    borderWidth: 1,
+                },
+            ],
+        };
+
+        const dashboardChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+    });
+</script>
