@@ -1,4 +1,4 @@
-const userModel = require('../models/userModel');
+const userModel = require('../models/profileModel');
 
 exports.index = (req, res) => {
     const data = {
