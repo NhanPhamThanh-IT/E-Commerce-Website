@@ -23,6 +23,15 @@ exports.getProducts = async (req, res) => {
 };
 
 exports.getProductDetails = async (req, res) => {
-    const product = Product.find((p) => p._id === req.params.id);
-    res.render('products/details', { product });
-}
+    try {
+        const productId = req.params.id;
+        const product = await Product.findById(productId).lean();
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+        res.render('products/details', { product });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
