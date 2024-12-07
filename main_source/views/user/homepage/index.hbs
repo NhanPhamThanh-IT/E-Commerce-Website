@@ -230,7 +230,49 @@
 
         modal.classList.remove('hidden');
     }
-    
+
+    // Handle Add-to-Cart button click
+    document.getElementById('add-to-cart').addEventListener('click', () => {
+        event.preventDefault(); 
+        const productId = document.getElementById('add-to-cart').getAttribute('data-product-id');
+        const quantityInput = document.getElementById('quantity-input');
+        const quantity = parseInt(quantityInput.value, 10);
+
+        if (!isNaN(quantity) && quantity > 0) {
+            addToCart(productId, quantity);
+        } else {
+            alert('Please enter a valid quantity.');
+        }
+    });
+
+    // Add items to cart
+    function addToCart(productId, quantity) {
+        let cart = getCartFromCookie();
+        const existingItem = cart.find(item => item.id === productId);
+
+        if (existingItem) {
+            existingItem.quantity += quantity;
+        } else {
+            cart.push({ id: productId, quantity });
+        }
+
+        saveCartToCookie(cart);
+
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        alert(`You now have ${totalItems} item(s) in your cart.`);
+    }
+
+    // Helper: Get cart from cookies
+    function getCartFromCookie() {
+        const cart = document.cookie.split('; ').find(row => row.startsWith('cart='));
+        return cart ? JSON.parse(decodeURIComponent(cart.split('=')[1])) : [];
+    }
+
+    // Helper: Save cart to cookies
+    function saveCartToCookie(cart) {
+        document.cookie = `cart=${encodeURIComponent(JSON.stringify(cart))}; path=/`;
+    }
+
     // Initialize product display with default filters
     fetchAndRenderProducts('/product?page=1');
 </script>
