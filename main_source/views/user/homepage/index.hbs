@@ -15,6 +15,20 @@
         </select>
     </div>
 
+    <!-- Price Filter -->
+    <div class="mb-4">
+        <label for="price-filter-min" class="block text-sm font-medium text-gray-700">Filter by Price</label>
+        <div class="flex space-x-2 mt-1">
+            <input id="price-filter-min" type="number" placeholder="Min Price" 
+                class="w-1/2 pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <input id="price-filter-max" type="number" placeholder="Max Price" 
+                class="w-1/2 pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <button id="apply-price-filter" 
+            class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
+            Apply
+        </button>
+    </div>
 
     <!-- Products Grid -->
     <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -37,12 +51,13 @@
     </div>
 
     <div id="pagination-container" class="flex justify-center mt-4">
-        <!-- Pagination buttons  -->
+        <!-- Pagination buttons will be dynamically added here -->
     </div>
 </main>
 
+
 <!-- Product Detail Modal -->
-<div id="product-modal" class="bg-black bg-opacity-50 fixed inset-0 flex items-center justify-center z-50 hidden">
+<div id="product-modal" class="bg-black bg-opacity-50 fixed inset-0 flex items-center justify-center z-50  hidden">
     <div class="bg-white rounded-lg shadow-lg w-1/3 p-4 relative">
         <button id="close-modal" class="absolute top-2 right-2 text-gray-700">&times;</button>
         <h2 id="product-title" class="text-xl font-semibold mb-4"></h2>
@@ -61,5 +76,12 @@
                     min="1" value="1" />
             </div>
         </div>
+        <div class="mt-6">
+            <h3 class="text-lg font-semibold mb-4">Related Products</h3>
+            <div id="related-products" class="grid grid-cols-2 gap-4">
+                <!-- Related products will be dynamically added here -->
+            </div>
+        </div>
     </div>
 </div>
+
