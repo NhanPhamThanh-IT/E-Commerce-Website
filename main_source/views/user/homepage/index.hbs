@@ -273,6 +273,42 @@
         document.cookie = `cart=${encodeURIComponent(JSON.stringify(cart))}; path=/`;
     }
 
+    // Close modal when clicking the close button
+    document.getElementById('close-modal').addEventListener('click', () => {
+        document.getElementById('product-modal').classList.add('hidden');
+    });
+
+    // Apply category filter
+    document.getElementById('category-filter').addEventListener('change', function () {
+        const category = this.value;
+        const minPrice = document.getElementById('price-filter-min').value || 0;
+        const maxPrice = document.getElementById('price-filter-max').value || 1000000;
+
+        const url = `/product/price?category=${category}&min=${minPrice}&max=${maxPrice}&page=1&limit=10`;
+        fetchAndRenderProducts(url);
+    });
+
+    // Apply price filter
+    document.getElementById('apply-price-filter').addEventListener('click', function () {
+        const minPrice = document.getElementById('price-filter-min').value || 0;
+        const maxPrice = document.getElementById('price-filter-max').value || 1000000;
+
+        const category = document.getElementById('category-filter').value || '';
+        const url = `/product/price?category=${category}&min=${minPrice}&max=${maxPrice}&page=1`;
+        fetchAndRenderProducts(url);
+    });
+    
+    // Handle search input changes
+    document.getElementById('search-input').addEventListener('change', function () {
+        const searchTerm = this.value.trim();
+        let url = '/product/search/title=' + searchTerm + '?page=1';  // Search query for title
+
+        if (searchTerm) {
+            fetchAndRenderProducts(url);
+        } else {
+            fetchAndRenderProducts('/product?page=1'); // If search term is cleared, show all products
+        }
+    });
     // Initialize product display with default filters
     fetchAndRenderProducts('/product?page=1');
 </script>
