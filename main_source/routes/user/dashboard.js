@@ -3,6 +3,7 @@ const router = express.Router();
 require('dotenv').config();
 const passport = require('passport');
 const Auth = require('../../middlewares/Auth');
+const upload = require('../../middlewares/uploadAvatar');
 const dashboardController = require('../../controllers/user/dashboardController');
 const userController = require('../../controllers/user/userController');
 
@@ -69,5 +70,32 @@ router.get('/', (req, res) => {
     }
     res.redirect('/login');
 });
+
+router.get('/profile',  (req, res) => {
+    console.log('req.user >>', req.user);
+    const user = req.user.toObject();
+    res.render('profile/index', { user });
+});
+
+router.post('/upload-avatar', upload.single('avatar'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    // Đường dẫn tệp vừa upload
+    const avatarUrl = `/images/${req.file.filename}`;
+    console.log(`Avatar uploaded: ${avatarUrl}`);
+
+    // Cập nhật thông tin vào cơ sở dữ liệu
+
+    // Phản hồi về client
+    res.status(200).json({ message: 'Avatar uploaded successfully', avatarUrl });
+
+    // Trả về phản hồi hoặc redirect về profile
+    res.redirect('/user/profile');
+});
+
+// Route cập nhật thông tin người dùng
+router.put('/profile', userController.updateUserController);
 
 module.exports = router;
