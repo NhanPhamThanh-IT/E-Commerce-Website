@@ -81,8 +81,40 @@ const getUserByIDService = async (id) => {
     }
 }
 
+const updateUserService = async (id, updateData) => {
+    try {
+        // Tìm người dùng theo ID
+        const user = await User.findById(id);
+        if (!user) {
+            throw new MyError(404, 'User not found', 'Unable to find user with provided ID');
+        }
+
+        // Cập nhật thông tin
+        if (updateData.name) {
+            user.name = updateData.name; // Cập nhật name nếu có
+        }
+        if (updateData.avatar) {
+            user.avatar = updateData.avatar; // Cập nhật avatar nếu có
+        }
+
+        // Lưu thông tin đã cập nhật
+        const updatedUser = await user.save();
+        return {
+            message: 'User updated successfully',
+            user: {
+                name: updatedUser.name,
+                avatar: updatedUser.avatar,
+            },
+        };
+    } catch (error) {
+        console.log(error);
+        throw new MyError(500, error.message, error.desc || 'An unexpected error occurred.');
+    }
+};
+
 module.exports = {
     createUserService, 
     handleLoginService, 
     getUserByIDService,
+    updateUserService,
 }
