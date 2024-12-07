@@ -1,20 +1,17 @@
-const userModel = require('../models/userModel');
+const User = require('../models/userModel');
 
 const USERS_PER_PAGE = 5;
 
 exports.index = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const skip = (page - 1) * USERS_PER_PAGE;
-
     try {
-        const users = userModel.slice(skip, skip + USERS_PER_PAGE);
-        const totalUsers = userModel.length;
+        const users = await User.find().lean().skip(skip).limit(USERS_PER_PAGE);
+        const totalUsers = await User.countDocuments();
         const totalPages = Math.ceil(totalUsers / USERS_PER_PAGE);
-
         if (req.xhr) {
             return res.json({ users, totalPages });
         }
-
         const data = {
             users,
             totalPages,

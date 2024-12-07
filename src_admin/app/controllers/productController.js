@@ -13,3 +13,7 @@ exports.getProducts = async (req, res) => {
     });
 };
 
+exports.getProductDetails = async (req, res) => {
+    const product = Product.find((p) => p._id === req.params.id);
+    res.render('products/details', { product });
+}

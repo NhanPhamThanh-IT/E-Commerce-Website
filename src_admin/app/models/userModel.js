@@ -1,45 +1,20 @@
-const fakeData = [
-    {
-        "_id": "648fa1c7e4b0b1c3c5a9d001",
-        name: "Admin User",
-        email: "admin@example.com",
-        password: "hashed_password_123",
-        role: "admin",
-        emailToken: "abc12345token",
-        isVerified: true,
-        loginMethod: "email",
-        cart: [],
-        created_at: new Date("2024-01-01T12:00:00Z").toISOString()  // Date format consistency
-    },
-    {
-        "_id": "648fa1c7e4b0b1c3c5a9d002",
-        name: "John Doe",
-        email: "john.doe@example.com",
-        password: "hashed_password_456",  // Ensure this is hashed properly
-        role: "user",
-        emailToken: "def67890token",
-        isVerified: false,
-        loginMethod: "email",
-        cart: [
-            { productID: "648fa1c7e4b0b1c3c5a9p001", quantity: 2, total: 500 },
-            { productID: "648fa1c7e4b0b1c3c5a9p002", quantity: 1, total: 300 }
-        ],
-        created_at: new Date("2024-01-02T14:30:00Z").toISOString()
-    },
-    {
-        "_id": "648fa1c7e4b0b1c3c5a9d003",
-        name: "Jane Smith",
-        email: "jane.smith@example.com",
-        password: "hashed_password_789",  
-        role: "user",
-        emailToken: "ghi54321token",
-        isVerified: true,
-        loginMethod: "google",
-        cart: [
-            { productID: "648fa1c7e4b0b1c3c5a9p003", quantity: 3, total: 900 }
-        ],
-        created_at: new Date("2024-01-03T08:45:00Z").toISOString()
-    }
-];
+const mongoose = require('mongoose');
 
-module.exports = fakeData;
+const userSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    email: { type: String, unique: true, sparse: true },
+    password: {
+        type: String,
+        required: function () {
+            return this.loginMethod === 'email';
+        },
+    },
+    role: { type: String, enum: ['admin', 'user'], default: 'user' },
+    loginMethod: { type: String, enum: ['email', 'google', 'facebook'], required: true, default: 'email' },
+    emailToken: { type: String, default: null },
+    isVerified: { type: Boolean, default: false },
+}, { timestamps: true });
+
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;
