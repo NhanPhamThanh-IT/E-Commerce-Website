@@ -1,69 +1,48 @@
 <div class="container mx-auto p-6">
-    <!-- Header Section -->
-    <div class="text-center mb-12">
-        <h1 class="text-5xl font-extrabold text-indigo-600">
+    <div class="text-center mb-10">
+        <h1 class="text-4xl font-bold text-indigo-600">
             Product Details
         </h1>
-        <p class="text-gray-600 mt-3 text-lg">
+        <p class="text-gray-500 mt-2">
             Explore detailed information about your selected product
         </p>
     </div>
-
-    <!-- Main Card -->
-    <div
-        class="bg-gradient-to-r from-white to-gray-50 shadow-lg rounded-2xl p-10 flex items-start gap-8 hover:shadow-2xl transition-shadow border border-gray-200"
-    >
-        <!-- Product Image -->
-        <div class="flex-shrink-0">
+    <div class="bg-white shadow-lg rounded-lg p-8 flex flex-wrap items-start gap-6 hover:shadow-2xl transition-shadow border border-gray-100">
+        <div class="flex-shrink-0 w-full md:w-1/3">
             <img
                 src="{{product.images}}"
-                alt="{{product.name}}"
-                class="w-64 h-64 object-cover rounded-lg shadow-md transform hover:scale-105 transition-transform"
+                alt="{{product.title}}"
+                class="w-full h-auto object-cover rounded-lg shadow-md transform hover:scale-105 transition-transform"
             />
         </div>
-
-        <!-- Product Information -->
         <div class="flex-1">
-            <h2 class="text-4xl font-bold text-gray-800">
-                {{product.name}}
+            <h2 class="text-2xl font-bold text-gray-800">
+                {{product.title}}
             </h2>
             <p class="text-gray-500 text-sm mt-2">
-                Category:
+                Category: 
                 <span class="font-medium text-indigo-500">
-                    {{product.category_id.name}}
+                    {{product.category}}
                 </span>
             </p>
-            <p class="text-gray-700 mt-6 text-base leading-relaxed">
+            <p class="text-gray-700 mt-4 text-base leading-relaxed">
                 {{product.description}}
             </p>
-
-            <div class="mt-8">
-                <p class="text-3xl font-extrabold text-gray-900">
+            <div class="mt-6">
+                <p class="text-xl font-bold text-gray-900">
                     Price: 
                     <span class="text-red-500">{{product.price}}</span> VND
                 </p>
-                <p class="text-sm text-gray-500 mt-3">
-                    Stock Quantity:
+                <p class="text-sm text-gray-500 mt-2">
+                    Stock Quantity: 
                     <span class="font-medium">{{product.stock_quantity}}</span>
                 </p>
             </div>
         </div>
-
-        <!-- Metadata -->
-        <div class="text-sm text-gray-500 text-right">
+        <div class="w-full mt-4 text-sm text-gray-500">
             <p>
-                Added on:
-                <span class="font-medium text-gray-700">
-                    {{product.created_at}}
-                </span>
-            </p>
-            <p>
-                Category ID:
-                <span class="font-medium">{{product.category_id._id}}</span>
-            </p>
-            <p>
-                Product ID:
-                <span class="font-medium">{{product._id}}</span>
+                Product ID: 
+                <span class="font-medium text-gray-700">{{product._id}}</span>
             </p>
         </div>
     </div>
