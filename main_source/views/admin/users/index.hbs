@@ -35,12 +35,17 @@
                     </table>
 
                     <div class="flex justify-between items-center mt-6">
+                        {{#if (gt currentPage 1)}}
                         <button id="prevPage" class="px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition duration-300">
                             Previous
                         </button>
+                        {{/if}}
+
+                        {{#if (lt currentPage totalPages)}}
                         <button id="nextPage" class="px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition duration-300">
                             Next
                         </button>
+                        {{/if}}
                     </div>
                 </div>
             </div>
@@ -57,7 +62,6 @@
         const nextButton = document.getElementById('nextPage');
         let currentPage = {{ currentPage }};
         const totalPages = {{ totalPages }};
-
         function loadUsers(page) {
             fetch(`/users?page=${page}`, {
                 method: 'GET',
@@ -69,7 +73,6 @@
                 .then((data) => {
                     const userList = document.getElementById('user-list');
                     userList.innerHTML = '';
-
                     data.users.forEach((user) => {
                         const row = document.createElement('tr');
                         row.classList.add('hover:bg-blue-50', 'transition', 'duration-300', 'ease-in-out');
@@ -86,13 +89,15 @@
                         `;
                         userList.appendChild(row);
                     });
-
-                    prevButton.style.display = page > 1 ? 'inline-block' : 'none';
-                    nextButton.style.display = page < totalPages ? 'inline-block' : 'none';
+                    if (prevButton) {
+                        prevButton.style.display = page > 1 ? 'inline-block' : 'none';
+                    }
+                    if (nextButton) {
+                        nextButton.style.display = page < totalPages ? 'inline-block' : 'none';
+                    }
                 })
                 .catch((error) => console.error('Error fetching users:', error));
         }
-
         if (prevButton) {
             prevButton.addEventListener('click', function () {
                 if (currentPage > 1) {
@@ -101,7 +106,6 @@
                 }
             });
         }
-
         if (nextButton) {
             nextButton.addEventListener('click', function () {
                 if (currentPage < totalPages) {
@@ -110,7 +114,5 @@
                 }
             });
         }
-
-        loadUsers(currentPage);
     });
 </script>
