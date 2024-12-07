@@ -30,14 +30,18 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        const users = parseInt('{{users}}') || 0;
+        const products = parseInt('{{products}}') || 0;
+        const orders = parseInt('{{orders}}') || 0;
+
         const ctx = document.getElementById('dashboardChart').getContext('2d');
 
         const data = {
             labels: ['Users', 'Products', 'Orders'],
             datasets: [
                 {
-                    label: 'Metrics',
-                    data: [250, 500, 150],
+                    label: 'Count',
+                    data: [users, products, orders],
                     backgroundColor: ['#4F46E5', '#10B981', '#F59E0B'],
                     borderColor: ['#3B82F6', '#059669', '#D97706'],
                     borderWidth: 1,
