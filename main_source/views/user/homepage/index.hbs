@@ -66,7 +66,8 @@
         <p id="product-price" class="text-gray-800 font-bold mb-4"></p>
         <div class="flex justify-between">
             <button id="add-to-cart" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-                data-product-id="">
+                 data-product-id="{{this.id}}" 
+                data-price="{{this.price}}">
                 Add to Cart
             </button>
             <div class="mb-4">
@@ -180,6 +181,7 @@
         document.getElementById('product-description').innerText = product.description;
         document.getElementById('product-price').innerText = `$${product.price}`;
         document.getElementById('add-to-cart').setAttribute('data-product-id', product._id); // Set product ID
+        document.getElementById('add-to-cart').setAttribute('data-price', product.price);
         // Fetch related products
         const relatedProductsContainer = document.getElementById('related-products');
         //relatedProductsContainer.innerHTML = '<p class="text-center text-gray-600">Loading related products...</p>';
@@ -237,23 +239,25 @@
         const productId = document.getElementById('add-to-cart').getAttribute('data-product-id');
         const quantityInput = document.getElementById('quantity-input');
         const quantity = parseInt(quantityInput.value, 10);
+        const price = document.getElementById('add-to-cart').getAttribute('data-price');
 
         if (!isNaN(quantity) && quantity > 0) {
-            addToCart(productId, quantity);
+            console.log('Adding to cart:', productId, quantity, price);
+            addToCart(productId, quantity, price);
         } else {
             alert('Please enter a valid quantity.');
         }
     });
 
     // Add items to cart
-    function addToCart(productId, quantity) {
+    function addToCart(productId, quantity, price) {
         let cart = getCartFromCookie();
         const existingItem = cart.find(item => item.id === productId);
 
         if (existingItem) {
             existingItem.quantity += quantity;
         } else {
-            cart.push({ id: productId, quantity });
+            cart.push({ id: productId, quantity, price });
         }
 
         saveCartToCookie(cart);
