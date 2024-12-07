@@ -6,9 +6,9 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {{#each products}}
         <div class="bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden transition-shadow duration-300">
-            <img src="{{this.images}}" class="w-full h-64 object-cover" alt="{{this.name}}">
+            <img src="{{this.images}}" class="w-full h-64 object-cover" alt="{{this.title}}">
             <div class="p-6">
-                <h5 class="text-lg font-semibold textt-black truncate">{{this.name}}</h5>
+                <h5 class="text-lg font-semibold textt-black truncate">{{this.title}}</h5>
                 <div class="flex justify-between items-center mt-4">
                     <p class="text-xl text-green-600 font-semibold">${{this.price}}</p>
                     <p class="text-sm text-gray-500">Stock: {{this.stock_quantity}}</p>
