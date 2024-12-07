@@ -193,7 +193,7 @@
                 // Filter out the product with the same _id
                 const filteredProducts = relatedProducts.products.filter(
                     (related) => related._id !== product._id
-                );
+                ).slice(0, 4);
 
                 if (filteredProducts.length > 0) {
                     filteredProducts.forEach((related) => {

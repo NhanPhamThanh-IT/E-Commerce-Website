@@ -55,7 +55,7 @@ router.use(Auth.isAuthenticated);
 router.get('/user', Auth.isUser, dashboardController.index);
 
 router.get('/cart', async (req, res) => {
-    res.render('cart/index');
+    res.render('user/cart/index');
 });
 
 router.post('/logout', userController.handleLogout);
