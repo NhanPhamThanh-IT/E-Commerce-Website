@@ -1,0 +1,93 @@
+<div class="overflow-x-auto bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Users List</h2>
+    <table class="min-w-full table-auto border-separate border-spacing-0">
+        <thead class="bg-gray-100 text-gray-600">
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium">Name</th>
+                <th class="px-6 py-3 text-left text-sm font-medium">Email</th>
+                <th class="px-6 py-3 text-left text-sm font-medium">Role</th>
+                <th class="px-6 py-3 text-left text-sm font-medium">Verified</th>
+            </tr>
+        </thead>
+        <tbody id="user-list">
+            {{#each users}}
+            <tr class="border-t hover:bg-gray-50 transition duration-300 ease-in-out">
+                <td class="px-6 py-4 text-sm">{{this.name}}</td>
+                <td class="px-6 py-4 text-sm">{{this.email}}</td>
+                <td class="px-6 py-4 text-sm">{{this.role}}</td>
+                <td class="px-6 py-4 text-sm">
+                    {{#if this.isVerified}}
+                        <span class="text-green-500">Yes</span>
+                    {{else}}
+                        <span class="text-red-500">No</span>
+                    {{/if}}
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <div class="flex justify-between mt-4">
+        <button id="prevPage" class="px-4 py-2 bg-blue-500 text-white rounded">Previous</button>
+        <button id="nextPage" class="px-4 py-2 bg-blue-500 text-white rounded">Next</button>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const prevButton = document.getElementById('prevPage');
+    const nextButton = document.getElementById('nextPage');
+    let currentPage = {{currentPage}};
+    const totalPages = {{totalPages}};
+
+    function loadUsers(page) {
+        fetch(`/users?page=${page}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = '';
+
+            data.users.forEach(user => {
+                const row = document.createElement('tr');
+                row.classList.add('border-t', 'hover:bg-gray-50', 'transition', 'duration-300', 'ease-in-out');
+                row.innerHTML = `
+                    <td class="px-6 py-4 text-sm">${user.name}</td>
+                    <td class="px-6 py-4 text-sm">${user.email}</td>
+                    <td class="px-6 py-4 text-sm">${user.role}</td>
+                    <td class="px-6 py-4 text-sm">${user.isVerified ? '<span class="text-green-500">Yes</span>' : '<span class="text-red-500">No</span>'}</td>
+                `;
+                userList.appendChild(row);
+            });
+
+            prevButton.style.display = page > 1 ? 'inline-block' : 'none';
+            nextButton.style.display = page < totalPages ? 'inline-block' : 'none';
+        })
+        .catch(error => console.error('Error fetching users:', error));
+    }
+
+    if (prevButton) {
+        prevButton.addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadUsers(currentPage);
+            }
+        });
+    }
+
+    if (nextButton) {
+        nextButton.addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadUsers(currentPage);
+            }
+        });
+    }
+
+    loadUsers(currentPage);
+});
+</script>
