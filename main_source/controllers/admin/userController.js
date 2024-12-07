@@ -3,7 +3,7 @@ const User = require('../../models/userModel');
 const USERS_PER_PAGE = 5;
 
 exports.index = async (req, res) => {
-    const page = parseInt(req.query.page) || 1;
+    const page = Math.max(1, parseInt(req.query.page) || 1);
     const skip = (page - 1) * USERS_PER_PAGE;
     try {
         const users = await User.find()
