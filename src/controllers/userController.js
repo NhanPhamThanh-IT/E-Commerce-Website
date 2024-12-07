@@ -17,9 +17,9 @@ const createUser = async (req, res, next) => {
         const userData = value;
         const result = await userService.createUserService(userData);
         if (result)
-            return res.redirect('/user/profile');
+            return res.status(200).json(result); // sửa 
         else
-            return res.redirect('/user/register');
+            return res.status(400).json('Failed'); // sửa 
     } catch (error) {
         return next(error);
     }

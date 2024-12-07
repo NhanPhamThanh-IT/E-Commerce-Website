@@ -31,6 +31,7 @@ app.use(passport.session());
 require('./config/passport')(passport); 
 
 //routes
+
 app.use('/user', userRoutes);
 
 app.use((req, res, next) => {
@@ -39,7 +40,7 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
     statusCode = err.statusCode || 500,
-    res.status(statusCode).render('error', {
+    res.status(statusCode).send({
         statusCode: statusCode,
         message: err.message,
         desc: err.desc
