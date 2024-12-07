@@ -85,3 +85,152 @@
     </div>
 </div>
 
+
+<script>
+    // Fetch and render products
+    async function fetchAndRenderProducts(url) {
+        const productsContainer = document.getElementById('products-container');
+        const paginationContainer = document.getElementById('pagination-container');
+
+        productsContainer.innerHTML = '';
+        paginationContainer.innerHTML = '';
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (response.ok && data.products) {
+                // Render products
+                data.products.forEach(product => {
+                    productsContainer.innerHTML += `
+                        <div class="w-full rounded-lg shadow-md bg-white overflow-hidden">
+                            <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <h3 class="text-lg font-semibold text-gray-900">
+                                    ${product.title}
+                                </h3>
+                                <p class="text-sm text-gray-600 mb-2">${product.brand} - ${product.model}</p>
+                                <p class="text-gray-800 font-bold mb-4">$${product.price}</p>
+                                <button 
+                                    class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+                                    data-product-id="${product._id}">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                // Render pagination buttons
+                for (let i = 1; i <= data.totalPages; i++) {
+                    const isCurrentPage = i === Number(data.currentPage); // Convert currentPage to number
+
+                    paginationContainer.innerHTML += `
+                        <button 
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-1 ${isCurrentPage ? 'opacity-50 cursor-not-allowed' : ''}" 
+                            data-page="${i}" 
+                            ${isCurrentPage ? 'disabled' : ''}>
+                            ${i}
+                        </button>
+                    `;
+                }
+
+
+    // Add click event listeners to pagination buttons
+            paginationContainer.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const selectedPage = button.getAttribute('data-page');
+                    const baseUrl = url.split('?')[0]; // Extract base URL
+                    const queryParams = new URLSearchParams(url.split('?')[1]); // Extract query parameters
+                    queryParams.set('page', selectedPage); // Update the page number
+
+                    fetchAndRenderProducts(`${baseUrl}?${queryParams.toString()}`);
+                });
+            });
+
+                // Add event listeners to products
+                addProductEventListeners();
+            } else {
+                productsContainer.innerHTML = '<p class="text-center text-gray-600">No products found.</p>';
+            }
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            productsContainer.innerHTML = '<p class="text-center text-red-500">Failed to load products. Please try again.</p>';
+        }
+    }
+
+    // Add click events to product buttons
+    function addProductEventListeners() {
+        document.querySelectorAll('[data-product-id]').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                const productId = e.target.getAttribute('data-product-id');
+                const response = await fetch(`/product/${productId}`);
+                const product = await response.json();
+                showProductModal(product);
+            });
+        });
+    }
+
+    async function showProductModal(product) {
+        const modal = document.getElementById('product-modal');
+
+        // Set product details
+        document.getElementById('product-title').innerText = product.title;
+        document.getElementById('product-image').src = product.image;
+        document.getElementById('product-description').innerText = product.description;
+        document.getElementById('product-price').innerText = `$${product.price}`;
+        document.getElementById('add-to-cart').setAttribute('data-product-id', product._id); // Set product ID
+        // Fetch related products
+        const relatedProductsContainer = document.getElementById('related-products');
+        //relatedProductsContainer.innerHTML = '<p class="text-center text-gray-600">Loading related products...</p>';
+        try {
+            const response = await fetch(`/product/category/${product.category}?limit=5`);
+            const relatedProducts = await response.json();
+
+            if (response.ok && relatedProducts.products.length > 0) {
+                relatedProductsContainer.innerHTML = '';
+
+                // Filter out the product with the same _id
+                const filteredProducts = relatedProducts.products.filter(
+                    (related) => related._id !== product._id
+                );
+
+                if (filteredProducts.length > 0) {
+                    filteredProducts.forEach((related) => {
+                        relatedProductsContainer.innerHTML += `
+                            <div 
+                                class="flex items-center justify-start space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
+                                data-product-id="${related._id}">
+                                <img src="${related.image}" alt="${related.title}" class="w-20 h-20 object-cover">
+                                <div>
+                                    <h4 class="text-sm font-semibold">${related.title}</h4>
+                                    <p class="text-sm text-gray-600">$${related.price}</p>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    relatedProductsContainer.querySelectorAll('[data-product-id]').forEach((relatedButton) => {
+                        relatedButton.addEventListener('click', async (e) => {
+                            const relatedProductId = e.target.closest('[data-product-id]').getAttribute('data-product-id');
+                            const productUrl = `/product/${relatedProductId}`;
+                            const response = await fetch(productUrl);
+                            const product = await response.json();
+                            showProductModal(product);
+                        });
+                    });
+                } else {
+                    relatedProductsContainer.innerHTML = '<p>No related products found.</p>';
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching related products:', error);
+            relatedProductsContainer.innerHTML = '<p class="text-center text-red-500">Failed to load related products.</p>';
+        }
+
+        modal.classList.remove('hidden');
+    }
+    
+    // Initialize product display with default filters
+    fetchAndRenderProducts('/product?page=1');
+</script>
