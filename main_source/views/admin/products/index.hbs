@@ -1,0 +1,46 @@
+<div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg shadow-2xl p-8 mb-8">
+    <h1 class="text-4xl font-extrabold text-center mb-8 text-white tracking-tight">
+        Product List
+    </h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        {{#each products}}
+        <div class="bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden transition-shadow duration-300">
+            <img src="{{this.images}}" class="w-full h-64 object-cover" alt="{{this.title}}">
+            <div class="p-6">
+                <h5 class="text-lg font-semibold textt-black truncate">{{this.title}}</h5>
+                <div class="flex justify-between items-center mt-4">
+                    <p class="text-xl text-green-600 font-semibold">${{this.price}}</p>
+                    <p class="text-sm text-gray-500">Stock: {{this.stock_quantity}}</p>
+                </div>
+                <div class="flex justify-between items-center mt-4">
+                    <p class="text-md text-red-500 font-semibold">-{{this.discount}}%</p>
+                    <p class="text-sm text-gray-500 capitalize">{{this.color}}</p>
+                </div>
+                <div class="mt-6">
+                    <a href="products/{{this._id}}"
+                        class="block font-bold no-underline text-center bg-blue-600 text-white py-2 rounded-lg transition duration-300 hover:bg-blue-700 hover:scale-105">
+                        View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <div class="flex justify-center mt-8 space-x-4">
+        {{#if (gt currentPage 1)}}
+        <a href="products?page={{subtract currentPage 1}}"
+            class="font-bold no-underline px-4 py-2 bg-blue-600 text-white rounded-lg transition duration-300 hover:bg-blue-700">
+            Previous
+        </a>
+        {{/if}}
+
+        {{#if (lt currentPage totalPages)}}
+        <a href="products?page={{add currentPage 1}}"
+            class="font-bold no-underline px-4 py-2 bg-blue-600 text-white rounded-lg transition duration-300 hover:bg-blue-700">
+            Next
+        </a>
+        {{/if}}
+    </div>
+</div>
