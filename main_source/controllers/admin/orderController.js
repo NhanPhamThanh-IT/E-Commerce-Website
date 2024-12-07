@@ -2,7 +2,7 @@ const Order = require('../../models/orderModel');
 
 exports.index = (req, res) => {
     const data = {
-        users: userModel
+        users: Order
     };
     res.render('admin/users/index', data);
 };
