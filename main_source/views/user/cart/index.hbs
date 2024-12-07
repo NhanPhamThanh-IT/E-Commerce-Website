@@ -22,6 +22,37 @@
             </div>
         </div>
 
+        <!-- Address Form Section -->
+        <div class="w-1/2 bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-3xl font-semibold text-gray-800 mb-8">Enter Your Information</h3>
+            <form id="address-form" class="space-y-6">
+                <div>
+                    <label for="name" class="block text-lg font-medium text-gray-700">Full Name</label>
+                    <input type="text" id="name" name="name"
+                        class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required>
+                </div>
+
+                <div>
+                    <label for="phone" class="block text-lg font-medium text-gray-700">Phone Number</label>
+                    <input type="tel" id="phone" name="phone"
+                        class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required>
+                </div>
+
+                <div>
+                    <label for="address" class="block text-lg font-medium text-gray-700">Shipping Address</label>
+                    <textarea id="address" name="address"
+                        class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        rows="4" required></textarea>
+                </div>
+
+                <div>
+                    <label for="email" class="block text-lg font-medium text-gray-700">Email Address</label>
+                    <input type="email" id="email" name="email"
+                        class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required>
+                </div>
 
                 <button type="submit"
                     class="bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-800 transition w-full">
