@@ -1,0 +1,70 @@
+<div class="container mx-auto p-6">
+    <!-- Header Section -->
+    <div class="text-center mb-12">
+        <h1 class="text-5xl font-extrabold text-indigo-600">
+            Product Details
+        </h1>
+        <p class="text-gray-600 mt-3 text-lg">
+            Explore detailed information about your selected product
+        </p>
+    </div>
+
+    <!-- Main Card -->
+    <div
+        class="bg-gradient-to-r from-white to-gray-50 shadow-lg rounded-2xl p-10 flex items-start gap-8 hover:shadow-2xl transition-shadow border border-gray-200"
+    >
+        <!-- Product Image -->
+        <div class="flex-shrink-0">
+            <img
+                src="{{product.images}}"
+                alt="{{product.name}}"
+                class="w-64 h-64 object-cover rounded-lg shadow-md transform hover:scale-105 transition-transform"
+            />
+        </div>
+
+        <!-- Product Information -->
+        <div class="flex-1">
+            <h2 class="text-4xl font-bold text-gray-800">
+                {{product.name}}
+            </h2>
+            <p class="text-gray-500 text-sm mt-2">
+                Category:
+                <span class="font-medium text-indigo-500">
+                    {{product.category_id.name}}
+                </span>
+            </p>
+            <p class="text-gray-700 mt-6 text-base leading-relaxed">
+                {{product.description}}
+            </p>
+
+            <div class="mt-8">
+                <p class="text-3xl font-extrabold text-gray-900">
+                    Price: 
+                    <span class="text-red-500">{{product.price}}</span> VND
+                </p>
+                <p class="text-sm text-gray-500 mt-3">
+                    Stock Quantity:
+                    <span class="font-medium">{{product.stock_quantity}}</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Metadata -->
+        <div class="text-sm text-gray-500 text-right">
+            <p>
+                Added on:
+                <span class="font-medium text-gray-700">
+                    {{product.created_at}}
+                </span>
+            </p>
+            <p>
+                Category ID:
+                <span class="font-medium">{{product.category_id._id}}</span>
+            </p>
+            <p>
+                Product ID:
+                <span class="font-medium">{{product._id}}</span>
+            </p>
+        </div>
+    </div>
+</div>
