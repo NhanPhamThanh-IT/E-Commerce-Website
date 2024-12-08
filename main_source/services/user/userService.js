@@ -31,7 +31,7 @@ const handleLoginService = async (userData) => {
             if (user.loginMethod !== 'email'){
                 throw new MyError(400, 'Login failed', 'Account must be logged in using Google/Facebook')
             }
-            const isMatch = bcrypt.compare(userData.password, user.password);
+            const isMatch = await bcrypt.compare(userData.password, user.password);
             if (isMatch){
                 const payload = {
                     id: user.id,

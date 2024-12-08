@@ -47,15 +47,14 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             body: JSON.stringify(formData)
         });
         console.log('Response:', response);
-
+    
         if (response.ok) {
             alert('Login successful!');
             // Redirect to dashboard or home page after login
-            window.location.href = '/';  // Or any desired redirect
+            window.location.href = '/homepage';  // Or any desired redirect
         } else {
-            // Show the error message from the response
-            const errorMessage = data.desc || 'Login failed. Please check your credentials.';
-            alert(`Error: ${errorMessage}`);
+            const errorData = await response.json(); // Parse the error response
+            alert(`Error: ${errorData.desc || errorData.message || 'Login failed'}`);
         }
     } catch (error) {
         alert('Something went wrong. Please try again later.');

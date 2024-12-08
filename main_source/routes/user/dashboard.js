@@ -48,6 +48,9 @@ router.get(
         });
     }
 )
+router.get('/', (req, res) => {
+    res.redirect('/login');
+});
 
 router.use(Auth.attachJwtToken);
 router.use(Auth.jwtAuth)
@@ -60,8 +63,7 @@ router.get('/cart', async (req, res) => {
 });
 
 router.post('/logout', userController.handleLogout);
-
-router.get('/', (req, res) => {
+router.get('/homepage', (req, res) => {
     if (req.user) {
         if (req.user.role === 'admin') {
             return res.redirect('/admin');
@@ -69,7 +71,7 @@ router.get('/', (req, res) => {
         res.redirect('/user');
     }
     res.redirect('/login');
-});
+})
 
 router.get('/profile',  (req, res) => {
     console.log('req.user >>', req.user);
