@@ -35,3 +35,18 @@ exports.getProductDetails = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
+exports.editProduct = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const product = await Product.findById(productId).lean();
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+        res.render('admin/products/details', { product });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
