@@ -65,9 +65,8 @@ exports.deleteProduct = async (req, res) => {
             return res.status(404).send('Product not found');
         }
         res.redirect('/admin/products');
-    }
-    catch (error) {
+    } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
-    };
+    }
 };

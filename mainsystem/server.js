@@ -7,11 +7,14 @@ const session = require('express-session');
 const connection = require('./config/database');
 const configViewEngine = require('./config/viewEngine');
 const MyError = require('./cerror');
+const methodOverride = require('method-override');
+
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'));
 
 configViewEngine(app);
 
