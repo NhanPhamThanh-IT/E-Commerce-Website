@@ -1,11 +1,24 @@
 {{> header }}
+<style>
+    /* CSS for fading out and in */
+    .cart-item {
+        opacity: 1;
+        transition: opacity 0.1s ease;
+    }
 
+    .cart-item.hidden {
+        opacity: 0;
+    }
+</style>
 <main class="container mx-auto px-6 py-12">
     <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Your Cart</h2>
 
     <div class="flex space-x-12">
         <!-- Cart Section -->
         <div class="w-1/2 bg-white p-6 rounded-lg shadow-md">
+            <div id="cart-summary" class="mt-6 border-b pt-6">
+                <p id="cart-total" class="text-xl font-semibold text-gray-800">Total: $0.00</p>
+            </div>
             <div id="cart-container" class="space-y-6">
                 <!-- Cart items will be dynamically added here -->
             </div>
@@ -13,13 +26,7 @@
                 <!-- Pagination buttons will be dynamically added here -->
             </div>
 
-            <div id="cart-summary" class="mt-6 border-t pt-6">
-                <p id="cart-total" class="text-xl font-semibold text-gray-800">Total: $0.00</p>
-                <button id="checkout-button"
-                    class="bg-blue-600 text-white py-3 px-6 rounded-lg mt-6 hover:bg-blue-800 transition">
-                    Proceed to Checkout
-                </button>
-            </div>
+
         </div>
 
         <!-- Address Form Section -->
