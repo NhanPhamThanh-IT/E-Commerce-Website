@@ -1,54 +1,50 @@
-<section class="profile-section spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="profile__text">
-                    <h2>Profile</h2>
-                    <p>View and Update your profile details</p>
-                </div>
-            </div>
+<section class="profile-section py-6">
+    <div class="container mx-auto bg-gradient-to-r from-green-600 to-green-300 p-8 rounded-lg shadow-xl">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-semibold text-white">Profile</h2>
+            <p class="text-lg text-white">View and update your profile details</p>
         </div>
-        
-        <!-- Form để lưu các thông tin khác của người dùng -->
-        <form action="/save-profile" method="POST">
-            <!-- User Information -->
-            <div class="col-lg-12 text-center">
-                <div class="profile__details">
-                    <!-- Avatar và nút Upload -->
-                    <div class="row mt-4 align-items-center justify-content-center">
-                        <div class="col-md-4 text-center">
-                            <div class="profile__avatar">
-                                <img id="avatar" src="/images/{{user.avatar}}" alt="User Avatar" class="img-fluid rounded-circle" onerror="this.onerror=null; this.src='/images/profile.png';">
-                            </div>
-                        </div>
-                        <div class="col-md-4 text-center">
-                            <div class="profile__upload">
-                                <!-- Form riêng để upload Avatar -->
-                                <form id="avatarForm" enctype="multipart/form-data">
-                                    <input type="file" name="avatar" accept="image/jpeg, image/png, image/jpg" id="avatarInput" class="form-control d-none" />
-                                    <button type="button" id="uploadButton" class="site-btn mt-2">Upload Avatar</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Các trường thông tin khác -->
-                    <div class="form-group bordered-input">
-                        <label for="username">Username</label>
-                        <input type="text" name="name" id="username" value="{{user.name}}" class="form-control" />
+        <form action="/save-profile" method="POST" class="bg-white p-8 rounded-lg shadow-md mx-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Left Column: Avatar and Upload -->
+                <div class="text-center flex flex-col h-full">
+                    <div class="w-[10px] h-[10px] overflow-hidden mx-auto mb-6">
+                        <img id="avatar" src="/images/{{user.avatar}}" alt="User Avatar"
+                            class="w-64 h-64 object-cover mx-auto"
+                            onerror="this.onerror=null; this.src='/images/profile.png';">
                     </div>
-
-                    <div class="form-group bordered-input">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" value="{{user.email}}" class="form-control" readonly />
+                    <div>
+                        <form id="avatarForm" enctype="multipart/form-data">
+                            <input type="file" name="avatar" accept="image/jpeg, image/png, image/jpg" id="avatarInput"
+                                class="hidden" />
+                            <button type="button" id="uploadButton"
+                                class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition">Upload
+                                Avatar</button>
+                        </form>
                     </div>
                 </div>
-            </div>
 
-            <!-- Nút lưu thay đổi -->
-            <div class="row mt-4">
-                <div class="col-lg-12 text-center">
-                    <button type="submit" class="save">Save Changes</button>
+                <!-- Right Column: User Information and Update Button -->
+                <div class="space-y-6 flex flex-col h-full">
+                    <div class="mb-4">
+                        <label for="username" class="block text-sm font-semibold text-gray-700">Username</label>
+                        <input type="text" name="name" id="username" value="{{user.name}}"
+                            class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-semibold text-gray-700">Email</label>
+                        <input type="email" id="email" name="email" value="{{user.email}}"
+                            class="w-full p-3 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            readonly />
+                    </div>
+
+                    <div class="text-center mt-auto">
+                        <button type="submit"
+                            class="bg-green-500 text-white px-8 py-3 rounded-md hover:bg-green-600 transition">Save
+                            Changes</button>
+                    </div>
                 </div>
             </div>
         </form>
@@ -70,50 +66,50 @@
 
     // Xử lý khi người dùng chọn tệp
     avatarInput.addEventListener('change', () => {
-    if (avatarInput.files.length > 0) {
-        const formData = new FormData();
-        formData.append('avatar', avatarInput.files[0]);
+        if (avatarInput.files.length > 0) {
+            const formData = new FormData();
+            formData.append('avatar', avatarInput.files[0]);
 
-        fetch('/upload-avatar', {
-            method: 'POST',
-            body: formData,
-        })
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Failed to upload avatar.');
-            }
-        })
-        .then((data) => {
-            alert(data.message);
-            document.getElementById('avatar').src = data.avatarUrl; // Cập nhật ảnh avatar
-        })
-        .catch((error) => console.error('Error uploading avatar:', error));
-    }
-});
+            fetch('/upload-avatar', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Failed to upload avatar.');
+                    }
+                })
+                .then((data) => {
+                    alert(data.message);
+                    document.getElementById('avatar').src = data.avatarUrl; // Cập nhật ảnh avatar
+                })
+                .catch((error) => console.error('Error uploading avatar:', error));
+        }
+    });
 
-document.querySelector('.save').addEventListener('click', (e) => {
-    e.preventDefault(); // Ngăn form submit mặc định
+    document.querySelector('.save').addEventListener('click', (e) => {
+        e.preventDefault(); // Ngăn form submit mặc định
 
-    const userId = "{{user._id}}"; // ID người dùng
-    const name = document.getElementById('username').value; // Lấy giá trị name
-    const avatarPath = document.getElementById('avatar').src.split('/').pop(); // Lấy tên file avatar
+        const userId = "{{user._id}}"; // ID người dùng
+        const name = document.getElementById('username').value; // Lấy giá trị name
+        const avatarPath = document.getElementById('avatar').src.split('/').pop(); // Lấy tên file avatar
 
-    fetch(`/profile`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, avatar: avatarPath }),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.message) {
-                alert(data.message); // Thông báo thành công
-            }
+        fetch(`/profile`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, avatar: avatarPath }),
         })
-        .catch((error) => console.error('Error updating user:', error));
-});
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.message) {
+                    alert(data.message); // Thông báo thành công
+                }
+            })
+            .catch((error) => console.error('Error updating user:', error));
+    });
 
 </script>

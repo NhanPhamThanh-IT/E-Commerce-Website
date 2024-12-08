@@ -74,7 +74,6 @@ router.get('/homepage', (req, res) => {
 })
 
 router.get('/profile',  (req, res) => {
-    console.log('req.user >>', req.user);
     const user = req.user.toObject();
     res.render('profile/index', { user });
 });
@@ -86,7 +85,6 @@ router.post('/upload-avatar', upload.single('avatar'), (req, res) => {
 
     // Đường dẫn tệp vừa upload
     const avatarUrl = `/images/${req.file.filename}`;
-    console.log(`Avatar uploaded: ${avatarUrl}`);
 
     // Cập nhật thông tin vào cơ sở dữ liệu
 
