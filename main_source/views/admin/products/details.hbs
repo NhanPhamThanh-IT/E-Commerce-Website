@@ -49,6 +49,13 @@
                             <span class="font-medium text-gray-700">{{product._id}}</span>
                         </p>
                     </div>
+                    <!-- Nút mở modal chỉnh sửa thông tin -->
+                    <div class="w-full mt-6 text-center">
+                        <button id="openModalBtn"
+                            class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition">
+                            Update Product
+                        </button>
+                    </div>
                 </div>
             </div>
         </main>
@@ -56,4 +63,84 @@
     <div>
         {{> footer }}
     </div>
+
+    <!-- Modal -->
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white h-screen w-11/12 md:w-2/3 lg:w-1/2 overflow-y-auto rounded-lg shadow-lg">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-xl font-semibold">Edit Product</h3>
+                <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">
+                    &#10005;
+                </button>
+            </div>
+            <form action="/edit-product/{{product._id}}" method="POST" class="p-6">
+                <div class="mb-4">
+                    <label class="block text-gray-700">Title</label>
+                    <input type="text" name="title" value="{{product.title}}" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-indigo-300">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Category</label>
+                    <input type="text" name="category" value="{{product.category}}" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-indigo-300">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Description</label>
+                    <textarea name="description" rows="4" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-indigo-300">{{product.description}}</textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Price (VND)</label>
+                    <input type="number" name="price" value="{{product.price}}" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-indigo-300">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Stock Quantity</label>
+                    <input type="number" name="stock_quantity" value="{{product.stock_quantity}}" required
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-indigo-300">
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" id="cancelBtn"
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded mr-2 hover:bg-gray-400">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- JavaScript để xử lý mở và đóng modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const openModalBtn = document.getElementById('openModalBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const editModal = document.getElementById('editModal');
+
+            // Hàm mở modal
+            openModalBtn.addEventListener('click', function () {
+                editModal.classList.remove('hidden');
+            });
+
+            // Hàm đóng modal khi nhấn nút đóng hoặc hủy
+            closeModalBtn.addEventListener('click', function () {
+                editModal.classList.add('hidden');
+            });
+
+            cancelBtn.addEventListener('click', function () {
+                editModal.classList.add('hidden');
+            });
+
+            // Đóng modal khi nhấn ngoài vùng modal
+            window.addEventListener('click', function (e) {
+                if (e.target === editModal) {
+                    editModal.classList.add('hidden');
+                }
+            });
+        });
+    </script>
 </div>
