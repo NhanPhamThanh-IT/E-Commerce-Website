@@ -54,7 +54,7 @@ const handleLogin = async (req, res, next) => {
         else if (result.user.role === 'user') {
             return res.redirect('/user');
         }
-        return redirect('/login');
+        return res.redirect('/login');
     } catch (error) {
         console.error(error);
         return next(error);
