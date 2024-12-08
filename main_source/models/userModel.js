@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
     },
     role: { type: String, enum: ['admin', 'user'], default: 'user' },
     loginMethod: { type: String, enum: ['email', 'google', 'facebook'], required: true, default: 'email' },
+    avatar: { type: String, default: 'profile.png' },
     emailToken: { type: String, default: null },
     isVerified: { type: Boolean, default: false },
 }, { timestamps: true });

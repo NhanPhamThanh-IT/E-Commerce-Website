@@ -83,9 +83,27 @@ const getUserByID = async (req, res, next) => {
     }
 };
 
+const updateUserController = async (req, res) => {
+    try {
+        const userId = req.user.id; // Lấy ID từ URL
+        const updateData = req.body; // Dữ liệu cần cập nhật từ client
+
+        // Gọi service để cập nhật thông tin
+        const result = await userService.updateUserService(userId, updateData);
+
+        // Gửi phản hồi thành công
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(error.statusCode || 500).json({
+            message: error.message || 'An unexpected error occurred.',
+            description: error.desc || null,
+        });
+    }
+};
 module.exports = {
     createUser,
     handleLogin,
     handleLogout,
     getUserByID,
+    updateUserController,
 };
