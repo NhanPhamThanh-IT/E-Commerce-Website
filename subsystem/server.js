@@ -4,8 +4,8 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const session = require('express-session');
-const connection = require('./config/database');
-const configViewEngine = require('../main_source/config/viewEngine');
+const connection = require('../mainsystem/config/database');
+const configViewEngine = require('../mainsytem/config/viewEngine');
 const MyError = require('./cerror');
 const app = express();
 const port = process.env.PORT || 3113;
@@ -25,9 +25,10 @@ app.use(cookieParser());
 
 app.use(passport.initialize());
 app.use(passport.session());
-require('./config/passport')(passport);
+require('../mainsystem/config/passport')(passport);
 
-app.use('/', require('./routes/user/dashboard'));
+
+// app.use('/', require('./routes/user/dashboard')); // Sai duong dan
 
 
 app.use((req, res, next) => {
