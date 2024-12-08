@@ -31,8 +31,7 @@
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
-    "passport-local": "^1.0.0",
-    "react-router-dom": "^7.0.2"
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "3.1.4"
