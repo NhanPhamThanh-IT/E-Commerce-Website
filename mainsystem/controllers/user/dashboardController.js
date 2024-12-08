@@ -5,7 +5,6 @@ exports.index = async (req, res, next) => {
         console.log('req.user >>', req.user);
         const user = req.user.toObject();
         const { page, limit } = req.query;
-
         const { products, totalItems, totalPages, currentPage } = await productService.getAllWithPagination(page, limit);
         const categories = await productService.getAllCategories();
         return res.render('user/homepage/index', {

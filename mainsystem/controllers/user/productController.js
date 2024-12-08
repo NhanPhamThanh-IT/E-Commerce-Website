@@ -3,15 +3,12 @@ const productService = require('../../services/user/productService');
 exports.getProductsByPrice = async (req, res, next) => {
     try {
         const { min, max, page, limit, category } = req.query;
-
         const minPrice = parseInt(min) || 0;
         const maxPrice = parseInt(max) || 1000000;
         const pageNumber = parseInt(page) || 1;
         const limitNumber = parseInt(limit) || 10;
         const categoryFilter = category || '';
-
         const products = await productService.getByPriceAndCategory(minPrice, maxPrice, categoryFilter, pageNumber, limitNumber);
-
         res.status(200).json(products);
     } catch (error) {
         next(error);
@@ -24,13 +21,10 @@ exports.searhProduct = async (req, res, next) => {
         const id = req.params.id.split('=');
         const searchBy = id[0] || 'title';
         const value = id[1] || '';
-
         const { page, limit } = req.query;
         const pageNumber = parseInt(page) || 1;
         const limitNumber = parseInt(limit) || 10;
-
         const products = await productService.search(searchBy, value, pageNumber, limitNumber);
-
         res.status(200).json(products);
     } catch (error) {
         next(error);
@@ -41,9 +35,7 @@ exports.getProductsByCategory = async (req, res, next) => {
     try {
         const { id } = req.params;
         const { page, limit } = req.query;
-
         const products = await productService.getByCategory(id, page, limit);
-
         res.status(200).json(products);
     } catch (error) {
         next(error);

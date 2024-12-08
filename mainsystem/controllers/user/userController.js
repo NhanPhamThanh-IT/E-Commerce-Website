@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const userService = require('../../services/user/userService');
 const MyError = require('../../cerror');
-const { redirect } = require('react-router-dom');
+
 require('dotenv').config();
 const createUser = async (req, res, next) => {
     const schema = Joi.object({
@@ -85,13 +85,9 @@ const getUserByID = async (req, res, next) => {
 
 const updateUserController = async (req, res) => {
     try {
-        const userId = req.user.id; // Lấy ID từ URL
-        const updateData = req.body; // Dữ liệu cần cập nhật từ client
-
-        // Gọi service để cập nhật thông tin
+        const userId = req.user.id;
+        const updateData = req.body;
         const result = await userService.updateUserService(userId, updateData);
-
-        // Gửi phản hồi thành công
         res.status(200).json(result);
     } catch (error) {
         res.status(error.statusCode || 500).json({
