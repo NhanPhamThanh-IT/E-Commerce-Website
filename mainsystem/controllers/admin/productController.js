@@ -39,14 +39,35 @@ exports.getProductDetails = async (req, res) => {
 exports.editProduct = async (req, res) => {
     try {
         const productId = req.params.id;
-        const product = await Product.findById(productId).lean();
+        const { title, category, description, price, stock_quantity } = req.body;
+        const product = await Product.findByIdAndUpdate(productId, {
+            title,
+            category,
+            description,
+            price,
+            stock_quantity
+        }, { new: true }).lean();
         if (!product) {
             return res.status(404).send('Product not found');
         }
-        res.render('admin/products/details', { product });
+        res.redirect(`/admin/products/${productId}`);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+exports.deleteProduct = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const product = await Product.findByIdAndDelete(productId);
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+        res.redirect('/admin/products');
     }
     catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
-    }
+    };
 };
