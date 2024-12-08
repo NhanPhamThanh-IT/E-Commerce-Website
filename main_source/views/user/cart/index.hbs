@@ -69,3 +69,280 @@
         </div>
     </div>
 </main>
+<script>
+    document.getElementById('address-form').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    // Collect form data
+    const formData = {
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        address: document.getElementById('address').value,
+        email: document.getElementById('email').value,
+    };
+
+    // Get cart items from the cookie
+    const cartItems = getCartFromCookie();
+
+    // Combine form data and cart items
+    const payload = {
+        customerInfo: formData,
+        cart: cartItems,
+    };
+
+    try {
+        // Send the payload to the server
+        const response = await fetch('/checkout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            alert(`Order confirmed! Order ID: ${result.orderId} for user with email: ${result.email}`);
+            // Optionally, clear the cart and redirect
+            saveCartToCookie([]);
+            window.location.href = '/thank-you';
+        } else {
+            alert('Failed to confirm the order. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error during order confirmation:', error);
+        alert('An unexpected error occurred. Please try again later.');
+    }
+});
+
+    // Function to get the cart from the cookie
+    function getCartFromCookie() {
+        const cartCookie = document.cookie.split('; ').find(row => row.startsWith('cart='));
+        if (cartCookie) {
+            try {
+                return JSON.parse(decodeURIComponent(cartCookie.split('=')[1]));
+            } catch (error) {
+                console.error('Error parsing cart cookie:', error);
+                return [];
+            }
+        }
+        return [];
+    }
+
+    // Function to save the cart to the cookie
+    function saveCartToCookie(cart) {
+        document.cookie = `cart=${encodeURIComponent(JSON.stringify(cart))}; path=/; max-age=31536000`;
+    }
+
+    // Function to fetch product details by ID
+    async function fetchProductDetails(productId) {
+        try {
+            const response = await fetch(`/product/${productId}`);
+            if (response.ok) {
+                return await response.json();
+            } else {
+                console.error(`Failed to fetch product with ID ${productId}`);
+                return null;
+            }
+        } catch (error) {
+            console.error(`Error fetching product with ID ${productId}:`, error);
+            return null;
+        }
+    }
+    // Constants for pagination
+    const ITEMS_PER_PAGE = 2; // Number of items per page
+    let currentPage = 1; // Current page
+    async function renderVisibleCartItems() {
+        const cart = getCartFromCookie();
+        const cartContainer = document.getElementById('cart-container');
+
+        // Determine the items for the current page
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+        const itemsToRender = cart.slice(start, end);
+
+        // Clear the current cart rows
+        cartContainer.innerHTML = '';
+
+        for (const item of itemsToRender) {
+            const product = await fetchProductDetails(item.id);
+            if (product) {
+                const productTotal = product.price * item.quantity;
+
+                // Create a new cart item element
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item', 'p-4', 'border', 'border-gray-300', 'rounded-lg', 'shadow-sm');
+                cartItem.setAttribute('data-product-row', item.id);
+                cartItem.setAttribute('data-product-price', product.price);
+
+                cartItem.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <img src="${product.image}" alt="${product.title}" class="w-16 h-16 object-cover rounded-md">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">${product.title}</h3>
+                            <p class="text-sm text-gray-600">${product.brand}</p>
+                            <p class="text-gray-800 font-bold">$${product.price.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <input type="number" class="w-16 text-center border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            value="${item.quantity}" min="1" data-product-id="${item.id}">
+                        <button class="text-red-500 hover:text-red-700" data-product-id="${item.id}">Remove</button>
+                        <p class="product-total text-gray-800 font-bold">$${productTotal.toFixed(2)}</p>
+                    </div>
+                </div>
+            `;
+
+                // Append the new item to the container
+                cartContainer.appendChild(cartItem);
+
+                // Optionally, trigger the fade-in effect after appending
+                setTimeout(() => cartItem.classList.remove('hidden'), 10);
+            }
+        }
+
+        attachCartEventListeners(); // Attach event listeners for the newly rendered items
+    }
+
+
+    // Function to render pagination controls
+    function renderPagination(totalItems) {
+        const paginationContainer = document.getElementById('pagination');
+        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+        paginationContainer.innerHTML = ''; // Clear previous pagination controls
+
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement('button');
+            button.textContent = i;
+            button.className = `px-4 py-2 rounded-lg ${i === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'
+                } hover:bg-blue-500 transition`;
+            button.addEventListener('click', () => {
+                currentPage = i;
+                updateVisibleItems(); // Only update the visible items
+            });
+            paginationContainer.appendChild(button);
+        }
+    }
+
+    // Function to update the visible items in the cart and pagination controls
+    function updateVisibleItems() {
+        const cartContainer = document.getElementById('cart-container');
+        const paginationContainer = document.getElementById('pagination');
+
+        // Hide the cart items and pagination during the re-render process
+        cartContainer.style.display = 'none'; 
+        paginationContainer.style.display = 'none'; 
+
+        // Fade out current cart items
+        const currentItems = cartContainer.querySelectorAll('.cart-item');
+        currentItems.forEach(item => {
+            item.classList.add('hidden');
+        });
+
+        // Wait for the fade-out animation to finish
+        setTimeout(async () => {
+            // Render all visible cart items
+            await renderVisibleCartItems();
+
+            // Render pagination controls
+            renderPagination(getCartFromCookie().length);
+
+            // Show the cart items and pagination after the rendering is complete
+            cartContainer.style.display = 'block'; // Show the cart items
+            paginationContainer.style.display = 'flex'; // Show the pagination
+
+            // Fade in the newly rendered items all at once
+            const newItems = cartContainer.querySelectorAll('.cart-item');
+            newItems.forEach(item => {
+                item.classList.remove('hidden');
+            });
+        }, 100); // Match the timeout with the fade-out duration
+    }
+
+
+    // Initialize the cart rendering
+    (async function initializeCart() {
+        await renderVisibleCartItems(); // Render the initial visible items
+        renderPagination(getCartFromCookie().length); // Render the pagination controls
+        updateCartTotal()
+    })();
+
+
+    // Function to attach event listeners
+    function attachCartEventListeners() {
+        document.querySelectorAll('[data-product-id]').forEach(element => {
+            const productId = element.getAttribute('data-product-id');
+            if (element.tagName === 'INPUT') {
+                element.addEventListener('change', (e) => {
+                    const newQuantity = parseInt(e.target.value, 10);
+                    if (newQuantity > 0) {
+                        updateCartQuantity(productId, newQuantity);
+                    } else {
+                        removeFromCart(productId); // Remove if quantity is set to 0
+                    }
+                });
+            } else if (element.tagName === 'BUTTON') {
+                element.addEventListener('click', () => {
+                    removeFromCart(productId);
+                });
+            }
+        });
+    }
+
+    // Function to update the quantity of an item in the cart
+    function updateCartQuantity(productId, quantity) {
+        const cart = getCartFromCookie();
+        const item = cart.find(item => item.id === productId);
+        if (item) {
+            item.quantity = quantity;
+            saveCartToCookie(cart);
+
+            // Update the product's total price in the DOM
+            const productRow = document.querySelector(`[data-product-row="${productId}"]`);
+            if (productRow) {
+                const productPrice = parseFloat(productRow.getAttribute('data-product-price'));
+                productRow.querySelector('.product-total').textContent = `$${(productPrice * quantity).toFixed(2)}`;
+            }
+
+            // Update the overall cart total
+            updateCartTotal();
+        }
+    }
+
+    // Function to remove an item from the cart
+    function removeFromCart(productId) {
+        let cart = getCartFromCookie();
+        cart = cart.filter(item => item.id !== productId);
+        saveCartToCookie(cart);
+
+        // Remove the product row from the DOM
+        const productRow = document.querySelector(`[data-product-row="${productId}"]`);
+        if (productRow) {
+            productRow.remove();
+        }
+
+        // Update the overall cart total
+        updateCartTotal();
+    }
+
+    // Update cart total from the cart stored in the cookie
+    function updateCartTotal() {
+        const cart = getCartFromCookie();
+        let total = 0;
+
+        // Loop through all items in the cart
+        cart.forEach(item => {
+            // Fetch the product price from the stored cart data
+            const productPrice = item.price;
+
+            // Calculate total based on quantity and price
+            total += productPrice * item.quantity;
+        });
+
+        // Update the total in the cart display (assuming you have an element with id 'cart-total')
+        document.getElementById('cart-total').textContent = `Total: $${total.toFixed(2)}`;
+    }
+
+</script>
