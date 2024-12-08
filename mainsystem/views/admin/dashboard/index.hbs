@@ -14,51 +14,46 @@
                 </header>
                 <main class="flex-1 p-6 overflow-y-auto">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Card: Users -->
                         <div class="bg-white shadow rounded-lg p-6 flex items-center space-x-6">
-                            <!-- Icon -->
                             <div class="bg-blue-500 text-white p-4 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5.121 17.804A7.963 7.963 0 0112 16c2.22 0 4.244.896 5.879 2.346M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
+                                <a href="/admin/users" class="text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M16 14c3.333 0 5 1.667 5 5v1H3v-1c0-3.333 1.667-5 5-5m8-4a4 4 0 11-8 0 4 4 0 018 0z" />
+                                    </svg>
+                                </a>
                             </div>
-                            <!-- Content -->
                             <div>
                                 <h2 class="text-xl font-bold text-gray-800">Users</h2>
                                 <p class="text-gray-700">Total: {{users}}</p>
                             </div>
                         </div>
-
-                        <!-- Card: Products -->
                         <div class="bg-white shadow rounded-lg p-6 flex items-center space-x-6">
-                            <!-- Icon -->
                             <div class="bg-green-500 text-white p-4 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 3h18M3 3v18m18-18v18M6 8h12M6 16h12" />
-                                </svg>
+                                <a href="/admin/products" class="text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 3h18M3 3v18m18-18v18M6 8h12M6 16h12" />
+                                    </svg>
+                                </a>
                             </div>
-                            <!-- Content -->
                             <div>
                                 <h2 class="text-xl font-bold text-gray-800">Products</h2>
                                 <p class="text-gray-700">Total: {{products}}</p>
                             </div>
                         </div>
-
-                        <!-- Card: Orders -->
                         <div class="bg-white shadow rounded-lg p-6 flex items-center space-x-6">
-                            <!-- Icon -->
                             <div class="bg-yellow-500 text-white p-4 rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 17v-6h6v6m4 4H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2z" />
-                                </svg>
+                                <a href="/admin/orders" class="text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 17v-6h6v6m4 4H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2z" />
+                                    </svg>
+                                </a>
                             </div>
-                            <!-- Content -->
                             <div>
                                 <h2 class="text-xl font-bold text-gray-800">Orders</h2>
                                 <p class="text-gray-700">Total: {{orders}}</p>
