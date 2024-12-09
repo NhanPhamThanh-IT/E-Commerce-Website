@@ -56,7 +56,7 @@ app.use((err, req, res, next) => {
     try {
         await connection();
         app.listen(port, () => {
-            console.log(`App listening on port ${port}`)
+            console.log(`App listening on http://localhost:${port}`)
         })
     } catch (error) {
         console.log(">>> Error connect to DB: ", error)

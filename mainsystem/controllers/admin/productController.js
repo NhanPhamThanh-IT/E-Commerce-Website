@@ -58,15 +58,18 @@ exports.editProduct = async (req, res) => {
 };
 
 exports.deleteProduct = async (req, res) => {
-    try {
-        const productId = req.params.id;
-        const product = await Product.findByIdAndDelete(productId);
-        if (!product) {
-            return res.status(404).send('Product not found');
+    const { _action } = req.body;
+    const { id } = req.params;
+
+    if (_action === 'delete') {
+        try {
+            await Product.findByIdAndDelete(id);
+            res.redirect('/admin/products');
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Error deleting product');
         }
-        res.redirect('/admin/products');
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
+    } else {
+        res.status(400).send('Invalid action');
     }
 };
