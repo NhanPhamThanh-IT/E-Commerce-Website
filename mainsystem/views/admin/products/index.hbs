@@ -24,7 +24,7 @@
                         <div class="bg-white hover:bg-gray-400">
                             <img src="{{this.image}}" class="w-full h-64 object-contain" alt="{{this.title}}"
                                 onclick="openImage('{{this.image}}')">
-                            <div class="p-6">
+                            <div class="px-6 py-2">
                                 <h5 class="text-lg font-semibold text-black truncate mb-0 text-center">{{this.title}}
                                 </h5>
                                 <div class="flex justify-between items-center my-3 transition-shadow">
@@ -87,7 +87,7 @@
         onclick="event.stopPropagation()">
         <img id="modalImage" class="w-1/2 h-auto max-w-full object-contain rounded-md" src="" alt="Image" />
         <button onclick="closeImage(event)"
-            class="absolute top-2 right-2 p-3 bg-red-600 text-white rounded opacity-75 hover:opacity-100 transition">
+            class="absolute top-2 right-2 p-3 bg-red-500 text-white rounded hover:bg-red-700 transition">
             X
         </button>
     </div>
