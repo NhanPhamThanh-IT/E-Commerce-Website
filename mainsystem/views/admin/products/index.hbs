@@ -13,7 +13,7 @@
                     {{#each products}}
                     <div
                         class="bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden transition-shadow duration-300">
-                        <img src="{{this.images}}" class="w-full h-64 object-cover" alt="{{this.title}}">
+                        <img src="{{this.image}}" class="w-full h-64 object-cover" alt="{{this.title}}">
                         <div class="p-6">
                             <h5 class="text-lg font-semibold text-black truncate mb-0">{{this.title}}</h5>
                             <div class="flex justify-between items-center mt-4">
@@ -26,7 +26,7 @@
                             </div>
                             <div class="mt-2">
                                 <a href="products/{{this._id}}"
-                                    class="block w-full font-bold no-underline text-center bg-blue-600 text-white py-2 rounded-lg transition duration-300 hover:no-underline hover:bg-blue-700 hover:scale-105">
+                                    class="block w-full font-bold no-underline text-center bg-blue-500 text-white py-2 rounded-lg transition duration-300 hover:no-underline hover:bg-blue-700 hover:scale-105">
                                     View Details
                                 </a>
                             </div>
@@ -34,7 +34,7 @@
                                 <form action="/admin/products/delete/{{this._id}}" method="POST">
                                     <input type="hidden" name="_action" value="delete" />
                                     <button type="submit"
-                                        class="w-full font-bold no-underline text-center bg-red-600 text-white py-2 rounded-lg transition duration-300 hover:bg-red-700 hover:scale-105">
+                                        class="w-full font-bold no-underline text-center bg-red-500 text-white py-2 rounded-lg transition duration-300 hover:bg-red-700 hover:scale-105">
                                         Delete
                                     </button>
                                 </form>
@@ -44,21 +44,21 @@
                     {{/each}}
                 </div>
 
-                <div class="flex justify-center mt-8 space-x-4">
-                    {{#if (gt currentPage 1)}}
+                <div class="flex justify-between mt-8 space-x-4">
                     <a href="products?page={{subtract currentPage 1}}"
-                        class="font-bold no-underline px-4 py-2 bg-white-600 text-white rounded-lg transition duration-300 hover:bg-blue-700 hover:no-underline">
+                        class="w-auto font-bold no-underline px-4 py-2 bg-gray-400 text-white rounded-lg transition duration-300 hover:bg-gray-700 hover:no-underline {{#if (gt currentPage 1)}}{{else}}cursor-not-allowed bg-gray-300{{/if}}"
+                        {{#if (gt currentPage 1)}}{{else}}aria-disabled="true" {{/if}}>
                         Previous
                     </a>
-                    {{/if}}
 
-                    {{#if (lt currentPage totalPages)}}
                     <a href="products?page={{add currentPage 1}}"
-                        class="font-bold no-underline px-4 py-2 bg-white-600 text-white rounded-lg transition duration-300 hover:bg-blue-700 hover:no-underline">
+                        class="w-auto font-bold no-underline px-10 py-2 bg-gray-400 text-white rounded-lg transition duration-300 hover:bg-gray-700 hover:no-underline {{#if (lt currentPage totalPages)}}{{else}}cursor-not-allowed bg-gray-300{{/if}}"
+                        {{#if (lt currentPage totalPages)}}{{else}}aria-disabled="true" {{/if}}>
                         Next
                     </a>
-                    {{/if}}
                 </div>
+
+
             </div>
         </main>
     </div>
