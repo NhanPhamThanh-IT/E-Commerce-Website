@@ -17,6 +17,14 @@ const configViewEngine = (app) => {
     hbs.create({}).handlebars.registerHelper('add', (a, b) => a + b);
     hbs.create({}).handlebars.registerHelper('gt', (a, b) => a > b);
     hbs.create({}).handlebars.registerHelper('lt', (a, b) => a < b);
+    hbs.create({}).handlebars.registerHelper('eq', (a, b) => a === b);
+    hbs.create({}).handlebars.registerHelper('range', function (start, end) {
+        let result = [];
+        for (let i = start; i <= end; i++)
+            result.push(i);
+        return result;
+    });
+
 
     app.set('view engine', 'hbs');
     app.set('views', path.join(__dirname, '../views'));

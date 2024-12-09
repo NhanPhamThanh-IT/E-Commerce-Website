@@ -60,14 +60,21 @@
 
                 <div class="flex justify-between mt-8 space-x-4">
                     <a href="{{#if (gt currentPage 1)}}products?page={{subtract currentPage 1}}{{else}}#{{/if}}"
-                        class="w-auto font-bold no-underline px-4 py-2 bg-gray-400 text-white rounded-lg transition duration-300 hover:bg-gray-700 hover:no-underline {{#if (gt currentPage 1)}}{{else}}bg-gray-300 cursor-not-allowed{{/if}}"
+                        class="w-auto font-bold no-underline px-4 py-2 bg-gray-300 text-white rounded-lg transition duration-300 hover:bg-gray-700 hover:no-underline {{#if (gt currentPage 1)}}{{else}}bg-gray-300 cursor-not-allowed{{/if}}"
                         {{#if (gt currentPage 1)}}{{else}}aria-disabled="true" {{/if}}
                         onclick="{{#if (gt currentPage 1)}}{{else}}event.preventDefault();{{/if}}">
                         Previous
                     </a>
-
+                    <div class="flex space-x-2">
+                        {{#each (range 1 totalPages) as |page|}}
+                        <a href="products?page={{page}}"
+                            class="no-underline w-auto font-bold px-4 py-2 text-white rounded-lg transition duration-300 hover:bg-gray-700 hover:no-underline {{#if (eq page currentPage)}}bg-gray-600 cursor-not-allowed{{else}}{{/if}}">
+                            {{page}}
+                        </a>
+                        {{/each}}
+                    </div>
                     <a href="{{#if (lt currentPage totalPages)}}products?page={{add currentPage 1}}{{else}}#{{/if}}"
-                        class="w-auto font-bold no-underline px-10 py-2 bg-gray-400 text-white rounded-lg transition duration-300 hover:bg-gray-700 hover:no-underline {{#if (lt currentPage totalPages)}}{{else}}bg-gray-300 cursor-not-allowed{{/if}}"
+                        class="w-auto font-bold no-underline px-10 py-2 bg-gray-300 text-white rounded-lg transition duration-300 hover:bg-gray-700 hover:no-underline {{#if (lt currentPage totalPages)}}{{else}}bg-gray-300 cursor-not-allowed{{/if}}"
                         {{#if (lt currentPage totalPages)}}{{else}}aria-disabled="true" {{/if}}
                         onclick="{{#if (lt currentPage totalPages)}}{{else}}event.preventDefault();{{/if}}">
                         Next
