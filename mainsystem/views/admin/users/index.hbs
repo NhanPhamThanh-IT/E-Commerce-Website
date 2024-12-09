@@ -1,114 +1,57 @@
-<div class="flex flex-col h-screen bg-gray-100">
-    <div class="flex flex-1">
-        <aside class="w-64 bg-white shadow-md h-full">
-            {{> aside }}
-        </aside>
-        <main class="flex-1 overflow-y-auto p-6 bg-gray-100">
-            <div class="min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 p-8 rounded-lg shadow-2xl">
-                <h2 class="text-4xl font-extrabold pb-4 mb-2 text-center text-white">Users List</h2>
-                <div class="overflow-x-auto bg-white shadow-lg rounded-lg p-6 border border-gray-200">
-                    <table class="min-w-full table-auto border-collapse bg-gray-50 rounded-lg">
-                        <thead class="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-sm font-medium uppercase">Name</th>
-                                <th class="px-6 py-3 text-left text-sm font-medium uppercase">Email</th>
-                                <th class="px-6 py-3 text-left text-sm font-medium uppercase">Role</th>
-                                <th class="px-6 py-3 text-left text-sm font-medium uppercase">Verified</th>
-                            </tr>
-                        </thead>
-                        <tbody id="user-list" class="divide-y divide-gray-200">
-                            <!-- Data will be loaded dynamically here via AJAX -->
-                        </tbody>
-                    </table>
-
-                    <div class="flex justify-between items-center mt-6">
-                        <button id="prevPage"
-                            class="px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition duration-300">
-                            Previous
-                        </button>
-                        <button id="nextPage"
-                            class="px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition duration-300">
-                            Next
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-    <div>
-        {{> footer }}
-    </div>
+<div id="user-list"></div>
+<div id="pagination-controls">
+    <button id="prev" disabled>Previous</button>
+    <span id="current-page">Page 1</span>
+    <button id="next">Next</button>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const prevButton = document.getElementById('prevPage');
-        const nextButton = document.getElementById('nextPage');
-        let currentPage = {{ currentPage }};
-        const totalPages = {{ totalPages }};
+    const apiUrl = "/admin/users";
 
-    function loadUsers(page) {
-        const url = `/admin/users?page=${page}`;
+    function renderUsers(users) {
+        const userList = document.getElementById("user-list");
+        userList.innerHTML = "";
+        users.forEach((user) => {
+            const userDiv = document.createElement("div");
+            userDiv.innerHTML = `
+                <p><strong>${user.name}</strong> (${user.email})</p>
+                <img src="${user.avatar || 'default-avatar.png'}" alt="${user.name}" width="50" />
+            `;
+            userList.appendChild(userDiv);
+        });
+    }
 
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                const userList = document.getElementById('user-list');
-                userList.innerHTML = '';
-                if (Array.isArray(data.users)) {
-                    data.users.forEach((user) => {
-                        const row = document.createElement('tr');
-                        row.classList.add('hover:bg-blue-50', 'transition', 'duration-300', 'ease-in-out');
-                        row.innerHTML = `
-                            <td class="px-6 py-4 text-sm text-gray-700">${user.name}</td>
-                            <td class="px-6 py-4 text-sm text-gray-700">${user.email}</td>
-                            <td class="px-6 py-4 text-sm text-gray-700">${user.role}</td>
-                            <td class="px-6 py-4 text-sm">
-                                ${user.isVerified
-                                ? '<span class="inline-block px-3 py-1 bg-green-100 text-green-600 rounded-full text-xs font-semibold">Yes</span>'
-                                : '<span class="inline-block px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-semibold">No</span>'}
-                            </td>
-                        `;
-                        userList.appendChild(row);
-                    });
-                } else {
-                    console.error('Error: data.users is not an array');
-                }
+    // Hàm cập nhật điều khiển phân trang
+    function updatePaginationControls(currentPage, totalPages) {
+        document.getElementById("current-page").innerText = `Page ${currentPage}`;
+        document.getElementById("prev").disabled = currentPage === 1;
+        document.getElementById("next").disabled = currentPage === totalPages;
+    }
 
-                // Hiển thị/ẩn các nút phân trang
-                if (prevButton) {
-                    prevButton.style.display = page > 1 ? 'inline-block' : 'none';
-                }
-                if (nextButton) {
-                    nextButton.style.display = page < totalPages ? 'inline-block' : 'none';
-                }
+    // Hàm lấy dữ liệu từ server
+    function fetchPage(page = 1) {
+        fetch(`${apiUrl}?page=${page}`)
+            .then((response) => {
+                if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu từ server");
+                return response.json();
             })
-            .catch((error) => console.error('Error fetching users:', error));
+            .then((data) => {
+                renderUsers(data.users); // Render danh sách người dùng
+                updatePaginationControls(data.currentPage, data.totalPages); // Cập nhật điều khiển phân trang
+            })
+            .catch((error) => console.error("Lỗi:", error));
     }
 
-    // Xử lý sự kiện khi nhấn nút "Previous"
-    if (prevButton) {
-        prevButton.addEventListener('click', async function () {
-            if (currentPage > 1) {
-                currentPage--;
-                await loadUsers(currentPage);  // Gọi hàm load lại người dùng với trang hiện tại
-            }
-        });
-    }
+    // Gắn sự kiện cho các nút phân trang
+    document.getElementById("prev").addEventListener("click", () => {
+        const currentPage = parseInt(document.getElementById("current-page").innerText.split(" ")[1]);
+        fetchPage(currentPage - 1);
+    });
 
-    if (nextButton) {
-        nextButton.addEventListener('click', async function () {
-            if (currentPage < totalPages) {
-                currentPage++;
-                await loadUsers(currentPage);
-            }
-        });
-    }
-});
+    document.getElementById("next").addEventListener("click", () => {
+        const currentPage = parseInt(document.getElementById("current-page").innerText.split(" ")[1]);
+        fetchPage(currentPage + 1);
+    });
+
+    fetchPage();
 </script>
