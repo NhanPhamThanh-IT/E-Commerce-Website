@@ -73,40 +73,51 @@
                     &#10005;
                 </button>
             </div>
-            <form action="/admin/products/edit/{{product._id}}" method="PUT" class="p-6 space-y-4">
+            <form action="/admin/products/edit/{{product._id}}" method="POST"
+                class="p-6 space-y-4">
+                <!-- Override method -->
+                <input type="hidden" name="_method" value="PUT">
+
                 <!-- Title -->
                 <div class="flex items-center space-x-4">
                     <label class="w-1/4 text-gray-700 font-medium">Title</label>
-                    <input type="text" name="title" value="{{product.title}}" required
+                    <input type="text" name="title" placeholder="Enter product title" value="{{product.title}}" required
                         class="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-300">
                 </div>
+
                 <!-- Category -->
                 <div class="flex items-center space-x-4">
                     <label class="w-1/4 text-gray-700 font-medium">Category</label>
-                    <input type="text" name="category" value="{{product.category}}" required
+                    <input type="text" name="category" placeholder="Enter product category" value="{{product.category}}"
+                        required
                         class="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-300">
                 </div>
+
                 <!-- Description -->
                 <div class="flex items-start space-x-4">
                     <label class="w-1/4 text-gray-700 font-medium">Description</label>
-                    <textarea name="description" rows="3" required
+                    <textarea name="description" rows="3" placeholder="Enter product description" required
                         class="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-300">{{product.description}}</textarea>
                 </div>
+
                 <!-- Price -->
                 <div class="flex items-center space-x-4">
-                    <label class="w-1/4 text-gray-700 font-medium">Price (VND)</label>
-                    <input type="number" name="price" value="{{product.price}}" required
+                    <label class="w-1/4 text-gray-700 font-medium">Price ($)</label>
+                    <input type="number" name="price" value="{{product.price}}" step="0.01" min="0" required
                         class="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-300">
                 </div>
+
                 <!-- Stock Quantity -->
                 <div class="flex items-center space-x-4">
                     <label class="w-1/4 text-gray-700 font-medium">Stock Quantity</label>
-                    <input type="number" name="stock_quantity" value="{{product.stock_quantity}}" required
+                    <input type="number" name="stock_quantity" value="{{product.stock_quantity}}" step="1" min="0"
+                        required
                         class="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-300">
                 </div>
+
                 <!-- Buttons -->
                 <div class="flex justify-end space-x-4">
-                    <button type="button" id="cancelBtn"
+                    <button type="button" id="cancelBtn" onclick="window.history.back();"
                         class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition">
                         Cancel
                     </button>
@@ -119,7 +130,6 @@
         </div>
     </div>
 
-    <!-- JavaScript để xử lý mở và đóng modal -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const openModalBtn = document.getElementById('openModalBtn');
