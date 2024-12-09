@@ -4,16 +4,26 @@
             {{> aside }}
         </aside>
         <main class="flex-1 overflow-y-auto p-6 bg-gray-100 h-full">
-            <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg shadow-2xl p-8 mb-8">
-                <h1 class="text-4xl font-extrabold text-center mb-8 text-white tracking-tight">
-                    Product List
-                </h1>
+            <div class="text-center mb-6">
+                <div
+                    class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-xl shadow-md p-6">
+                    <h1 class="text-4xl font-extrabold tracking-tight">
+                        Product List
+                    </h1>
+                    <p class="text-white mt-2 text-lg mb-0">
+                        Explore detailed information about your selected product
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl shadow-2xl p-8 mb-8">
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                     {{#each products}}
                     <div
-                        class="bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden transition-shadow duration-300">
-                        <img src="{{this.image}}" class="w-full h-64 object-cover" alt="{{this.title}}">
+                        class="bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden transition-shadow duration-500 transform hover:scale-105">
+                        <img src="{{this.image}}" class="w-full h-64 object-contain" alt="{{this.title}}"
+                            onclick="openImage('{{this.image}}')">
                         <div class="p-6">
                             <h5 class="text-lg font-semibold text-black truncate mb-0">{{this.title}}</h5>
                             <div class="flex justify-between items-center mt-4">
@@ -26,7 +36,7 @@
                             </div>
                             <div class="mt-2">
                                 <a href="products/{{this._id}}"
-                                    class="block w-full font-bold no-underline text-center bg-blue-500 text-white py-2 rounded-lg transition duration-300 hover:no-underline hover:bg-blue-700 hover:scale-105">
+                                    class="block w-full font-bold no-underline text-center bg-blue-500 text-white py-2 rounded-lg transition duration-300 hover:bg-blue-700 hover:scale-105">
                                     View Details
                                 </a>
                             </div>
@@ -59,7 +69,6 @@
                         Next
                     </a>
                 </div>
-
             </div>
         </main>
     </div>
@@ -67,3 +76,30 @@
         {{> footer }}
     </div>
 </div>
+
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center hidden"
+    onclick="closeImage(event)">
+    <div class="relative flex justify-center rounded-lg shadow-lg overflow-auto w-auto max-h-full p-4 transition-all duration-2000 transform"
+        onclick="event.stopPropagation()">
+        <img id="modalImage" class="w-1/2 h-auto max-w-full object-contain rounded-md" src="" alt="Image" />
+        <button onclick="closeImage(event)"
+            class="absolute top-2 right-2 p-3 bg-red-600 text-white rounded opacity-75 hover:opacity-100 transition">
+            X
+        </button>
+    </div>
+</div>
+
+<script>
+    function openImage(imageUrl) {
+        const modal = document.getElementById("imageModal");
+        const modalImage = document.getElementById("modalImage");
+        modalImage.src = imageUrl;
+        modal.classList.remove("hidden");
+    }
+
+    function closeImage(event) {
+        const modal = document.getElementById("imageModal");
+        modal.classList.add("hidden");
+        event.stopPropagation();
+    }
+</script>
