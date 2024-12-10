@@ -3,86 +3,37 @@
         <aside class="w-64 bg-white shadow-md h-full">
             {{> aside }}
         </aside>
-        <main class="flex-1 overflow-y-auto p-6 bg-gray-100 h-full">
-            <!-- Header Section -->
+        <main class="flex-1 p-6 bg-gray-100 h-full relative">
+            <div id="loading"
+                class="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-75 z-50 hidden">
+                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+            </div>
             <div class="text-center mb-6">
                 <div
                     class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-xl shadow-md p-6">
-                    <h1 class="text-4xl font-extrabold tracking-tight">
-                        Users List
-                    </h1>
+                    <h1 class="text-4xl font-extrabold tracking-tight">Users List</h1>
                     <p class="text-white mt-2 text-lg mb-0">
                         Explore our curated list of users tailored just for you
                     </p>
                 </div>
             </div>
-
             <div
                 class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl shadow-2xl p-8 mb-4 backdrop-blur-lg">
-                <div id="user-list"
-                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-h-96 overflow-y-scroll">
-                    <!-- User Card -->
-                    <div
-                        class="bg-white p-6 shadow-lg rounded-lg hover:shadow-2xl transition transform hover:scale-105 duration-500 ease-in-out">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <div
-                                class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 font-bold text-2xl">
-                                U
-                            </div>
-                            <div>
-                                <h3 class="text-2xl font-semibold text-gray-800">User Name</h3>
-                                <p class="text-gray-500 text-sm">user@example.com</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce efficitur, lorem non commodo
-                            fermentum.
-                        </p>
-                        <button
-                            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
-                            View Profile
-                        </button>
-                    </div>
-
-                    <!-- Additional User Cards (Duplicate or Dynamic Data) -->
-                    <div
-                        class="bg-white p-6 shadow-lg rounded-lg hover:shadow-2xl transition transform hover:scale-105 duration-500 ease-in-out">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <div
-                                class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 font-bold text-2xl">
-                                U
-                            </div>
-                            <div>
-                                <h3 class="text-2xl font-semibold text-gray-800">Another User</h3>
-                                <p class="text-gray-500 text-sm">another@example.com</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">
-                            Proin accumsan turpis ut orci sollicitudin, vel vulputate nunc auctor.
-                        </p>
-                        <button
-                            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
-                            View Profile
-                        </button>
-                    </div>
+                <div id="user-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
                 </div>
-
-                <!-- Pagination Controls -->
-                <div id="pagination-controls" class="flex items-center justify-between mt-10 gap-4">
-                    <button id="prev" disabled
-                        class="bg-gray-300 text-gray-600 px-6 py-3 rounded-full hover:bg-gray-400 focus:ring-2 focus:ring-gray-300 focus:outline-none transition duration-300 disabled:opacity-50">
-                        &larr; Previous
+                <div id="pagination-controls" class="flex items-center mt-10 gap-4">
+                    <button id="prev"
+                        class="w-auto font-bold px-4 py-2 bg-gray-600 text-white rounded-lg transition duration-300 hover:bg-gray-900 {{#if (lt currentPage totalPages)}}{{else}}bg-gray-300 cursor-not-allowed{{/if}}">
+                        Previous
                     </button>
-                    <span id="current-page" class="text-xl font-extrabold text-purple-600">
-                        Page <span class="text-gray-800">1</span>
+                    <span id="current-page"
+                        class="mx-auto w-auto font-bold px-10 py-2 bg-gray-600 text-white rounded-lg transition duration-300">
+                        Page 1
                     </span>
                     <button id="next"
-                        class="bg-purple-500 text-white px-6 py-3 rounded-full hover:bg-purple-600 focus:ring-2 focus:ring-purple-300 focus:outline-none transition duration-300 flex items-center">
-                        Next <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                            </path>
-                        </svg>
+                        class="w-auto font-bold px-10 py-2 bg-gray-600 text-white rounded-lg transition duration-300 hover:bg-gray-900 {{#if (lt currentPage totalPages)}}{{else}}bg-gray-300 cursor-not-allowed{{/if}}">
+                        Next
                     </button>
                 </div>
             </div>
@@ -96,42 +47,45 @@
 <script>
     const apiUrl = "/admin/users";
 
+    function showLoading() {
+        document.getElementById("loading").classList.remove("hidden");
+    }
+
+    function hideLoading() {
+        document.getElementById("loading").classList.add("hidden");
+    }
+
     function renderUsers(users) {
         const userList = document.getElementById("user-list");
         userList.innerHTML = "";
         users.forEach((user) => {
             const userDiv = document.createElement("div");
-            userDiv.className =
-                "bg-white p-6 shadow-lg rounded-lg hover:shadow-2xl transition transform hover:scale-105 duration-500 ease-in-out";
+            userDiv.className = "bg-white p-6 shadow-lg rounded-lg hover:shadow-2xl transition transform hover:scale-105 duration-500 ease-in-out";
             userDiv.innerHTML = `
-                <div class="flex items-center space-x-4 mb-4">
-                    <img src="${user.avatar || 'default-avatar.png'}" alt="${user.name}" class="w-16 h-16 rounded-full object-cover" />
-                    <div>
-                        <h3 class="text-2xl font-semibold text-gray-800">${user.name}</h3>
-                        <p class="text-gray-500 text-sm">${user.email}</p>
-                    </div>
+            <div class="flex items-center space-x-4 mb-4">
+                <img src="${user.avatar || 'default-avatar.png'}" alt="${user.name}" class="w-16 h-16 rounded-full object-cover border-2 border-indigo-400" />
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800">${user.name}</h3>
+                    <p class="text-gray-500 text-sm">${user.email}</p>
                 </div>
-                <p class="text-gray-600 mb-4">
-                    ${user.bio || "No bio available for this user."}
-                </p>
-                <button
-                    class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
-                    View Profile
-                </button>
-            `;
+            </div>
+            <p class="text-gray-600 mb-4">${user.bio || "No bio available for this user."}</p>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-800 font-bold">View Profile</button>
+        `;
             userList.appendChild(userDiv);
         });
     }
 
     function updatePaginationControls(currentPage, totalPages) {
-        document.getElementById("current-page").innerHTML = `
-            Page <span class="text-gray-800">${currentPage}</span>
-        `;
+        document.getElementById("current-page").innerHTML = `Page ${currentPage}`;
+        document.getElementById("prev").hidden = currentPage === 1;
         document.getElementById("prev").disabled = currentPage === 1;
+        document.getElementById("next").hidden = currentPage === totalPages;
         document.getElementById("next").disabled = currentPage === totalPages;
     }
 
     function fetchPage(page = 1) {
+        showLoading();
         fetch(`${apiUrl}?page=${page}`)
             .then((response) => {
                 if (!response.ok) throw new Error("Error fetching data from server");
@@ -141,7 +95,8 @@
                 renderUsers(data.users);
                 updatePaginationControls(data.currentPage, data.totalPages);
             })
-            .catch((error) => console.error("Error:", error));
+            .catch((error) => console.error("Error:", error))
+            .finally(() => hideLoading());
     }
 
     document.getElementById("prev").addEventListener("click", () => {
