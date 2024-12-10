@@ -7,6 +7,11 @@ exports.index = async (req, res) => {
 
     const pipeline = [
         {
+            $match: {
+                role: "user"
+            }
+        },
+        {
             $facet: {
                 data: [
                     { $skip: (page - 1) * USERS_PER_PAGE },
