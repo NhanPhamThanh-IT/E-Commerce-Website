@@ -1,62 +1,70 @@
-<div class="auth-container" id="signup-container">
-    <h2 class="text-2xl font-semibold mb-4">Create an account</h2>
-    <form id="signupForm" class="space-y-4">
-        <div class="form-group">
-            <label for="name" class="block text-sm font-medium">Name</label>
-            <input type="text" class="form-input w-full p-2 border border-gray-300 rounded-md" id="name" name="name" placeholder="Name" required>
+<div class="flex items-center justify-center w-screen h-screen bg-gray-100">
+    <div class="auth-container max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg border-2 border-gray-400">
+        <h2 class="text-3xl font-semibold text-center text-indigo-700 mb-6">Create an Account</h2>
+        <form id="signupForm" class="space-y-6">
+            <div class="form-group">
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                <input type="text"
+                    class="form-input w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                    id="name" name="name" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email"
+                    class="form-input w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                    id="email" name="email" placeholder="Your email" required>
+            </div>
+            <div class="form-group">
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password"
+                    class="form-input w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                    id="password" name="password" placeholder="Your password" required>
+            </div>
+            <button type="submit"
+                class="w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">Sign
+                Up</button>
+        </form>
+        <div class="toggle-link text-center mt-4">
+            <span class="text-sm">Already have an account? <a href="/login" class="text-indigo-600 hover:underline">Log
+                    in</a></span>
         </div>
-        <div class="form-group">
-            <label for="email" class="block text-sm font-medium">Email</label>
-            <input type="email" class="form-input w-full p-2 border border-gray-300 rounded-md" id="email" name="email" placeholder="Email" required>
+        <div class="text-center mt-4">
+            <small class="text-gray-600">By clicking continue, you agree to our <a href="#"
+                    class="text-indigo-600 hover:underline">Terms of Service</a> and <a href="#"
+                    class="text-indigo-600 hover:underline">Privacy Policy</a>.</small>
         </div>
-        <div class="form-group">
-            <label for="password" class="block text-sm font-medium">Password</label>
-            <input type="password" class="form-input w-full p-2 border border-gray-300 rounded-md" id="password" name="password" placeholder="Password" required>
-        </div>
-        <button type="submit" class="btn btn-dark w-100 mt-3">Sign Up</button>
-    </form>
-    <div class="toggle-link text-center mt-4">
-        Already have an account? <a href="/login" class="text-blue-500 hover:underline">Log in</a>
-    </div>
-    <div class="text-center mt-3">
-        <small>By clicking continue, you agree to our <a href="#" class="text-blue-500 hover:underline">Terms of Service</a> and <a href="#" class="text-blue-500 hover:underline">Privacy Policy</a>.</small>
     </div>
 </div>
 
 <script>
-document.getElementById('signupForm').addEventListener('submit', async function(e) {
-    e.preventDefault(); // Prevent the default form submission
-    
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    
-    const formData = {
-        name: name,
-        email: email,
-        password: password
-    };
-
-    try {
-        const response = await fetch('/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-        });
-
-        const data = await response.json();
-        console.log(data)
-        if (response.ok) {
-            alert('Registration successful!');
-            // Redirect to login or home page if needed
-            window.location.href = '/login';
-        } else {
-            alert(`Error: ${data.desc || 'Registration failed'}`);
+    document.getElementById('signupForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const formData = {
+            name: name,
+            email: email,
+            password: password
+        };
+        try {
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+            const data = await response.json();
+            console.log(data)
+            if (response.ok) {
+                alert('Registration successful!');
+                window.location.href = '/login';
+            } else {
+                alert(`Error: ${data.desc || 'Registration failed'}`);
+            }
+        } catch (error) {
+            alert('Something went wrong. Please try again later.');
         }
-    } catch (error) {
-        alert('Something went wrong. Please try again later.');
-    }
-});
+    });
 </script>

@@ -52,7 +52,7 @@
 
 <div id="alertBox"
     class="overflow-hidden w-screen h-screen hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-    <div class="bg-red-500 p-6 rounded-lg shadow-2xl w-96 text-center transform transition-all duration-300 scale-90">
+    <div class="p-6 rounded-lg shadow-2xl w-96 text-center transform transition-all duration-300 scale-90">
         <h2 id="alertMessage" class="text-white text-2xl font-semibold mb-4"></h2>
         <button id="alertCloseBtn"
             class="bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-400 transition-colors transform hover:scale-105">
@@ -118,10 +118,8 @@
         const alertBox = document.getElementById('alertBox');
         const alertMessage = document.getElementById('alertMessage');
         const alertCloseBtn = document.getElementById('alertCloseBtn');
-
         alertMessage.textContent = message;
         alertBox.classList.remove('hidden');
-
         if (type === 'success') {
             alertMessage.classList.add('text-green-600');
             alertCloseBtn.classList.add('bg-green-500');
@@ -129,12 +127,10 @@
             alertMessage.classList.add('text-red-600');
             alertCloseBtn.classList.add('bg-red-500');
         }
-
         alertCloseBtn.onclick = function () {
             alertBox.classList.add('hidden');
             stopSnowflakes();
         };
-
         createSnowflakes();
     }
 
@@ -149,7 +145,6 @@
         snowContainer.style.bottom = '0';
         snowContainer.style.pointerEvents = 'none';
         document.body.appendChild(snowContainer);
-
         for (let i = 0; i < numberOfSnowflakes; i++) {
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
@@ -162,7 +157,6 @@
             snowContainer.appendChild(snowflake);
             snowflakes.push(snowflake);
         }
-
         function moveSnowflakes() {
             snowflakes.forEach((snowflake) => {
                 let y = parseFloat(snowflake.style.top);
@@ -175,7 +169,6 @@
             });
             requestAnimationFrame(moveSnowflakes);
         }
-
         moveSnowflakes();
     }
 
