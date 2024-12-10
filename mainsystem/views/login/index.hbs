@@ -1,20 +1,27 @@
 <div class="bg-slate-200 w-screen h-screen flex overflow-hidden">
-    <div class="auth-container w-1/2 max-w-sm mx-auto p-8 rounded-lg shadow-lg bg-zinc-300 my-4">
+    <div
+        class="auth-container w-1/2 max-w-sm mx-auto p-8 rounded-lg shadow-lg bg-zinc-300 my-4 border-2 border-gray-400">
         <h2 class="text-3xl font-semibold text-center text-indigo-700 mb-6">Log in to your account</h2>
-        <form id="loginForm" class="space-y-6">
+        <form id="loginForm" class="space-y-6 mb-4">
             <div class="form-group">
                 <label for="email" class="block text-lg font-medium text-gray-700">Email</label>
                 <input type="email"
-                    class="form-input w-full p-3 border border-indigo-500 rounded-md focus:ring-2 focus:ring-indigo-500"
+                    class="form-input w-full p-3 border border-gray-400 rounded-md focus:ring-2 focus:ring-indigo-500"
                     id="email" name="email" placeholder="Enter your email" required>
             </div>
             <div class="form-group">
                 <label for="password" class="block text-lg font-medium text-gray-700">Password</label>
-                <input type="password"
-                    class="form-input w-full p-3 border border-indigo-500 rounded-md focus:ring-2 focus:ring-indigo-500"
-                    id="password" name="password" placeholder="Enter your password" required>
+                <div class="relative">
+                    <input type="password"
+                        class="form-input w-full p-3 border border-gray-400 rounded-md focus:ring-2 focus:ring-indigo-500"
+                        id="password" name="password" placeholder="Enter your password" required>
+                    <button type="button" id="togglePassword"
+                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600">
+                        <i id="eyeIcon" class="fas fa-eye"></i>
+                    </button>
+                </div>
             </div>
-            <div class="font-bold bg-green-500 text-white rounded-md hover:bg-green-700 transition duration-200">
+            <div class="font-bold bg-green-500 text-white rounded-md hover:bg-green-700 transition duration-200 mt-8">
                 <button type="submit" class="btn w-full py-3 text-white">Log in</button>
             </div>
             <div class="divider my-4 text-center text-indigo-500">Or Continue With</div>
@@ -34,7 +41,7 @@
             </div>
         </form>
         <div class="toggle-link text-center mt-6">
-            <p class="text-sm text-gray-600">Don't have an account? <a href="/register"
+            <p class="text-sm text-gray-600 mb-0">Don't have an account? <a href="/register"
                     class="text-indigo-500 no-underline hover:no-underline">Sign up</a></p>
         </div>
     </div>
@@ -45,8 +52,7 @@
 
 <div id="alertBox"
     class="overflow-hidden w-screen h-screen hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-    <div
-        class="bg-red-500 p-6 rounded-lg shadow-2xl w-96 text-center transform transition-all duration-300 scale-90">
+    <div class="bg-red-500 p-6 rounded-lg shadow-2xl w-96 text-center transform transition-all duration-300 scale-90">
         <h2 id="alertMessage" class="text-white text-2xl font-semibold mb-4"></h2>
         <button id="alertCloseBtn"
             class="bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-400 transition-colors transform hover:scale-105">
@@ -56,6 +62,22 @@
 </div>
 
 <script>
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('password');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    togglePassword.addEventListener('click', function () {
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    });
+
     document.getElementById('loginForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
