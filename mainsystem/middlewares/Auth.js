@@ -1,27 +1,8 @@
 const MyError = require('../cerror');
 const passport = require('passport');
-const attachJwtToken = (req, res, next) => {
-    try {
-        if (req.cookies?.['connect.sid']) {
-            return next(); // If logged in using session cookies, skip JWT authentication, go to next middleware
-        }
-        // Retrieve the JWT token from a cookie named 'token'
-        const token = req.cookies?.token;
-        if (!token) {
-            return next(new MyError(401, 'Unauthorized', 'JWT token is missing.'));
-        }
-        // Attach the token to the Authorization header as a Bearer token
-        req.headers['authorization'] = `Bearer ${token}`;
-        next();
-    } catch (err) {
-        console.error('Error attaching JWT token:', err);
-        return next(new MyError(500, 'Failed to attach JWT token.'));
-    }
-};
+const jwt = require('jsonwebtoken');
+
 const jwtAuth = (req, res, next) => {
-    if (req.cookies?.['connect.sid']) {
-        return next(); // If logged in using session cookies, skip JWT authentication, go to next middleware
-    }
     passport.authenticate('jwt', { session: false }, (err, user, info) => {
         if (err) {
             return res.status(500).json({ error: 'Authentication error.' });
@@ -29,7 +10,7 @@ const jwtAuth = (req, res, next) => {
         if (!user) {
             return res.status(401).json({ error: 'Unauthorized.' });
         }
-        req.user = user; // Attach authenticated user to request object
+        req.user = user;
         next();
     })(req, res, next);
 };
@@ -41,6 +22,21 @@ const googleAuth = (req, res, next) => {
         if (!user) {
             return res.status(401).json({ error: 'Unauthorized.' });
         }
+        const payload = {
+            id: user._id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role,
+        };
+        const access_token = jwt.sign(payload, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRE, 
+        });
+        res.cookie('token', access_token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: process.env.COOKIE_MAX_AGE,
+        });
         req.user = user; // Attach authenticated user to request object
         next();
     })(req, res, next);
@@ -53,6 +49,21 @@ const facebookAuth = (req, res, next) => {
         if (!user) {
             return res.status(401).json({ error: 'Unauthorized.' });
         }
+        const payload = {
+            id: user._id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role,
+        };
+        const access_token = jwt.sign(payload, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRE, 
+        });
+        res.cookie('token', access_token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: process.env.COOKIE_MAX_AGE,
+        });
         req.user = user; // Attach authenticated user to request object
         next();
     })(req, res, next);
@@ -79,7 +90,6 @@ const isUser = (req, res, next) => {
     return next(new MyError(403, 'Forbidden', 'You do not have permission to access this resource.'));
 }
 module.exports = {
-    attachJwtToken,
     jwtAuth,
     googleAuth,
     facebookAuth,
