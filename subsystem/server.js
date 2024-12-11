@@ -8,11 +8,15 @@ const session = require('express-session');
 const connection = require('../mainsystem/config/database');
 const configViewEngine = require('../mainsytem/config/viewEngine');
 const MyError = require('./cerror');
+const cors = require('cors');
+
 const app = express();
 const PORT = process.env.PORT || 3113;
 
 const key = require('fs').readFileSync(__dirname + '/certs/key.pem');
 const cert = require('fs').readFileSync(__dirname + '/certs/cert.pem');
+
+app.use(cors());
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
