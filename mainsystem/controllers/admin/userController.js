@@ -1,8 +1,25 @@
 const User = require('../../models/userModel');
 
-const USERS_PER_PAGE = 5;
+const USERS_PER_PAGE = 3;
 
 exports.index = async (req, res) => {
+    const email = req.query.email;
+
+    if (email) {
+        try {
+            if (!email) {
+                return res.status(400).send('Email is required');
+            }
+            const user = await User.findOne({ email: email }).lean();
+            if (!user) {
+                return res.status(404).send('User not found');
+            }
+            return res.render('admin/users/profile', { user });
+        } catch (error) {
+            return res.status(500).send('Server error');
+        }
+    }
+
     const page = req.query.page ? parseInt(req.query.page) : 1;
 
     const pipeline = [
@@ -29,7 +46,7 @@ exports.index = async (req, res) => {
         const totalPages = Math.ceil(totalUsers / USERS_PER_PAGE);
 
         if (!req.query.page) {
-            return res.render('admin/users', {
+            return res.render('admin/users/index', {
                 users,
                 totalPages,
                 currentPage: page,
@@ -42,10 +59,11 @@ exports.index = async (req, res) => {
             });
         }
     } catch (error) {
-        console.error('Error fetching users:', error);
         const isDev = process.env.NODE_ENV === 'development';
-        res.status(500).send({
+        return res.status(500).send({
             message: 'Error fetching users', ...(isDev && { error: error.message }),
         });
-    };
+    }
 };
+
+

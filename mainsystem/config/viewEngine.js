@@ -24,7 +24,7 @@ const configViewEngine = (app) => {
             result.push(i);
         return result;
     });
-
+    hbs.create({}).handlebars.registerHelper('getData', (data) => data || "Not provied");
 
     app.set('view engine', 'hbs');
     app.set('views', path.join(__dirname, '../views'));

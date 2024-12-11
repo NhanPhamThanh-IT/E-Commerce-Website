@@ -63,15 +63,20 @@
             const userDiv = document.createElement("div");
             userDiv.className = "bg-white p-6 shadow-lg rounded-lg hover:shadow-2xl transition transform hover:scale-105 duration-500 ease-in-out";
             userDiv.innerHTML = `
-            <div class="flex items-center space-x-4 mb-4">
-                <img src="${user.avatar || 'default-avatar.png'}" alt="${user.name}" class="w-16 h-16 rounded-full object-cover border-2 border-indigo-400" />
-                <div>
-                    <h3 class="text-2xl font-semibold text-gray-800">${user.name}</h3>
-                    <p class="text-gray-500 text-sm">${user.email}</p>
+            <form action="/admin/users" method="GET">
+                <div class="flex items-center space-x-4 mb-4">
+                    <img src="${user.image || 'default-avatar.png'}" alt="${user.firstName}" class="w-16 h-16 rounded-full object-cover border-2 border-indigo-400" />
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-800">${user.lastName} ${user.firstName}</h3>
+                        <p class="text-gray-500 text-sm">${user.email}</p>
+                    </div>
                 </div>
-            </div>
-            <p class="text-gray-600 mb-4">${user.bio || "No bio available for this user."}</p>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-800 font-bold">View Profile</button>
+                <p class="text-gray-600 mb-4">${user.bio || "No bio available for this user."}</p>
+                <input type="hidden" name="email" value="${user.email}" />
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-800 font-bold">
+                    View Profile
+                </button>
+            </form>
         `;
             userList.appendChild(userDiv);
         });
@@ -79,9 +84,7 @@
 
     function updatePaginationControls(currentPage, totalPages) {
         document.getElementById("current-page").innerHTML = `Page ${currentPage}`;
-        document.getElementById("prev").hidden = currentPage === 1;
         document.getElementById("prev").disabled = currentPage === 1;
-        document.getElementById("next").hidden = currentPage === totalPages;
         document.getElementById("next").disabled = currentPage === totalPages;
     }
 
