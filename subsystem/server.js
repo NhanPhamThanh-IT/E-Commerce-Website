@@ -1,4 +1,5 @@
 require('dotenv').config();
+const fs = require('fs');
 const https = require('https');
 const express = require('express');
 const cookieParser = require('cookie-parser');
@@ -8,7 +9,10 @@ const connection = require('../mainsystem/config/database');
 const configViewEngine = require('../mainsytem/config/viewEngine');
 const MyError = require('./cerror');
 const app = express();
-const port = process.env.PORT || 3113;
+const PORT = process.env.PORT || 3113;
+
+const key = require('fs').readFileSync(__dirname + '/certs/key.pem');
+const cert = require('fs').readFileSync(__dirname + '/certs/cert.pem');
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -47,9 +51,9 @@ app.use((err, req, res, next) => {
 (async () => {
     try {
         await connection();
-        app.listen(port, () => {
-            console.log(`App listening on port ${port}`)
-        })
+        https.createServer({ key: key, cert: cert }, app).listen(PORT, () => {
+            console.log(`>>> Server is running on https://localhost:${PORT}`);
+        });
     } catch (error) {
         console.log(">>> Error connect to DB: ", error)
     }
