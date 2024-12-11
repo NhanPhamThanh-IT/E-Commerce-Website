@@ -22,9 +22,12 @@ module.exports = function (passport) {
                     done(null, user);
                 } else {
                     const newUser = new User({
-                        name: googleData.name.givenName,
+                        firstName: googleData.name.givenName,
+                        lastName: googleData.name.familyName,
                         email: googleData.emails[0].value,
-                        // password: 'none',
+                        username: googleData.displayName,
+                        image: googleData.photos[0].value,
+                        password: 'none',
                         loginMethod: 'google',
                         isVerified: true,
                     });
@@ -40,6 +43,7 @@ module.exports = function (passport) {
         callbackURL: '/facebook/callback',
         profileFields: ['id', 'emails', 'name'],
     }, async (accessToken, refreshToken, facebookData, done) => {
+        console.log(facebookData)
         if (!facebookData?.emails[0]?.value) {
             return done(null, false, { message: 'Email not provided by Facebook' });
         }
@@ -48,9 +52,13 @@ module.exports = function (passport) {
             done(null, user);
         } else {
             const newUser = new User({
-                name: facebookData.name.givenName,
+                firstName: facebookData.name.givenName,
+                lastName: facebookData.name.familyName,
                 email: facebookData.emails[0].value,
-                // password: 'none',
+                gender: facebookData.gender,
+                image: facebookData.profileUrl,
+                username: facebookData.displayName,
+                password: 'none',
                 loginMethod: 'facebook',
                 isVerified: true,
             });

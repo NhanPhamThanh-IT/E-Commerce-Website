@@ -6,14 +6,15 @@ const jwt = require('jsonwebtoken');
 
 const createUserService = async (userData) => {
     try {
-        const user = await User.findOne({email: userData.email})
+        const user = await User.findOne({email: userData.email}).lean();
         if (user){
             throw new MyError(403, 'Registration failed', `User with email ${userData.email} exists. Please use another email.`)
         }
         const saltRounds = 10;
         const hashPassword  = await bcrypt.hash(userData.password, saltRounds);
         let result = await User.create({
-            name: userData.name,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
             email: userData.email,
             password: hashPassword,
         })
@@ -36,7 +37,8 @@ const handleLoginService = async (userData) => {
                 const payload = {
                     id: user.id,
                     email: user.email,
-                    name: user.name,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
                     role: user.role,
                 }
                 const access_token = jwt.sign(payload, 
@@ -47,7 +49,8 @@ const handleLoginService = async (userData) => {
                 return {
                     access_token,
                     user:{
-                        name: user.name,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
                         email: user.email,
                         role: user.role,
                     }
