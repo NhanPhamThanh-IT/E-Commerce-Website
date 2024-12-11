@@ -6,6 +6,8 @@ const Auth = require('../../middlewares/Auth');
 const upload = require('../../middlewares/uploadAvatar');
 const dashboardController = require('../../controllers/user/dashboardController');
 const userController = require('../../controllers/user/userController');
+const orderController = require('../../controllers/user/orderController');
+const userModel = require('../../models/userModel');
 
 router.get('/login', (req, res) => {
     res.render('login/index');
@@ -59,8 +61,14 @@ router.use(Auth.isAuthenticated);
 router.get('/user', Auth.isUser, dashboardController.index);
 
 router.get('/cart', async (req, res) => {
-    res.render('user/cart/index');
+    const user = await userModel.findById(req.user._id).lean();
+    if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+    }
+    res.render('user/cart/index', { user: user });
 });
+
+router.post('/checkout', orderController.checkout);
 
 router.post('/logout', userController.handleLogout);
 router.get('/homepage', (req, res) => {
