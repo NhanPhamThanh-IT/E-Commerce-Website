@@ -66,4 +66,16 @@ exports.index = async (req, res) => {
     }
 };
 
-
+exports.delete = async (req, res) => {
+    const { email } = req.body;
+    try {
+        const user = await User.findOneAndDelete({ email: email, role: "user" });
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        return res.redirect('/admin/users');
+    }
+    catch (error) {
+        return res.status(500).send('Server error');
+    };
+};
