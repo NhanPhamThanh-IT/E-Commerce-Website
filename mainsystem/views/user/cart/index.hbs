@@ -34,31 +34,17 @@
             <h3 class="text-3xl font-semibold text-gray-800 mb-8">Enter Your Information</h3>
             <form id="address-form" class="space-y-6">
                 <div>
-                    <label for="name" class="block text-lg font-medium text-gray-700">Full Name</label>
-                    <input type="text" id="name" name="name"
-                        class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required>
-                </div>
-
-                <div>
                     <label for="phone" class="block text-lg font-medium text-gray-700">Phone Number</label>
                     <input type="tel" id="phone" name="phone"
                         class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required>
+                        required value="{{user.phone}}">
                 </div>
 
                 <div>
                     <label for="address" class="block text-lg font-medium text-gray-700">Shipping Address</label>
-                    <textarea id="address" name="address"
+                    <input id="address" name="address" type="text"
                         class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        rows="4" required></textarea>
-                </div>
-
-                <div>
-                    <label for="email" class="block text-lg font-medium text-gray-700">Email Address</label>
-                    <input type="email" id="email" name="email"
-                        class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required>
+                        rows="4" required value="{{user.address}}"></input>
                 </div>
 
                 <button type="submit"
@@ -71,49 +57,62 @@
 </main>
 <script>
     document.getElementById('address-form').addEventListener('submit', async function (event) {
-    event.preventDefault(); // Prevent the default form submission behavior
+        event.preventDefault();
 
-    // Collect form data
-    const formData = {
-        name: document.getElementById('name').value,
-        phone: document.getElementById('phone').value,
-        address: document.getElementById('address').value,
-        email: document.getElementById('email').value,
-    };
+        const formData = {
+            phone: document.getElementById('phone').value.trim(),
+            address: document.getElementById('address').value.trim(),
+        };
 
-    // Get cart items from the cookie
-    const cartItems = getCartFromCookie();
+        const cartItems = getCartFromCookie();
 
-    // Combine form data and cart items
-    const payload = {
-        customerInfo: formData,
-        cart: cartItems,
-    };
-
-    try {
-        // Send the payload to the server
-        const response = await fetch('/checkout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            alert(`Order confirmed! Order ID: ${result.orderId} for user with email: ${result.email}`);
-            // Optionally, clear the cart and redirect
-            saveCartToCookie([]);
-            window.location.href = '/thank-you';
-        } else {
-            alert('Failed to confirm the order. Please try again.');
+        if (!formData.phone) {
+            alert('Phone number is required.');
+            return;
         }
-    } catch (error) {
-        console.error('Error during order confirmation:', error);
-        alert('An unexpected error occurred. Please try again later.');
-    }
-});
+
+        if (!/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/.test(formData.phone)) {
+            alert('Please enter a valid phone number.');
+            return;
+        }
+
+        if (!formData.address || formData.address.length < 10) {
+            alert('Address must be at least 10 characters long.');
+            return;
+        }
+
+        if (!cartItems || cartItems.length === 0) {
+            alert('Your cart is empty.');
+            return;
+        }
+
+        const payload = {
+            customerInfo: formData,
+            cart: cartItems,
+        };
+        console.log('Validation passed. Payload:', payload);
+        alert('Validation successful! You can now proceed to checkout.');
+        try {
+            const response = await fetch('/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (response.redirected) {
+                saveCartToCookie([]);
+                window.location.href = response.url;
+            } else {
+                const result = await response.json();
+                alert('Error during checkout: ' + (result.message || 'Unknown error occurred.'));
+            }
+        } catch (error) {
+            console.error('Error during order confirmation:', error);
+            alert('An unexpected error occurred. Please try again later.');
+        }
+    });
 
     // Function to get the cart from the cookie
     function getCartFromCookie() {
@@ -209,6 +208,10 @@
     // Function to render pagination controls
     function renderPagination(totalItems) {
         const paginationContainer = document.getElementById('pagination');
+        if (totalItems === 0) {
+            paginationContainer.style.display = 'none';
+            return;
+        }
         const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
         paginationContainer.innerHTML = ''; // Clear previous pagination controls
@@ -232,8 +235,8 @@
         const paginationContainer = document.getElementById('pagination');
 
         // Hide the cart items and pagination during the re-render process
-        cartContainer.style.display = 'none'; 
-        paginationContainer.style.display = 'none'; 
+        cartContainer.style.display = 'none';
+        paginationContainer.style.display = 'none';
 
         // Fade out current cart items
         const currentItems = cartContainer.querySelectorAll('.cart-item');
