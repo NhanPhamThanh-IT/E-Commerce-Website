@@ -1,6 +1,6 @@
 const User = require('../../models/userModel');
 
-const USERS_PER_PAGE = 3;
+const USERS_PER_PAGE = 5;
 
 exports.index = async (req, res) => {
     const email = req.query.email;

@@ -19,13 +19,25 @@
                 </div>
             </div>
             <div
-                class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl shadow-2xl p-8 mb-4 backdrop-blur-lg">
-                <div id="user-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                </div>
+                class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl shadow-2xl p-8 mb-4 backdrop-blur-lg hover:rounded-xl">
+                <table class="w-full text-left bg-white shadow-lg rounded-xl">
+                    <thead>
+                        <tr style="background-color:#f5f5f4" class="rounded-t-xl">
+                            <th class="px-6 py-4 font-bold text-lg text-gray-600 text-center w-32 rounded-t-xl">Avatar
+                            </th>
+                            <th class="px-6 py-4 font-bold text-lg text-gray-600 text-center rounded-t-xl">Full Name
+                            </th>
+                            <th class="px-6 py-4 font-bold text-lg text-gray-600 text-center rounded-t-xl">Email</th>
+                            <th class="px-6 py-4 font-bold text-lg text-gray-600 text-center w-48 rounded-t-xl">Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-list" class="rounded-b-xl">
+                    </tbody>
+                </table>
                 <div id="pagination-controls" class="flex items-center mt-10 gap-4">
                     <button id="prev"
-                        class="w-auto font-bold px-4 py-2 bg-gray-600 text-white rounded-lg transition duration-300 hover:bg-gray-900 {{#if (lt currentPage totalPages)}}{{else}}bg-gray-300 cursor-not-allowed{{/if}}">
+                        class="w-auto font-bold px-4 py-2 bg-gray-600 text-white rounded-lg transition duration-300 hover:bg-gray-900 {{#if (lt currentPage totalPages)}}{{else}}bg-gray-300 cursor-not-allowed text-transparent{{/if}}">
                         Previous
                     </button>
                     <span id="current-page"
@@ -33,7 +45,7 @@
                         Page 1
                     </span>
                     <button id="next"
-                        class="w-auto font-bold px-10 py-2 bg-gray-600 text-white rounded-lg transition duration-300 hover:bg-gray-900 {{#if (lt currentPage totalPages)}}{{else}}bg-gray-300 cursor-not-allowed{{/if}}">
+                        class="w-auto font-bold px-10 py-2 bg-gray-600 text-white rounded-lg transition duration-300 hover:bg-gray-900 {{#if (lt currentPage totalPages)}}{{else}}bg-gray-300 cursor-not-allowed text-transparent{{/if}}">
                         Next
                     </button>
                 </div>
@@ -60,33 +72,50 @@
         const userList = document.getElementById("user-list");
         userList.innerHTML = "";
         users.forEach((user) => {
-            const userDiv = document.createElement("div");
-            userDiv.className = "bg-white p-6 shadow-lg rounded-lg hover:shadow-2xl transition transform hover:scale-105 duration-500 ease-in-out";
-            userDiv.innerHTML = `
-            <form action="/admin/users" method="GET">
-                <div class="flex items-center space-x-4 mb-4">
-                    <img src="${user.image || 'default-avatar.png'}" alt="${user.firstName}" class="w-16 h-16 rounded-full object-cover border-2 border-indigo-400" />
-                    <div>
-                        <h3 class="text-2xl font-semibold text-gray-800">${user.lastName} ${user.firstName}</h3>
-                        <p class="text-gray-500 text-sm">${user.email}</p>
+            const row = document.createElement("tr");
+            row.className = "border-b hover:bg-gray-50 hover:rounded-xl";
+
+            row.innerHTML = `
+                <td class="px-6 py-3">
+                    <img src="${user.image || 'default-avatar.png'}" alt="${user.firstName}" class="w-12 h-12 rounded-full object-cover border-2 border-indigo-400 mx-auto" />
+                </td>
+                <td class="px-6 py-3 text-gray-800 text-center">${user.lastName} ${user.firstName}</td>
+                <td class="px-6 py-3 text-gray-500 text-center">${user.email}</td>
+                <td class="px-6 py-3 mx-auto">
+                    <div class="flex justify-center items-center mx-auto space-x-2">
+                        <form action="/admin/users" method="GET" class="my-0 mb-0">
+                            <input type="hidden" name="email" value="${user.email}" class="mx-auto"/>
+                            <button type="submit" class="bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600 transition duration-800 font-bold mx-auto">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </form>
+                        <form action="/admin/users" method="POST" class="my-0 mb-0">
+                            <input type="hidden" name="email" value="${user.email}" class="mx-auto"/>
+                            <button type="submit" class="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition duration-800 font-bold mx-auto">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
                     </div>
-                </div>
-                <p class="text-gray-600 mb-4">${user.bio || "No bio available for this user."}</p>
-                <input type="hidden" name="email" value="${user.email}" />
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-800 font-bold">
-                    View Profile
-                </button>
-            </form>
-        `;
-            userList.appendChild(userDiv);
+                </td>
+            `;
+            userList.appendChild(row);
         });
     }
 
     function updatePaginationControls(currentPage, totalPages) {
+        const prevButton = document.getElementById("prev");
+        const nextButton = document.getElementById("next");
         document.getElementById("current-page").innerHTML = `Page ${currentPage}`;
-        document.getElementById("prev").disabled = currentPage === 1;
-        document.getElementById("next").disabled = currentPage === totalPages;
+        prevButton.disabled = currentPage === 1;
+        nextButton.disabled = currentPage === totalPages;
+        prevButton.style.cursor = prevButton.disabled ? "not-allowed" : "pointer";
+        nextButton.style.cursor = nextButton.disabled ? "not-allowed" : "pointer";
+        prevButton.style.backgroundColor = prevButton.disabled ? "transparent" : "";
+        nextButton.style.backgroundColor = nextButton.disabled ? "transparent" : "";
+        prevButton.style.color = prevButton.disabled ? "transparent" : "";
+        nextButton.style.color = nextButton.disabled ? "transparent" : "";
     }
+
 
     function fetchPage(page = 1) {
         showLoading();
