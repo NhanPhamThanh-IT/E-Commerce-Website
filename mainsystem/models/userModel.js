@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
             return this.loginMethod === 'email';
         },
     },
+    username: { type: String},
     address: { type: String },
     role: { type: String, enum: ['admin', 'user'], default: 'user' },
     phone: { type: String },
