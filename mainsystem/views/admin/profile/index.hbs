@@ -3,69 +3,84 @@
         <aside class="w-64 bg-white shadow-md h-full">
             {{> aside }}
         </aside>
-        <main class="flex-1 overflow-y-auto p-6 bg-gray-100">
-            <div class="container mx-auto px-3 py-2">
-                <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg shadow-2xl p-8 mb-8">
-                    <div class="flex justify-between items-center space-x-4">
-                        <h2 class="text-4xl font-extrabold pb-4 mb-0 text-center flex items-center">
-                            Personal Information
-                        </h2>
-                        <button id="editProfileButton"
-                            class="bg-red-400 hover:bg-red-700 text-white font-bold mb-4 py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center">
-                            Edit Profile
-                        </button>
-                    </div>
+        <main class="flex-1 overflow-y-auto p-6 bg-gray-100 h-full">
+            <div class="text-center mb-6">
+                <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-xl p-6">
+                    <h1 class="text-4xl font-extrabold tracking-tight">
+                        Personal Information
+                    </h1>
+                    <p class="text-white mt-2 text-lg mb-0">
+                        Browse through our curated list of products available for you
+                    </p>
+                </div>
+            </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 bg-gray-50">
-                        <div class="space-y-6 flex flex-col justify-end">
-                            <div class="flex justify-center items-center flex-grow">
-                                <div class="overflow-hidden rounded-full shadow-lg w-40 h-40">
-                                    <img src="{{adminInfo.image}}" alt="Avatar" class="w-full h-full object-cover">
+            <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl shadow-2xl p-8 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 rounded-xl">
+                    <div class="space-y-6 flex flex-col justify-end">
+                        <div class="flex justify-between items-center flex-grow">
+                            <div class="grid grid-cols-5 gap-4 w-full">
+                                <div class="col-span-1 text-white rounded-lg">
+                                    <button id="editProfileButton"
+                                        class="text-white font-bold focus:outline-none focus:shadow-outline flex justify-begin">
+                                        <i class="fas fa-cogs text-white border-2 border-white p-2 rounded-full text-sm"></i>
+                                    </button>
                                 </div>
-                            </div>
-                            <div
-                                class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                                <span class="text-lg block font-semibold text-blue-700">Full Name</span>
-                                <span class="text-lg font-medium flex justify-end">{{adminInfo.lastName}} {{adminInfo.firstName}}</span>
-                            </div>
-                            <div
-                                class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                                <span class="text-lg block font-semibold text-blue-700">Email</span>
-                                <span class="text-lg font-medium flex justify-end">{{adminInfo.email}}</span>
-                            </div>
-                            <div
-                                class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                                <span class="text-lg block font-semibold text-blue-700">Role</span>
-                                <span class="text-lg font-medium flex justify-end">{{adminInfo.role}}</span>
+                                <div class="col-span-4 text-white p-4 rounded-lg">
+                                    <div class="flex justify-center">
+                                        <div
+                                            class="overflow-hidden rounded-full shadow-lg w-40 h-40 border-2 border-black">
+                                            <img src="{{adminInfo.image}}" alt="Avatar"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="space-y-6">
-                            <div
-                                class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                                <span class="text-lg block font-semibold text-blue-700">Username</span>
-                                <span class="text-lg font-medium flex justify-end">{{adminInfo.username}}</span>
-                            </div>
-                            <div
-                                class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                                <span class="text-lg block font-semibold text-blue-700">Birth Date</span>
-                                <span class="text-lg font-medium flex justify-end">{{adminInfo.birthDate}}</span>
-                            </div>
-                            <div
-                                class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                                <span class="text-lg block font-semibold text-blue-700">Phone</span>
-                                <span class="text-lg font-medium flex justify-end">{{adminInfo.phone}}</span>
-                            </div>
-                            <div
-                                class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                                <span class="text-lg block font-semibold text-blue-700">Address</span>
-                                <span class="text-lg font-medium flex justify-end">{{adminInfo.address}}</span>
-                            </div>
-                            <div
-                                class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                                <span class="text-lg block font-semibold text-blue-700">Login Method</span>
-                                <span class="text-lg font-medium flex justify-end">{{adminInfo.loginMethod}}</span>
-                            </div>
+                        <div
+                            class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                            <span class="text-lg block font-semibold text-blue-700">Full Name</span>
+                            <span class="text-lg font-medium flex justify-end">{{adminInfo.lastName}}
+                                {{adminInfo.firstName}}</span>
+                        </div>
+                        <div
+                            class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                            <span class="text-lg block font-semibold text-blue-700">Email</span>
+                            <span class="text-lg font-medium flex justify-end">{{adminInfo.email}}</span>
+                        </div>
+                        <div
+                            class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                            <span class="text-lg block font-semibold text-blue-700">Role</span>
+                            <span class="text-lg font-medium flex justify-end">{{adminInfo.role}}</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div
+                            class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                            <span class="text-lg block font-semibold text-blue-700">Username</span>
+                            <span class="text-lg font-medium flex justify-end">{{adminInfo.username}}</span>
+                        </div>
+                        <div
+                            class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                            <span class="text-lg block font-semibold text-blue-700">Birth Date</span>
+                            <span class="text-lg font-medium flex justify-end">{{adminInfo.birthDate}}</span>
+                        </div>
+                        <div
+                            class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                            <span class="text-lg block font-semibold text-blue-700">Phone</span>
+                            <span class="text-lg font-medium flex justify-end">{{adminInfo.phone}}</span>
+                        </div>
+                        <div
+                            class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                            <span class="text-lg block font-semibold text-blue-700">Address</span>
+                            <span class="text-lg font-medium flex justify-end">{{adminInfo.address}}</span>
+                        </div>
+                        <div
+                            class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                            <span class="text-lg block font-semibold text-blue-700">Login Method</span>
+                            <span class="text-lg font-medium flex justify-end">{{adminInfo.loginMethod}}</span>
                         </div>
                     </div>
                 </div>
@@ -79,22 +94,26 @@
                         <div class="mb-4">
                             <label for="lastName" class="block text-sm font-semibold text-black">Last Name</label>
                             <input type="text" id="lastname" name="lastName"
-                                class="w-full px-3 py-2 border border-gray-300 rounded" value="{{adminInfo.lastName}}" required>
+                                class="w-full px-3 py-2 border border-gray-300 rounded" value="{{adminInfo.lastName}}"
+                                required>
                         </div>
                         <div class="mb-4">
                             <label for="firstName" class="block text-sm font-semibold text-black">First Name</label>
                             <input type="text" id="firstname" name="firstName"
-                                class="w-full px-3 py-2 border border-gray-300 rounded" value="{{adminInfo.firstName}}" required>
+                                class="w-full px-3 py-2 border border-gray-300 rounded" value="{{adminInfo.firstName}}"
+                                required>
                         </div>
                         <div class="mb-4">
                             <label for="phone" class="block text-sm font-semibold text-black">Phone</label>
                             <input type="text" id="phone" name="phone"
-                                class="w-full px-3 py-2 border border-gray-300 rounded" value="{{adminInfo.phone}}" required>
+                                class="w-full px-3 py-2 border border-gray-300 rounded" value="{{adminInfo.phone}}"
+                                required>
                         </div>
                         <div class="mb-4">
                             <label for="address" class="block text-sm font-semibold text-black">Address</label>
                             <input type="text" id="address" name="address"
-                                class="w-full px-3 py-2 border border-gray-300 rounded" value="{{adminInfo.addres}}" required>
+                                class="w-full px-3 py-2 border border-gray-300 rounded" value="{{adminInfo.address}}"
+                                required>
                         </div>
                         <div class="mb-0 flex justify-end space-x-3">
                             <button type="submit"
