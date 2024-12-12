@@ -52,15 +52,37 @@
             </div>
         </main>
 
-        <div id="myModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50">
-            <div class="bg-white p-6 rounded-lg shadow-lg">
-                <h2 class="text-xl font-bold mb-4">Modal Title</h2>
-                <p class="mb-4">This is a modal content.</p>
-                <form id="delete-form" action="/admin/users/delete" method="POST">
-                    <input type="hidden" name="email" value="" />
-                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
-                </form>
-                <button type="button" id="closeModalButton" class="bg-red-500 text-white px-4 py-2 rounded">Close</button>
+        <div id="myModal"
+            class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 hidden z-50 transition-opacity duration-300 ease-in-out">
+            <div
+                class="bg-white p-8 rounded-lg shadow-xl transform transition-transform duration-300 ease-in-out scale-95">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-0">Confirm Delete User</h2>
+                    <button type="button" id="closeModalButton"
+                        class="text-red-500 hover:text-red-700 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex flex-col space-y-2">
+                    <p class="text-gray-600">Are you sure you want to delete <span class="font-bold text-gray-800">user
+                        </span>? This action cannot be undone.</p>
+                    <p class="text-red-500 font-medium">This will permanently remove all data associated with this user.
+                    </p>
+                </div>
+                <div class="flex justify-end space-x-4 mt-4">
+                    <form id="delete-form" action="/admin/users/delete" method="POST" class="mb-0">
+                        <input type="hidden" name="email" value="" />
+                        <button type="submit"
+                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300">Delete
+                            User</button>
+                    </form>
+                    <button type="button" id="closeModalButton"
+                        class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition-colors duration-300">Cancel</button>
+                </div>
             </div>
         </div>
     </div>

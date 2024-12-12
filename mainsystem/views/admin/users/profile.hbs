@@ -3,42 +3,46 @@
         <aside class="w-64 bg-white shadow-md h-full">
             {{> aside }}
         </aside>
-        <main class="flex-1 p-6 bg-gray-100 h-full relative">
-            <div class="container mx-auto mt-8 max-w-4xl p-6 bg-white shadow-lg rounded-lg">
-                <div class="flex items-center space-x-6 mb-6">
-                    <img src="{{user.image}}" alt="{{user.firstName}}"
-                        class="w-24 h-24 rounded-full object-cover border-4 border-indigo-500" />
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-800">{{user.lastName}} {{user.firstName}}</h1>
-                        <p class="text-gray-500">{{user.email}}</p>
+        <main class="flex flex-col items-center justify-center min-h-screen px-6">
+            <div
+                class="container mx-auto max-w-5xl p-6 bg-white shadow-lg rounded-lg transform transition-all duration-300 hover:shadow-xl">
+                <div
+                    class="flex flex-col md:flex-row items-center justify-between mb-0 space-y-8 md:space-y-0 md:space-x-16">
+                    <div class="w-1/3 bg-gray-100 rounded-full overflow-hidden shadow-md">
+                        <img src="{{user.image}}" alt="{{user.firstName}}" class="w-full h-full object-cover" />
                     </div>
-                </div>
-
-                <div class="mb-6">
-                    <h2 class="text-2xl font-semibold text-indigo-600 mb-2">About</h2>
-                    <p class="text-gray-700">{{getData user.bio}}</p>
-                </div>
-
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="p-4 bg-indigo-50 rounded-lg">
-                        <h3 class="text-lg font-semibold text-gray-700">Phone</h3>
-                        <p class="text-gray-600">{{getData user.phone}}</p>
+                    <div class="ml-4">
+                        <h1 class="text-4xl font-bold text-gray-800">{{user.lastName}} {{user.firstName}}</h1>
+                        <p class="text-xl text-gray-600 mb-6">{{user.email}}</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="mb-6 p-4 bg-gray-50 rounded-lg shadow-md">
+                                <h2 class="text-2xl font-semibold text-indigo-600 mb-4">Contact Information</h2>
+                                <ul class="space-y-4 pl-0">
+                                    <li class="flex items-center">
+                                        <strong class="w-24">Phone:</strong>
+                                        <span class="text-gray-700">{{user.phone}}</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <strong class="w-24">Address:</strong>
+                                        <span class="text-gray-700">{{user.address}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mb-6 p-4 bg-gray-50 rounded-lg shadow-md">
+                                <h2 class="text-2xl font-semibold text-indigo-600 mb-4">Personal Information</h2>
+                                <ul class="space-y-4 pl-0">
+                                    <li class="flex items-center">
+                                        <strong class="w-24">Gender:</strong>
+                                        <span class="text-gray-700">{{user.gender}}</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <strong class="w-24">Birthdate:</strong>
+                                        <span class="text-gray-700">{{user.birthDate}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div class="p-4 bg-indigo-50 rounded-lg">
-                        <h3 class="text-lg font-semibold text-gray-700">Address</h3>
-                        <p class="text-gray-600">{{getData user.address}}</p>
-                    </div>
-                </div>
-
-                <div class="mt-6 flex space-x-4">
-                    <a href="/admin/users/edit?email={{user.email}}"
-                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200 font-semibold">
-                        Edit Profile
-                    </a>
-                    <a href="/admin/users/delete?email={{user.email}}"
-                        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200 font-semibold">
-                        Delete Profile
-                    </a>
                 </div>
             </div>
         </main>
