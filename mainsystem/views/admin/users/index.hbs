@@ -9,6 +9,7 @@
                 <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
                 <div class="mt-4 text-center text-gray-700 font-semibold">Loading...</div>
             </div>
+
             <div class="text-center mb-6">
                 <div
                     class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-xl shadow-md p-6">
@@ -18,6 +19,17 @@
                     </p>
                 </div>
             </div>
+
+            <div class="text-center mb-6">
+                <div
+                    class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-xl shadow-md p-6">
+                    <h1 class="text-4xl font-extrabold tracking-tight">{{ totalUsers }} Users</h1>
+                    <p class="text-white mt-2 text-lg mb-0">
+                        Explore our curated list of users tailored just for you
+                    </p>
+                </div>
+            </div>
+
             <div
                 class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl shadow-2xl p-8 mb-4 backdrop-blur-lg hover:rounded-xl">
                 <table class="w-full text-left bg-white shadow-lg rounded-xl">
@@ -52,7 +64,7 @@
             </div>
         </main>
 
-        <div id="myModal"
+        <div id="deleteModal"
             class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 hidden z-50 transition-opacity duration-300 ease-in-out">
             <div
                 class="bg-white p-8 rounded-lg shadow-xl transform transition-transform duration-300 ease-in-out scale-95">
@@ -93,7 +105,7 @@
 
 <script>
     document.getElementById('closeModalButton').addEventListener('click', function () {
-        document.getElementById('myModal').classList.add('hidden');
+        document.getElementById('deleteModal').classList.add('hidden');
     });
 
     const apiUrl = "/admin/users";
@@ -142,7 +154,7 @@
         document.querySelectorAll('.delete-button').forEach(button => {
             button.addEventListener('click', function () {
                 const email = this.getAttribute('data-email');
-                document.getElementById('myModal').classList.remove('hidden');
+                document.getElementById('deleteModal').classList.remove('hidden');
                 document.getElementById('delete-form').querySelector('input[name="email"]').value = email;
             });
         });
