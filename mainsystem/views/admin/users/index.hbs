@@ -51,6 +51,18 @@
                 </div>
             </div>
         </main>
+
+        <div id="myModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden z-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-bold mb-4">Modal Title</h2>
+                <p class="mb-4">This is a modal content.</p>
+                <form id="delete-form" action="/admin/users/delete" method="POST">
+                    <input type="hidden" name="email" value="" />
+                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+                </form>
+                <button type="button" id="closeModalButton" class="bg-red-500 text-white px-4 py-2 rounded">Close</button>
+            </div>
+        </div>
     </div>
     <div>
         {{> footer }}
@@ -58,6 +70,10 @@
 </div>
 
 <script>
+    document.getElementById('closeModalButton').addEventListener('click', function () {
+        document.getElementById('myModal').classList.add('hidden');
+    });
+
     const apiUrl = "/admin/users";
 
     function showLoading() {
@@ -89,9 +105,9 @@
                                 <i class="fas fa-eye"></i>
                             </button>
                         </form>
-                        <form action="/admin/users/delete" method="POST" class="my-0 mb-0">
+                        <form class="my-0 mb-0">
                             <input type="hidden" name="email" value="${user.email}" class="mx-auto"/>
-                            <button type="submit" class="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition duration-800 font-bold mx-auto">
+                            <button type="button" class="delete-button bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition duration-800 font-bold mx-auto" data-email="${user.email}">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </form>
@@ -99,6 +115,14 @@
                 </td>
             `;
             userList.appendChild(row);
+        });
+
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const email = this.getAttribute('data-email');
+                document.getElementById('myModal').classList.remove('hidden');
+                document.getElementById('delete-form').querySelector('input[name="email"]').value = email;
+            });
         });
     }
 
@@ -115,7 +139,6 @@
         prevButton.style.color = prevButton.disabled ? "transparent" : "";
         nextButton.style.color = nextButton.disabled ? "transparent" : "";
     }
-
 
     function fetchPage(page = 1) {
         showLoading();
