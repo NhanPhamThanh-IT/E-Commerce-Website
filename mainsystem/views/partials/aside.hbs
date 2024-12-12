@@ -1,13 +1,13 @@
 <aside
-    class="w-64 bg-gradient-to-b from-indigo-500 to-blue-500 text-white flex flex-col shadow-2xl h-screen sticky top-0">
+    class="w-64 bg-white text-black flex flex-col shadow-2xl h-screen sticky top-0">
     <div class="p-6 space-y-6 rounded-t-lg mb-20">
         <div class="mb-20">
-            <h2 class="text-3xl font-semibold text-center text-white font-bold">Admin Dashboard</h2>
+            <h2 class="text-3xl font-semibold text-center text-black font-bold">Admin Dashboard</h2>
         </div>
         <ul class="space-y-4 pl-0" id="menu">
             <li class="font-semibold text-xl">
                 <a href="/admin"
-                    class="block py-2 px-4 rounded-lg text-white no-underline hover:bg-indigo-500 hover:no-underline transition duration-300 ease-in-out flex items-center space-x-2"
+                    class="block py-2 px-4 rounded-lg text-black no-underline hover:bg-slate-300 hover:no-underline transition duration-300 ease-in-out flex items-center space-x-2"
                     data-page="dashboard">
                     <i class="bi bi-house-door-fill"></i>
                     <span>Dashboard</span>
@@ -15,7 +15,7 @@
             </li>
             <li class="font-semibold text-xl">
                 <a href="/admin/users"
-                    class="block py-2 px-4 rounded-lg text-white no-underline hover:bg-indigo-500 hover:no-underline transition duration-300 ease-in-out flex items-center space-x-2"
+                    class="block py-2 px-4 rounded-lg text-black no-underline hover:bg-slate-300 hover:no-underline transition duration-300 ease-in-out flex items-center space-x-2"
                     data-page="users">
                     <i class="bi bi-person-fill"></i>
                     <span>Users</span>
@@ -23,7 +23,7 @@
             </li>
             <li class="font-semibold text-xl">
                 <a href="/admin/products"
-                    class="block py-2 px-4 rounded-lg text-white no-underline hover:bg-indigo-500 hover:no-underline transition duration-300 ease-in-out flex items-center space-x-2"
+                    class="block py-2 px-4 rounded-lg text-black no-underline hover:bg-slate-300 hover:no-underline transition duration-300 ease-in-out flex items-center space-x-2"
                     data-page="products">
                     <i class="bi bi-box-fill"></i>
                     <span>Products</span>
@@ -31,7 +31,7 @@
             </li>
             <li class="font-semibold text-xl">
                 <a href="/admin/orders"
-                    class="block py-2 px-4 rounded-lg text-white no-underline hover:bg-indigo-500 hover:no-underline transition duration-300 ease-in-out flex items-center space-x-2"
+                    class="block py-2 px-4 rounded-lg text-black no-underline hover:bg-slate-300 hover:no-underline transition duration-300 ease-in-out flex items-center space-x-2"
                     data-page="orders">
                     <i class="bi bi-basket-fill"></i>
                     <span>Orders</span>
@@ -39,7 +39,7 @@
             </li>
             <li class="font-semibold text-xl">
                 <a href="/admin/profile"
-                    class="block py-2 px-4 rounded-lg text-white no-underline hover:bg-indigo-500 hover:no-underline transition duration-300 ease-in-out flex items-center space-x-2"
+                    class="block py-2 px-4 rounded-lg text-black no-underline hover:bg-slate-300 hover:no-underline transition duration-300 ease-in-out flex items-center space-x-2"
                     data-page="profile">
                     <i class="bi bi-gear-fill"></i>
                     <span>Profile</span>
@@ -48,9 +48,9 @@
             <li class="font-semibold text-xl">
                 <form action="/logout" method="post" class="mb-0">
                     <button
-                        class="w-full text-lg mb-0 py-2 pl-4 font-semibold text-white rounded-lg hover:bg-indigo-500 transition duration-300 ease-in-out">
+                        class="w-full text-lg mb-0 py-2 pl-4 font-semibold text-black rounded-lg hover:bg-slate-300 transition duration-300 ease-in-out">
                         <div class="flex justify-begin m-0 space-x-2 items-center">
-                            <i class="bi bi-door-open-fill text-white"></i>
+                            <i class="bi bi-door-open-fill text-black"></i>
                             <span>Logout</span>
                         </div>
                     </button>
@@ -68,11 +68,13 @@
     menuItems.forEach(item => {
         const pageName = item.dataset.page;
         if (currentPage.includes(pageName)) {
-            item.style.backgroundColor = "rgb(67 56 202)";
+            item.style.backgroundColor = "black";
+            item.style.color = "white";
         }
     });
 
     if (currentPage === 'admin') {
-        menuItems[0].style.backgroundColor = "rgb(67 56 202)";
+        menuItems[0].style.backgroundColor = "black";
+        menuItems[0].style.color = "white";
     }
 </script>
