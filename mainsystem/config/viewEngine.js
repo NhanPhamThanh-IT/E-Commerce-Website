@@ -26,6 +26,18 @@ const configViewEngine = (app) => {
     });
     hbs.create({}).handlebars.registerHelper('getData', (data) => data || "Not provied");
 
+    hbs.create({}).handlebars.registerHelper('formatDate', (date) => {
+        return new Date(date).toLocaleDateString();
+    });
+
+    hbs.create({}).handlebars.registerHelper('calculateItemTotal', (price, quantity) => {
+        return (price * quantity).toFixed(2);
+    });
+
+    hbs.create({}).handlebars.registerHelper('calculateSubtotal', (totalAmount, shippingFee) => {
+        return (totalAmount - shippingFee).toFixed(2);
+    });
+
     app.set('view engine', 'hbs');
     app.set('views', path.join(__dirname, '../views'));
 

@@ -9,7 +9,16 @@ const userController = require('../../controllers/user/userController');
 const orderController = require('../../controllers/user/orderController');
 const userModel = require('../../models/userModel');
 
+router.get('/', (req, res) => {
+    if (req.cookies?.token) {
+        return res.redirect('/homepage');
+    }
+    res.render('login/index');
+});
 router.get('/login', (req, res) => {
+    if (req.cookies?.token) {
+        return res.redirect('/homepage');
+    }
     res.render('login/index');
 });
 
@@ -50,9 +59,6 @@ router.get(
         });
     }
 )
-router.get('/', (req, res) => {
-    res.redirect('/login');
-});
 
 router.use(Auth.jwtAuth)
 router.use(Auth.isAuthenticated);
@@ -75,7 +81,7 @@ router.get('/homepage', (req, res) => {
         if (req.user.role === 'admin') {
             return res.redirect('/admin');
         }
-        res.redirect('/user');
+        return res.redirect('/user');
     }
     res.redirect('/login');
 })
