@@ -7,50 +7,30 @@
 
     <!-- Main Content -->
     <main class="flex flex-col items-center justify-center min-h-screen px-6">
-      <div
-        class="container mx-auto max-w-5xl p-6 bg-white shadow-lg rounded-lg transform transition-all duration-300 hover:shadow-xl"
-      >
-        <div
-          class="flex flex-col md:flex-row items-center justify-between mb-0 space-y-8 md:space-y-0 md:space-x-16"
-        >
+      <div class="container mx-auto max-w-5xl p-6 bg-white shadow-lg rounded-lg transform transition-all duration-300 hover:shadow-xl">
+        <div class="flex flex-col md:flex-row items-center justify-between mb-0 space-y-8 md:space-y-0 md:space-x-16">
           <!-- User Image -->
-          <div
-            class="w-1/3 bg-gray-100 rounded-full overflow-hidden shadow-md border-black border-2"
-          >
-            <img
-              src="{{user.image}}"
-              alt="{{user.firstName}}"
-              class="w-full h-full object-cover"
-            />
+          <div class="w-1/3 bg-gray-100 rounded-full overflow-hidden shadow-md border-black border-2">
+            <img src="{{user.image}}" alt="{{user.firstName}}" class="w-full h-full object-cover" />
           </div>
 
           <!-- User Information -->
           <div class="ml-4">
             <div class="flex justify-between">
               <div>
-                <h1 class="text-4xl font-bold text-gray-800">
-                  {{user.lastName}} {{user.firstName}}
-                </h1>
+                <h1 class="text-4xl font-bold text-gray-800">{{user.lastName}} {{user.firstName}}</h1>
                 <p class="text-xl text-gray-600 mb-6">{{user.email}}</p>
               </div>
 
               <!-- Action Buttons -->
               <div class="order-last flex justify-end space-x-2">
                 <form>
-                  <button
-                    id="editUser"
-                    type="button"
-                    class="bg-indigo-600 text-white px-2 py-2 rounded-lg shadow-md hover:bg-indigo-700"
-                  >
+                  <button id="editUser" type="button" class="bg-indigo-600 text-white px-2 py-2 rounded-lg shadow-md hover:bg-indigo-700">
                     <i class="fas fa-pencil-alt"></i>
                   </button>
                 </form>
                 <form>
-                  <button
-                    id="deleteUser"
-                    type="button"
-                    class="bg-red-600 text-white px-2 py-2 rounded-lg shadow-md hover:bg-red-700"
-                  >
+                  <button id="deleteUser" type="button" class="bg-red-600 text-white px-2 py-2 rounded-lg shadow-md hover:bg-red-700">
                     <i class="fas fa-trash-alt"></i>
                   </button>
                 </form>
@@ -60,9 +40,7 @@
             <!-- Additional Info -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="mb-6 p-4 bg-gray-50 rounded-lg shadow-md">
-                <h2 class="text-2xl font-semibold text-indigo-600 mb-4">
-                  Contact Information
-                </h2>
+                <h2 class="text-2xl font-semibold text-indigo-600 mb-4">Contact Information</h2>
                 <ul class="space-y-4 pl-0">
                   <li class="flex items-center">
                     <strong class="w-24">Phone:</strong>
@@ -75,9 +53,7 @@
                 </ul>
               </div>
               <div class="mb-6 p-4 bg-gray-50 rounded-lg shadow-md">
-                <h2 class="text-2xl font-semibold text-indigo-600 mb-4">
-                  Personal Information
-                </h2>
+                <h2 class="text-2xl font-semibold text-indigo-600 mb-4">Personal Information</h2>
                 <ul class="space-y-4 pl-0">
                   <li class="flex items-center">
                     <strong class="w-24">Gender:</strong>
@@ -96,103 +72,59 @@
     </main>
 
     <!-- Edit User Modal -->
-    <div
-      id="editModal"
-      class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 hidden z-50 transition-opacity duration-300 ease-in-out"
-    >
-      <div
-        class="bg-white p-6 rounded-lg shadow-xl transform transition-transform duration-300 scale-95"
-      >
+    <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 hidden z-50 transition-opacity duration-300 ease-in-out">
+      <div class="bg-white p-6 rounded-lg shadow-xl transform transition-transform duration-300 scale-95">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-2xl font-bold text-gray-800">Edit User Profile</h2>
-          <button
-            type="button"
-            id="closeEditModal"
-            class="text-gray-500 hover:text-red-500 focus:outline-none"
-          >
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
+          <button type="button" id="closeEditModal" class="text-gray-500 hover:text-red-500 focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
         </div>
         <form id="edit-form" action="/admin/users/edit" method="POST">
           <div class="grid grid-cols-1 gap-4 mb-4">
-            <input
-              type="text"
-              name="firstName"
-              placeholder="First Name"
-              value="{{user.firstName}}"
-              class="w-full p-2 border border-gray-300 rounded"
-            />
-            <input
-              type="text"
-              name="lastName"
-              placeholder="Last Name"
-              value="{{user.lastName}}"
-              class="w-full p-2 border border-gray-300 rounded"
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value="{{user.email}}"
-              class="w-full p-2 border border-gray-300 rounded"
-            />
-            <input
-              type="text"
-              name="phone"
-              placeholder="Phone"
-              value="{{user.phone}}"
-              class="w-full p-2 border border-gray-300 rounded"
-            />
-            <input
-              type="text"
-              name="address"
-              placeholder="Address"
-              value="{{user.address}}"
-              class="w-full p-2 border border-gray-300 rounded"
-            />
-            <select
-              name="gender"
-              class="w-full p-2 border border-gray-300 rounded"
-            >
+            <input type="text" name="firstName" placeholder="First Name" value="{{user.firstName}}" class="w-full p-2 border border-gray-300 rounded" />
+            <input type="text" name="lastName" placeholder="Last Name" value="{{user.lastName}}" class="w-full p-2 border border-gray-300 rounded" />
+            <input type="email" name="email" placeholder="Email" value="{{user.email}}" class="w-full p-2 border border-gray-300 rounded" />
+            <input type="text" name="phone" placeholder="Phone" value="{{user.phone}}" class="w-full p-2 border border-gray-300 rounded" />
+            <input type="text" name="address" placeholder="Address" value="{{user.address}}" class="w-full p-2 border border-gray-300 rounded" />
+            <select name="gender" class="w-full p-2 border border-gray-300 rounded">
               <option value="male" {{eq user.gender "male"}}selected>Male</option>
               <option value="female" {{eq user.gender "female"}}selected>Female</option>
             </select>
-            <input
-              type="date"
-              name="birthDate"
-              value="{{user.birthDate}}"
-              class="w-full p-2 border border-gray-300 rounded"
-            />
+            <input type="date" name="birthDate" value="{{user.birthDate}}" class="w-full p-2 border border-gray-300 rounded" />
           </div>
           <div class="flex justify-end space-x-4">
-            <button
-              type="submit"
-              class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              id="cancelEdit"
-              class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300"
-            >
-              Cancel
-            </button>
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Save</button>
+            <button type="button" id="cancelEdit" class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">Cancel</button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Delete User Modal -->
+    <div id="deleteModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 hidden z-50 transition-opacity duration-300 ease-in-out">
+      <div class="bg-white p-8 rounded-lg shadow-xl transform transition-transform duration-300 ease-in-out scale-95">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold text-gray-800 mb-0">Confirm Delete User</h2>
+          <button type="button" id="closeDeleteModal" class="text-red-500 hover:text-red-700 focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="flex flex-col space-y-2">
+          <p class="text-gray-600">Are you sure you want to delete <span class="font-bold text-gray-800">user</span>? This action cannot be undone.</p>
+          <p class="text-red-500 font-medium">This will permanently remove all data associated with this user.</p>
+        </div>
+        <div class="flex justify-end space-x-4 mt-4">
+          <form id="delete-form" action="/admin/users/delete" method="POST" class="mb-0">
+            <input type="hidden" name="email" value="{{user.email}}" />
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300">Delete User</button>
+          </form>
+          <button type="button" id="cancelDelete" class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition-colors duration-300">Cancel</button>
+        </div>
       </div>
     </div>
   </div>
@@ -202,6 +134,7 @@
 </div>
 
 <script>
+  // Edit User Modal Logic
   const editUserButton = document.getElementById('editUser');
   const editModal = document.getElementById('editModal');
   const cancelEditButton = document.getElementById('cancelEdit');
@@ -220,4 +153,24 @@
   editUserButton.addEventListener('click', openEditModal);
   cancelEditButton.addEventListener('click', closeEditModal);
   closeEditModalButton.addEventListener('click', closeEditModal);
+
+  // Delete User Modal Logic
+  const deleteUserButton = document.getElementById('deleteUser');
+  const deleteModal = document.getElementById('deleteModal');
+  const cancelDeleteButton = document.getElementById('cancelDelete');
+  const closeDeleteModalButton = document.getElementById('closeDeleteModal');
+
+  const openDeleteModal = () => {
+    deleteModal.classList.remove('hidden');
+    deleteModal.classList.add('opacity-100', 'scale-100');
+  };
+
+  const closeDeleteModal = () => {
+    deleteModal.classList.add('hidden');
+    deleteModal.classList.remove('opacity-100', 'scale-100');
+  };
+
+  deleteUserButton.addEventListener('click', openDeleteModal);
+  cancelDeleteButton.addEventListener('click', closeDeleteModal);
+  closeDeleteModalButton.addEventListener('click', closeDeleteModal);
 </script>
