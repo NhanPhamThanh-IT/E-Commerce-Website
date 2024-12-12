@@ -5,12 +5,13 @@ const Order = require('../../models/orderModel');
 exports.index = async (req, res) => {
     try {
         const personalInfo = req.user.toObject();
-        const [usersCount, productsCount, verifiedCount] = await Promise.all([
+        const [usersCount, productsCount, verifiedCount, activedUsers, ordersCount ] = await Promise.all([
             User.countDocuments({ role: 'user' }),
             Product.countDocuments(),
             User.countDocuments({ isVerified: true }),
+            User.countDocuments({ role: 'user', isActive: true }),
+            Order.countDocuments(),
         ]);
-        const ordersCount = 150;
         const data = {
             users: usersCount,
             products: productsCount,
@@ -18,6 +19,7 @@ exports.index = async (req, res) => {
             verified: verifiedCount,
             unverified: usersCount - verifiedCount,
             personalInfo,
+            activedUsers,
         };
         res.render('admin/dashboard/index', data);
     } catch (err) {

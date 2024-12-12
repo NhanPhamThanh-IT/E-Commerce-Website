@@ -12,54 +12,48 @@
                             class="text-lg mb-0 py-2 px-4 font-semibold bg-red-600 text-white rounded-lg hover:bg-red-800">Logout</button>
                     </form>
                 </header>
+
                 <main class="flex-1 p-6 overflow-y-auto">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div
-                            class="bg-white shadow-lg rounded-xl p-6 flex items-center space-x-6 hover:shadow-xl transition-shadow duration-300">
-                            <div class="bg-blue-500 text-white p-5 rounded-full flex items-center justify-center">
+                            class="card shadow-lg rounded-xl p-6 flex flex-col items-center space-y-4 hover:shadow-xl transition-shadow duration-300">
+                            <div
+                                class="bg-blue-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16">
                                 <a href="/admin/users" class="text-white">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 14c3.333 0 5 1.667 5 5v1H3v-1c0-3.333 1.667-5 5-5m8-4a4 4 0 11-8 0 4 4 0 018 0z" />
-                                    </svg>
+                                    <i class="bi bi-person-fill fs-2"></i>
                                 </a>
                             </div>
-                            <div>
-                                <h2 class="text-xl font-bold text-gray-800">Users</h2>
-                                <p class="text-gray-600">Total: {{users}}</p>
+                            <div class="text-center">
+                                <h2 class="text-xl font-bold text-gray-800">Total Actived Users</h2>
+                                <p class="text-gray-600 mb-0">Total: {{activedUsers}}</p>
                             </div>
                         </div>
+
                         <div
-                            class="bg-white shadow-lg rounded-xl p-6 flex items-center space-x-6 hover:shadow-xl transition-shadow duration-300">
-                            <div class="bg-green-500 text-white p-5 rounded-full flex items-center justify-center">
+                            class="card shadow-lg rounded-xl p-6 flex flex-col items-center space-y-4 hover:shadow-xl transition-shadow duration-300">
+                            <div
+                                class="bg-green-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16">
                                 <a href="/admin/products" class="text-white">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 3h18M3 3v18m18-18v18M6 8h12M6 16h12" />
-                                    </svg>
+                                    <i class="bi bi-box-fill fs-2"></i>
                                 </a>
                             </div>
-                            <div>
+                            <div class="text-center">
                                 <h2 class="text-xl font-bold text-gray-800">Products</h2>
-                                <p class="text-gray-600">Total: {{products}}</p>
+                                <p class="text-gray-600 mb-0">Total: {{products}}</p>
                             </div>
                         </div>
+
                         <div
-                            class="bg-white shadow-lg rounded-xl p-6 flex items-center space-x-6 hover:shadow-xl transition-shadow duration-300">
-                            <div class="bg-yellow-500 text-white p-5 rounded-full flex items-center justify-center">
+                            class="card shadow-lg rounded-xl p-6 flex flex-col items-center space-y-4 hover:shadow-xl transition-shadow duration-300">
+                            <div
+                                class="bg-yellow-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16">
                                 <a href="/admin/orders" class="text-white">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 17v-6h6v6m4 4H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2z" />
-                                    </svg>
+                                    <i class="bi bi-basket-fill fs-2"></i>
                                 </a>
                             </div>
-                            <div>
+                            <div class="text-center">
                                 <h2 class="text-xl font-bold text-gray-800">Orders</h2>
-                                <p class="text-gray-600">Total: {{orders}}</p>
+                                <p class="text-gray-600 mb-0">Total: {{orders}}</p>
                             </div>
                         </div>
                     </div>
@@ -91,8 +85,8 @@
                 {
                     label: 'Count',
                     data: [users, products, orders],
-                    backgroundColor: ['#4F46E5', '#10B981', '#F59E0B'],
-                    borderColor: ['#3B82F6', '#059669', '#D97706'],
+                    backgroundColor: ['#3b82f6', '#10B981', '#F59E0B'],
+                    borderColor: ['#4F46E5', '#059669', '#D97706'],
                     borderWidth: 1,
                 },
             ],
