@@ -84,6 +84,7 @@
         </div>
         <form id="edit-form" action="/admin/users/edit" method="POST">
           <div class="grid grid-cols-1 gap-4 mb-4">
+            <input type="hidden" name="old_email" value="{{user.email}}" />
             <input type="text" name="firstName" placeholder="First Name" value="{{user.firstName}}" class="w-full p-2 border border-gray-300 rounded" />
             <input type="text" name="lastName" placeholder="Last Name" value="{{user.lastName}}" class="w-full p-2 border border-gray-300 rounded" />
             <input type="email" name="email" placeholder="Email" value="{{user.email}}" class="w-full p-2 border border-gray-300 rounded" />

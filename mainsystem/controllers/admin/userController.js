@@ -79,3 +79,31 @@ exports.delete = async (req, res) => {
         return res.status(500).send('Server error');
     };
 };
+
+exports.edit = async (req, res) => {
+    const { old_email, firstName, lastName, email, phone, address, gender } = req.body;
+    try {
+        const user = await User.findOne({ email: old_email, role: 'user' });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (email && email !== old_email) {
+            const emailExists = await User.findOne({ email }).lean();
+            if (emailExists) {
+                return res.status(400).json({ message: 'Email đã tồn tại' });
+            }
+            user.email = email;
+        }
+        user.firstName = firstName || user.firstName;
+        user.lastName = lastName || user.lastName;
+        user.phone = phone || user.phone;
+        user.address = address || user.address;
+        user.gender = gender || user.gender;
+        await user.save();
+        res.status(200).json({ message: 'User profile updated successfully', user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error', error });
+    }
+};
+
