@@ -6,19 +6,15 @@
         <main class="flex-1 overflow-y-auto p-6 bg-gray-100 h-full">
             <div class="flex-1 flex flex-col">
                 <header class="h-16 bg-white shadow flex items-center justify-between px-6">
-                    <h1 class="text-lg font-semibold mb-0">Welcome, {{ personalInfo.name }}!</h1>
-                    <form action="/logout" method="post" class="mb-0">
-                        <button
-                            class="text-lg mb-0 py-2 px-4 font-semibold bg-red-600 text-white rounded-lg hover:bg-red-800">Logout</button>
-                    </form>
+                    <h1 class="text-lg font-semibold mb-0">Welcome, {{personalInfo.lastName}} {{personalInfo.firstName}}!</h1>
                 </header>
 
                 <main class="flex-1 p-6 overflow-y-auto">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div
-                            class="card shadow-lg rounded-xl p-6 flex flex-col items-center space-y-4 hover:shadow-xl transition-shadow duration-300">
+                            class="card shadow-lg rounded-xl p-6 flex flex-col items-center space-y-4 hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
                             <div
-                                class="bg-blue-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16">
+                                class="bg-blue-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16 hover:bg-blue-600 transition-colors duration-300">
                                 <a href="/admin/users" class="text-white">
                                     <i class="bi bi-person-fill fs-2"></i>
                                 </a>
@@ -30,9 +26,9 @@
                         </div>
 
                         <div
-                            class="card shadow-lg rounded-xl p-6 flex flex-col items-center space-y-4 hover:shadow-xl transition-shadow duration-300">
+                            class="card shadow-lg rounded-xl p-6 flex flex-col items-center space-y-4 hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
                             <div
-                                class="bg-green-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16">
+                                class="bg-green-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16 hover:bg-green-600 transition-colors duration-300">
                                 <a href="/admin/products" class="text-white">
                                     <i class="bi bi-box-fill fs-2"></i>
                                 </a>
@@ -44,9 +40,9 @@
                         </div>
 
                         <div
-                            class="card shadow-lg rounded-xl p-6 flex flex-col items-center space-y-4 hover:shadow-xl transition-shadow duration-300">
+                            class="card shadow-lg rounded-xl p-6 flex flex-col items-center space-y-4 hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
                             <div
-                                class="bg-yellow-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16">
+                                class="bg-yellow-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16 hover:bg-yellow-600 transition-colors duration-300">
                                 <a href="/admin/orders" class="text-white">
                                     <i class="bi bi-basket-fill fs-2"></i>
                                 </a>
@@ -56,6 +52,7 @@
                                 <p class="text-gray-600 mb-0">Total: {{orders}}</p>
                             </div>
                         </div>
+
                     </div>
 
                     <div class="bg-white shadow rounded-lg p-6 mt-6">
