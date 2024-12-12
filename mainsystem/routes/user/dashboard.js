@@ -54,7 +54,6 @@ router.get('/', (req, res) => {
     res.redirect('/login');
 });
 
-router.use(Auth.attachJwtToken);
 router.use(Auth.jwtAuth)
 router.use(Auth.isAuthenticated);
 

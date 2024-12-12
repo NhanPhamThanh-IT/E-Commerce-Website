@@ -35,7 +35,7 @@ const handleLoginService = async (userData) => {
             const isMatch = await bcrypt.compare(userData.password, user.password);
             if (isMatch){
                 const payload = {
-                    id: user.id,
+                    id: user._id,
                     email: user.email,
                     firstName: user.firstName,
                     lastName: user.lastName,

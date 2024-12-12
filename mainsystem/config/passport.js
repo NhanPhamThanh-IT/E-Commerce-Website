@@ -3,7 +3,13 @@ const extractJwt = require('passport-jwt').ExtractJwt;
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const FacebookStrategy = require('passport-facebook').Strategy
 const opts = {
-    jwtFromRequest: extractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: (req) => {
+        var token = null;
+        if (req && req.cookies) {
+            token = req.cookies.token;
+        }
+        return token;
+    },
     secretOrKey: process.env.JWT_SECRET,
 }
 const User = require('../models/userModel')
