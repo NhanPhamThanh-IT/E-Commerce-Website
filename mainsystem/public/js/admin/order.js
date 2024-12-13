@@ -1,16 +1,12 @@
 async function fetchAndRenderOrders(url) {
     const ordersContainer = document.getElementById('orders-container');
     const paginationContainer = document.getElementById('pagination-container');
-
     ordersContainer.innerHTML = '<tr><td colspan="4" class="text-center text-gray-600">Loading...</td></tr>';
     paginationContainer.innerHTML = '';
-
     try {
         const response = await fetch(url);
         const data = await response.json();
-
         ordersContainer.innerHTML = '';
-
         if (response.ok && data.Orders && data.Orders.length > 0) {
             data.Orders.forEach(order => {
                 const orderRow = document.createElement('tr');
@@ -37,7 +33,6 @@ async function fetchAndRenderOrders(url) {
                     `;
                 ordersContainer.appendChild(orderRow);
             });
-
             renderPagination(data.totalPages, data.currentPage, url);
         } else {
             ordersContainer.innerHTML = '<tr><td colspan="4" class="text-center text-gray-600">No orders found.</td></tr>';
@@ -51,21 +46,17 @@ async function fetchAndRenderOrders(url) {
 function renderPagination(totalPages, currentPage, url) {
     const paginationContainer = document.getElementById('pagination-container');
     paginationContainer.innerHTML = '';
-
     for (let i = 1; i <= totalPages; i++) {
         const button = document.createElement('button');
-        button.className = `bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-1 ${i === currentPage ? 'opacity-50 cursor-not-allowed' : ''}`;
+        button.className = `bg-neutral-500 hover:bg-black text-white font-bold py-2 px-4 rounded mx-1 ${i === currentPage ? 'opacity-50 cursor-not-allowed' : ''}`;
         button.textContent = i;
         button.disabled = i === currentPage;
-
         button.addEventListener('click', () => {
             const baseUrl = url.split('?')[0];
             const queryParams = new URLSearchParams(url.split('?')[1]);
             queryParams.set('page', i);
-
             fetchAndRenderOrders(`${baseUrl}?${queryParams.toString()}`);
         });
-
         paginationContainer.appendChild(button);
     }
 }
@@ -78,19 +69,14 @@ async function openViewModal(orderId) {
     const modal = document.getElementById('viewModal');
     modal.classList.remove('hidden');
     modal.classList.add('flex');
-
     try {
         const response = await fetch(`/admin/orders/info/${orderId}`);
-        if (!response.ok) {
+        if (!response.ok)
             throw new Error('Failed to fetch order details');
-        }
-
         const orderData = await response.json();
-
         document.getElementById('view-user-id').textContent = orderData.user_id || 'N/A';
         document.getElementById('view-date').textContent = orderData.date || 'N/A';
         document.getElementById('view-total-amount').textContent = `$${orderData.total_amount || 0}`;
-
         const itemsList = document.getElementById('view-items');
         itemsList.innerHTML = '';
         if (orderData.items && orderData.items.length > 0) {
@@ -141,7 +127,6 @@ async function handleDeleteOrder(orderId) {
             },
             body: JSON.stringify({ orderId }),
         });
-
         if (response.ok) {
             alert('Order deleted successfully');
             fetchAndRenderOrders('/admin/orders/api?page=1');

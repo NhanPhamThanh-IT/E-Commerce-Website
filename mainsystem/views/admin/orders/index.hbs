@@ -4,21 +4,12 @@
             {{> aside }}
         </aside>
         <main class="flex-1 overflow-y-auto p-6 bg-gray-100">
-            <div class="text-center mb-6">
-                <div class="bg-white text-black border border-black rounded-xl shadow-md p-6">
-                    <h1 class="text-4xl font-extrabold tracking-tight">
-                        Order List
-                    </h1>
-                    <p class="text-black mt-2 text-lg mb-0">
-                        View and manage your recent orders effortlessly
-                    </p>
-                </div>
-            </div>
+            {{> mainHeader title="Order List" content="View and manage your recent orders effortlessly"}}
 
-            <div class="bg-white shadow rounded-lg">
-                <table class="table-auto w-full text-left border-collapse border border-gray-300">
-                    <thead class="bg-gray-100">
-                        <tr>
+            <div class="bg-white border border-black rounded-xl shadow-md p-6">
+                <table class="table-auto w-full text-left border border-gray-300 rounded-xl">
+                    <thead class="bg-black text-white">
+                        <tr class="">
                             <th class="px-4 py-2 border border-gray-300 text-center">User ID</th>
                             <th class="px-4 py-2 border border-gray-300 text-center">Date</th>
                             <th class="px-4 py-2 border border-gray-300 text-center">Total Amount</th>
