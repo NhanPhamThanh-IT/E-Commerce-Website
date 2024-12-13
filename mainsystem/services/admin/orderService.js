@@ -26,6 +26,10 @@ class OrderService {
         const totalPages = Math.ceil(totalItems / itemsPerPage);
         return { Orders, totalItems, totalPages, currentPage };
     }
+
+    static async deleteById(id) {
+        return await Order.findByIdAndDelete(id);
+    }
 }
 
 module.exports = OrderService;
