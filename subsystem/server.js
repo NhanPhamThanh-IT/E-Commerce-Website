@@ -9,9 +9,10 @@ const connection = require('../mainsystem/config/database');
 const configViewEngine = require('../mainsystem/config/viewEngine');
 const MyError = require('./cerror');
 const cors = require('cors');
+require('../mainsystem/config/passport')(passport);
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3113;
 const key = fs.readFileSync(__dirname + '/certs/key.pem');
 const cert = fs.readFileSync(__dirname + '/certs/cert.pem');
 app.use(cors());
@@ -27,16 +28,49 @@ app.use(session({
     saveUninitialized: false,
 }))
 
-app.use(cookieParser());
 
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
-require('../mainsystem/config/passport')(passport);
 
+app.use((req, res, next) => {
+    passport.authenticate('jwt', { session: false }, (err, user, info) => {
+        if (err) {
+            console.error('Error:', err);
+            return res.status(500).send('Authentication error.');
+        }
+        if (!user) {
+            console.log('Unauthorized:', info);
+            return res.status(401).send('Unauthorized.');
+        }
+        req.user = user;
+        next();
+    })(req, res, next);
+});
+const PayAccount = require('../mainsystem/models/payAccountModel');
+const createAccountIfNotExist = async (req, res, next) => {
+    try {
+        let account = await PayAccount.findOne({ id: req.user._id });
+        if (!account) {
+            account = new PayAccount({
+                id: req.user._id,
+                remainingBalance: 1000, 
+            });
+            await account.save();
+            console.log(`Account created for user ${req.user._id} with balance 1000.`);
+        } else {
+            console.log(`Account already exists for user ${req.user._id}`);
+        }
+        req.account = account;
+        next();
+    } catch (error) {
+        console.error(error);
+        next(new MyError(500, 'Internal Server Error', 'Could not create or find the account.'));
+    }
+};
 
-// app.use('/', require('./routes/user/dashboard')); // Sai duong dan
-
-
+app.use(createAccountIfNotExist); 
+app.use('/', require('./routes/index'));
 app.use((req, res, next) => {
     next(new MyError(404, 'Page not found', "The page you're looking for doesn't exist."))
 });

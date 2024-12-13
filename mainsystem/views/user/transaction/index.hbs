@@ -1,0 +1,123 @@
+<div class="container mx-auto my-8 px-4">
+    <!-- Page Title -->
+    <h1 class="text-4xl font-semibold text-center text-blue-600 mb-6">Order Summary</h1>
+
+    <!-- User Info Card -->
+    <div class="bg-gradient-to-r from-blue-50 to-indigo-100 rounded-lg shadow-xl p-6 mb-8 max-w-5xl mx-auto">
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-4">User Information</h2>
+        <div class="space-y-3">
+            <p class="text-gray-600 text-lg">Name: <span class="font-semibold text-gray-900">{{user.firstName}} {{user.lastName}}</span></p>
+            <p class="text-gray-600 text-lg">Email: <span class="font-semibold text-gray-900">{{user.email}}</span></p>
+            <p class="text-gray-600 text-lg">Remaining Balance: <span class="font-semibold text-green-500">${{balance}}</span></p>
+        </div>
+    </div>
+
+    <!-- Order Card -->
+    <div class="bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg shadow-xl p-6 max-w-5xl mx-auto">
+        <div class="bg-green-500 text-white p-4 rounded-t-lg">
+            <h2 class="text-2xl font-bold">Order ID: <span class="text-yellow-300">{{order._id}}</span></h2>
+            <p>
+                Status:
+                {{#if (eq order.status "pending")}}
+                <span class="inline-block py-1 px-4 rounded-full text-white bg-yellow-400">{{order.status}}</span>
+                {{else if (eq order.status "completed")}}
+                <span class="inline-block py-1 px-4 rounded-full text-white bg-green-400">{{order.status}}</span>
+                {{else}}
+                <span class="inline-block py-1 px-4 rounded-full text-white bg-red-400">{{order.status}}</span>
+                {{/if}}
+            </p>
+        </div>
+
+        <div class="p-4">
+            <!-- Order Date -->
+            <p class="text-gray-500 mb-4">Date: <span class="text-gray-700">{{formatDate order.date}}</span></p>
+
+            <hr class="my-4 border-t border-gray-300">
+
+            <!-- Order Items -->
+            <div class="text-xl font-semibold border-b-2 pb-2 mb-4 text-gray-800">Items</div>
+            <ul class="space-y-3">
+                {{#each order.list_of_items}}
+                <li class="flex items-center p-3 bg-white rounded-lg shadow-sm hover:bg-gray-50 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl">
+                    <div class="flex items-center w-1/3">
+                        <i class="fas fa-box-open text-blue-500 mr-2"></i>
+                        <span class="font-semibold truncate w-full">{{title}}</span> <!-- Truncate title  -->
+                    </div>
+                    <div class="flex-grow text-center">
+                        <span class="bg-gray-200 text-gray-900 px-2 py-1 rounded-full text-sm font-medium hover:bg-gray-300 transition duration-200">Qty: {{quantity}}</span>
+                    </div>
+                    <div class="w-1/3 text-right">
+                        <span class="font-bold">${{calculateItemTotal price quantity}}</span>
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+
+            <hr class="my-4 border-t border-gray-300">
+
+            <!-- Totals -->
+            <div class="flex justify-between text-gray-700 mb-3">
+                <p class="font-semibold">Subtotal:</p>
+                <p class="text-gray-500">${{calculateSubtotal order.total_amount order.shipping_fee}}</p>
+            </div>
+            <div class="flex justify-between text-gray-700 mb-3">
+                <p class="font-semibold">Shipping Fee:</p>
+                <p class="text-gray-500">${{order.shipping_fee}}</p>
+            </div>
+            <div class="flex justify-between text-xl font-bold text-red-500">
+                <p>Total:</p>
+                <p id="total-amount">${{order.total_amount}}</p>
+            </div>
+
+            <hr class="my-4 border-t border-gray-300">
+
+            <!-- Shipping Address and Phone Number -->
+            <div class="mt-4">
+                <div class="text-xl font-semibold border-b-2 pb-2 mb-4 text-gray-800">Shipping Address</div>
+                <p class="text-gray-700">{{order.address}}</p>
+                <div class="text-xl font-semibold border-b-2 pb-2 mt-6 mb-4 text-gray-800">Phone Number</div>
+                <p class="text-gray-700">{{order.phone_number}}</p>
+            </div>
+
+            <!-- Payment Button  -->
+            {{#if (eq order.status "pending")}}
+            <div class="mt-6 text-center">
+                <button id="pay-now-button" class="bg-green-500 text-white py-3 px-6 rounded-full text-lg hover:bg-green-600 transition transform hover:scale-105 shadow-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50">
+                    <i class="fas fa-credit-card mr-2"></i> Pay Now
+                </button>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</div>
+<script>
+document.getElementById('pay-now-button').addEventListener('click', async function() {
+    const pathParts = window.location.pathname.split('/');
+    const orderId = pathParts[pathParts.length - 1]; 
+    if (!orderId) {
+        alert('Invalid Order ID!');
+        return;
+    }
+
+    try {
+        const response = await fetch('/process-order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ orderId  })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert('Order processed successfully!');
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        alert('An error occurred while processing your order.');
+        console.error(error);
+    }
+});
+</script>

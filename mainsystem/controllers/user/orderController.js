@@ -65,7 +65,7 @@ exports.checkout = async (req, res) => {
             phone_number: customerInfo.phone,
         });
         await newOrder.save();
-        res.redirect('https://localhost:3113/transaction');
+        res.redirect(`https://localhost:3113/transaction/${newOrder._id}`);
     } catch (error) {
         console.error('Error during checkout:', error);
         res.status(500).json({ message: 'Internal server error.' });
