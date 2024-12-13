@@ -90,3 +90,34 @@
         </div>
     </div>
 </div>
+<script>
+document.getElementById('pay-now-button').addEventListener('click', async function() {
+    const pathParts = window.location.pathname.split('/');
+    const orderId = pathParts[pathParts.length - 1]; 
+    if (!orderId) {
+        alert('Invalid Order ID!');
+        return;
+    }
+
+    try {
+        const response = await fetch('/process-order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ orderId  })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert('Order processed successfully!');
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        alert('An error occurred while processing your order.');
+        console.error(error);
+    }
+});
+</script>
