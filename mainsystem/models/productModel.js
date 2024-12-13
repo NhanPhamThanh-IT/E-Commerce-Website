@@ -23,12 +23,16 @@ const productSchema = new mongoose.Schema({
         default: 0,
         min: [0, 'Stock quantity cannot be negative'],
     },
-    images: {
+    image: {
         type: [String],
         validate: {
             validator: (value) => value.every(url => /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))$/i.test(url)),
             message: 'Invalid image URL',
         },
+    },
+    iamges: {
+        type: Array,
+        default: [],
     },
     brand: {
         type: String
