@@ -1,12 +1,15 @@
 {{> header }}
 <main class="container mx-auto px-4 py-8">
-    <h2 class="text-3xl font-semibold mb-6">Products</h2>
+    <h2 class="text-3xl font-bold mb-6 flex items-center gap-2">
+        <i class="fas fa-box-open text-blue-500"></i>
+        Products
+    </h2>
 
     <!-- Category Filter -->
     <div class="mb-4">
         <label for="category-filter" class="block text-sm font-medium text-gray-700">Category</label>
         <select id="category-filter"
-            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-transform duration-300 ease-in-out hover:scale-105">
             <option value="">All Categories</option>
             {{#each categories}}
             <option value="{{this}}">{{this}}</option>
@@ -18,31 +21,34 @@
     <div class="mb-4">
         <label for="price-filter-min" class="block text-sm font-medium text-gray-700">Filter by Price</label>
         <div class="flex space-x-2 mt-1">
-            <input id="price-filter-min" type="number" placeholder="Min Price" 
+            <input id="price-filter-min" type="number" placeholder="Min Price"
                 class="w-1/2 pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            <input id="price-filter-max" type="number" placeholder="Max Price" 
+            <input id="price-filter-max" type="number" placeholder="Max Price"
                 class="w-1/2 pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
         </div>
-        <button id="apply-price-filter" 
-            class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
-            Apply
+        <button id="apply-price-filter"
+            class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
+            Apply <i class="fas fa-filter"></i>
         </button>
     </div>
 
     <!-- Products Grid -->
-    <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {{#each products}}
-        <div class="w-full rounded-lg shadow-md bg-white overflow-hidden">
+        <div
+            class="w-full rounded-lg shadow-md bg-white overflow-hidden transition-transform transform hover:scale-105">
             <img src="{{this.image}}" alt="{{this.title}}" class="w-full h-48 object-cover">
             <div class="p-4">
-                <h3 class="text-lg font-semibold text-gray-900">
+                <h3 class="text-lg font-semibold text-gray-900 truncate flex items-center gap-1">
+                    <i class="fas fa-tag text-gray-500"></i>
                     {{this.title}}
                 </h3>
-                <p class="text-sm text-gray-600 mb-2">{{this.brand}} - {{this.model}}</p>
+                <p class="text-sm text-gray-600 mb-2 truncate">{{this.brand}} - {{this.model}}</p>
                 <p class="text-gray-800 font-bold mb-4">${{this.price}}</p>
-                <button id="view-details-{{this.id}}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+                <button id="view-details-{{this.id}}"
+                    class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
                     data-product-id="{{this.id}}">
-                    View Details
+                    View Details <i class="fas fa-eye"></i>
                 </button>
             </div>
         </div>
@@ -56,30 +62,40 @@
 
 
 <!-- Product Detail Modal -->
-<div id="product-modal" class="bg-black bg-opacity-50 fixed inset-0 flex items-center justify-center z-50  hidden">
-    <div class="bg-white rounded-lg shadow-lg w-1/3 p-4 relative">
-        <button id="close-modal" class="absolute top-2 right-2 text-gray-700">&times;</button>
-        <h2 id="product-title" class="text-xl font-semibold mb-4"></h2>
-        <img id="product-image" src="" alt="" class="w-full h-48 object-cover mb-4">
-        <p id="product-description" class="text-gray-600 mb-4"></p>
-        <p id="product-price" class="text-gray-800 font-bold mb-4"></p>
-        <div class="flex justify-between">
-            <button id="add-to-cart" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-                 data-product-id="{{this.id}}" 
-                data-price="{{this.price}}">
-                Add to Cart
-            </button>
-            <div class="mb-4">
-                <label for="quantity-input" class="block text-sm font-medium text-gray-700">Quantity</label>
-                <input type="number" id="quantity-input"
-                    class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    min="1" value="1" />
+<div id="product-modal" class="bg-black bg-opacity-50 fixed inset-0 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-6 relative animate-fade-in overflow-auto max-h-[90vh]">
+        <button id="close-modal"
+            class="absolute top-4 right-4 text-gray-700 text-2xl hover:text-red-500 transition-colors">
+            &times;
+        </button>
+        <div class="flex flex-col gap-6">
+            <!-- Product Details -->
+            <div class="w-full">
+                <!-- Ensure modal title truncates -->
+                <h2 id="product-title" class="text-2xl font-semibold mb-4 truncate"></h2>
+                <img id="product-image" src="" alt="" class="w-full h-64 object-cover mb-4 rounded">
+                <p id="product-description" class="text-gray-600 mb-4"></p>
+                <p id="product-price" class="text-gray-800 font-bold mb-4"></p>
+                <div class="flex justify-between items-center">
+                    <button id="add-to-cart"
+                        class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
+                        data-product-id="{{this.id}}" data-price="{{this.price}}">
+                        Add to Cart <i class="fas fa-cart-plus"></i>
+                    </button>
+                    <div>
+                        <label for="quantity-input" class="block text-sm font-medium text-gray-700">Quantity</label>
+                        <input type="number" id="quantity-input"
+                            class="mt-1 block w-20 pl-3 pr-10 py-2 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            min="1" value="1" />
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="mt-6">
-            <h3 class="text-lg font-semibold mb-4">Related Products</h3>
-            <div id="related-products" class="grid grid-cols-2 gap-4">
-                <!-- Related products will be dynamically added here -->
+            <!-- Related Products -->
+            <div class="w-full">
+                <h3 class="text-lg font-semibold mb-4">Related Products</h3>
+                <div id="related-products" class="grid grid-cols-1 gap-4">
+                    <!-- Related products will be dynamically added here -->
+                </div>
             </div>
         </div>
     </div>
@@ -103,24 +119,25 @@
                 // Render products
                 data.products.forEach(product => {
                     productsContainer.innerHTML += `
-                        <div class="w-full rounded-lg shadow-md bg-white overflow-hidden">
-                            <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover">
-                            <div class="p-4">
-                                <h3 class="text-lg font-semibold text-gray-900">
-                                    ${product.title}
-                                </h3>
-                                <p class="text-sm text-gray-600 mb-2">${product.brand} - ${product.model}</p>
-                                <p class="text-gray-800 font-bold mb-4">$${product.price}</p>
-                                <button 
-                                    class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-                                    data-product-id="${product._id}">
-                                    View Details
-                                </button>
-                            </div>
-                        </div>
-                    `;
+        <div class="w-full rounded-lg shadow-md bg-white overflow-hidden">
+            <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover">
+            <div class="p-4">
+                <h3 class="text-lg font-semibold text-gray-900">
+                    ${product.title}
+                </h3>
+                ${product.brand ? `<p class="text-sm text-gray-600 mb-2">${product.brand}</p>` : ''}
+                <p class="text-gray-800 font-bold mb-4">$${product.price}</p>
+                <button 
+                    class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+                    data-product-id="${product._id}">
+                    View Details
+                </button>
+            </div>
+        </div>
+    `;
                 });
-                
+
+
                 // Render pagination buttons
                 for (let i = 1; i <= data.totalPages; i++) {
                     const isCurrentPage = i === Number(data.currentPage); // Convert currentPage to number
@@ -136,17 +153,17 @@
                 }
 
 
-    // Add click event listeners to pagination buttons
-            paginationContainer.querySelectorAll('button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const selectedPage = button.getAttribute('data-page');
-                    const baseUrl = url.split('?')[0]; // Extract base URL
-                    const queryParams = new URLSearchParams(url.split('?')[1]); // Extract query parameters
-                    queryParams.set('page', selectedPage); // Update the page number
+                // Add click event listeners to pagination buttons
+                paginationContainer.querySelectorAll('button').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const selectedPage = button.getAttribute('data-page');
+                        const baseUrl = url.split('?')[0]; // Extract base URL
+                        const queryParams = new URLSearchParams(url.split('?')[1]); // Extract query parameters
+                        queryParams.set('page', selectedPage); // Update the page number
 
-                    fetchAndRenderProducts(`${baseUrl}?${queryParams.toString()}`);
+                        fetchAndRenderProducts(`${baseUrl}?${queryParams.toString()}`);
+                    });
                 });
-            });
 
                 // Add event listeners to products
                 addProductEventListeners();
@@ -234,7 +251,7 @@
 
     // Handle Add-to-Cart button click
     document.getElementById('add-to-cart').addEventListener('click', () => {
-        event.preventDefault(); 
+        event.preventDefault();
         const productId = document.getElementById('add-to-cart').getAttribute('data-product-id');
         const quantityInput = document.getElementById('quantity-input');
         const quantity = parseInt(quantityInput.value, 10);
@@ -300,7 +317,7 @@
         const url = `/product/price?category=${category}&min=${minPrice}&max=${maxPrice}&page=1`;
         fetchAndRenderProducts(url);
     });
-    
+
     // Handle search input changes
     document.getElementById('search-input').addEventListener('change', function () {
         const searchTerm = this.value.trim();
