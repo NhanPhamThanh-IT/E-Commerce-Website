@@ -1,12 +1,12 @@
-<div class="flex flex-col h-screen bg-gray-100">
+<div class="flex flex-col h-screen">
     <div class="flex">
         <aside class="w-64 bg-white shadow-md h-full">
             {{> aside }}
         </aside>
-        <main class="flex-1 overflow-y-auto p-6 bg-gray-100 h-full">
+        <main class="flex-1 overflow-y-auto p-4 h-full">
             <div class="flex-1 flex flex-col">
                 <header
-                    class="h-32 bg-gradient-to-r from-blue-500 to-green-500 shadow-lg flex items-center justify-between px-6 relative">
+                    class="h-32 bg-gradient-to-r from-blue-500 to-green-500 flex items-center justify-between px-6 relative">
                     <div class="absolute inset-0 bg-cover bg-center opacity-30"
                         style="background-image: url('your-banner-image.jpg');"></div>
                     <div class="relative z-10 flex items-center">
@@ -17,11 +17,10 @@
                     </div>
                 </header>
 
-
-                <main class="flex-1 p-6 overflow-y-auto">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <main class="flex-1 pt-4 overflow-y-auto">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
                         <div
-                            class="card shadow-lg rounded-xl p-6 flex flex-col items-center space-y-4 hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
+                            class="card rounded-xl p-6 flex flex-col items-center space-y-4 hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
                             <div
                                 class="bg-blue-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16 hover:bg-blue-600 transition-colors duration-300">
                                 <a href="/admin/users" class="text-white">
@@ -29,13 +28,27 @@
                                 </a>
                             </div>
                             <div class="text-center">
-                                <h2 class="text-xl font-bold text-gray-800">Total Actived Users</h2>
+                                <h2 class="text-xl font-bold text-gray-800">Actived Users</h2>
                                 <p class="text-gray-600 mb-0">Total: {{activedUsers}}</p>
                             </div>
                         </div>
 
                         <div
-                            class="card shadow-lg rounded-xl p-6 flex flex-col items-center space-y-4 hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
+                            class="card rounded-xl p-6 flex flex-col items-center space-y-4 hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
+                            <div
+                                class="bg-blue-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16 hover:bg-blue-600 transition-colors duration-300">
+                                <a href="/admin/users" class="text-white">
+                                    <i class="bi bi-person-fill fs-2"></i>
+                                </a>
+                            </div>
+                            <div class="text-center">
+                                <h2 class="text-xl font-bold text-gray-800">Actived Users</h2>
+                                <p class="text-gray-600 mb-0">Total: {{activedUsers}}</p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="card rounded-xl p-6 flex flex-col items-center space-y-4 hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
                             <div
                                 class="bg-green-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16 hover:bg-green-600 transition-colors duration-300">
                                 <a href="/admin/products" class="text-white">
@@ -49,7 +62,7 @@
                         </div>
 
                         <div
-                            class="card shadow-lg rounded-xl p-6 flex flex-col items-center space-y-4 hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
+                            class="card rounded-xl p-6 flex flex-col items-center space-y-4 hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
                             <div
                                 class="bg-yellow-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16 hover:bg-yellow-600 transition-colors duration-300">
                                 <a href="/admin/orders" class="text-white">
@@ -61,7 +74,6 @@
                                 <p class="text-gray-600 mb-0">Total: {{orders}}</p>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="bg-white shadow rounded-lg p-6 mt-6">
