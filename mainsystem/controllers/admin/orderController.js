@@ -41,3 +41,17 @@ exports.deleteOrder = async (req, res, next) => {
         return res.status(500).json({ message: 'An error occurred while deleting the order.' });
     }
 }
+
+exports.getOrderInfo = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const order = await OrderService.getById(id);
+        if (!order) {
+            return res.status(404).json({ message: 'Order not found.' });
+        }
+        return res.status(200).json(order);
+    } catch (error) {
+        console.error('Error getting order info:', error);
+        return res.status(500).json({ message: 'An error occurred while getting order info.' });
+    }
+}
