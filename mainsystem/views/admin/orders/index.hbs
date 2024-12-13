@@ -39,12 +39,6 @@
                                             <i class="fas fa-pencil-alt"></i>
                                         </button>
                                     </form>
-                                    <form class="mb-0">
-                                        <button id="deleteOrder" type="button"
-                                            class="bg-red-600 text-white px-2 py-2 rounded-lg shadow-md hover:bg-red-700">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -61,6 +55,7 @@
 </div>
 
 <script>
+    // Fetch orders and render them dynamically
     async function fetchAndRenderOrders(url) {
         const ordersContainer = document.getElementById('orders-container');
         const paginationContainer = document.getElementById('pagination-container');
@@ -84,15 +79,9 @@
                         <td class="px-4 py-2 border border-gray-300">
                             <div class="flex justify-center items-center space-x-2">
                                 <form class="mb-0">
-                                    <button id="viewOrder" type="button" 
+                                    <button data-id="2" type="button" 
                                         class="bg-indigo-600 text-white px-2 py-2 rounded-lg shadow-md hover:bg-indigo-700">
                                         <i class="fas fa-pencil-alt"></i>
-                                    </button>
-                                </form>
-                                <form class="mb-0">
-                                    <button id="deleteOrder" type="button"
-                                        class="bg-red-600 text-white px-2 py-2 rounded-lg shadow-md hover:bg-red-700">
-                                        <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>
                             </div>
@@ -111,6 +100,7 @@
         }
     }
 
+    // Render pagination buttons
     function renderPagination(totalPages, currentPage, url) {
         const paginationContainer = document.getElementById('pagination-container');
         paginationContainer.innerHTML = '';
@@ -134,5 +124,8 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', () => fetchAndRenderOrders('/admin/orders/api?page=1'));
+    // On page load, fetch orders
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchAndRenderOrders('/admin/orders/api?page=1');
+    });
 </script>
