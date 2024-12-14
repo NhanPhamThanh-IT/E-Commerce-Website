@@ -44,16 +44,20 @@
             <!-- Products Grid -->
             <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                 {{#each products}}
-                <div class="w-full rounded-xl shadow-lg bg-white overflow-hidden transform transition-all hover:scale-105 hover:shadow-xl">
+                <div
+                    class="w-full rounded-xl shadow-lg bg-white overflow-hidden transform transition-all hover:scale-105 hover:shadow-xl">
                     <div class="relative pb-2/3">
-                        <img src="{{this.image}}" alt="{{this.title}}" class="absolute inset-0 w-full h-full object-cover rounded-t-lg">
+                        <img src="{{this.image}}" alt="{{this.title}}"
+                            class="absolute inset-0 w-full h-full object-cover rounded-t-lg">
                     </div>
                     <div class="p-6">
                         <h3 class="text-lg font-semibold text-gray-900 truncate flex items-center gap-1">
                             <i class="fas fa-tag text-gray-500"></i>
                             {{this.title}}
                         </h3>
-                        <p class="text-sm text-gray-600 mb-2 truncate">{{this.brand}}</p>
+                        {{#if this.brand}}
+                        <p class="text-sm text-gray-600 mb-2">{{this.brand}}</p>
+                        {{/if}}
                         <p class="text-lg font-bold text-gray-900 mb-4">${{this.price}}</p>
                         <button id="view-details-{{this.id}}"
                             class="bg-blue-500 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition duration-300 transform hover:scale-105"
@@ -105,7 +109,7 @@
                 <div class="flex justify-between items-center">
                     <button id="add-to-cart"
                         class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
-                        data-product-id="{{this.id}}" data-price="{{this.price}}">
+                        data-product-id="{{this.id}}" data-price="{{this.price}}" data-stock="{{this.stock_quantity}}">
                         Add to Cart <i class="fas fa-cart-plus"></i>
                     </button>
                     <div>
@@ -253,8 +257,10 @@
         document.getElementById('product-image').src = product.image;
         document.getElementById('product-description').innerText = product.description;
         document.getElementById('product-price').innerText = `$${product.price}`;
+        document.getElementById('quantity-input').value = 1;
         document.getElementById('add-to-cart').setAttribute('data-product-id', product._id); // Set product ID
         document.getElementById('add-to-cart').setAttribute('data-price', product.price);
+        document.getElementById('add-to-cart').setAttribute('data-stock', product.stock_quantity);
         document.getElementById("stock-quantity").innerText = product.stock_quantity;
         // Fetch related products
         const relatedProductsContainer = document.getElementById('related-products');
@@ -314,10 +320,15 @@
         const quantityInput = document.getElementById('quantity-input');
         const quantity = parseInt(quantityInput.value, 10);
         const price = document.getElementById('add-to-cart').getAttribute('data-price');
-
+        const stockQuantity = document.getElementById('add-to-cart').getAttribute('data-stock');
         if (!isNaN(quantity) && quantity > 0) {
-            console.log('Adding to cart:', productId, quantity, price);
-            addToCart(productId, quantity, price);
+            if (quantity > stockQuantity) {
+                alert('Quantity exceeds stock quantity.');
+            }
+            else {
+                console.log('Adding to cart:', productId, quantity, price);
+                addToCart(productId, quantity, price);
+            }
         } else {
             alert('Please enter a valid quantity.');
         }
