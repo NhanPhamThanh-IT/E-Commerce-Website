@@ -6,73 +6,40 @@
                 <header class="h-48 flex items-center justify-between px-0 relative rounded-xl">
                     <div class="absolute inset-0 bg-center bg-[#274354] z-0 rounded-xl"></div>
 
-                    {{> admin/dashboard/banner id="content1" href="/admin" title="The system is running smoothly" message="Check out the reports and stats now." button_content="Go Dashboard"}}
-                    {{> admin/dashboard/banner id="content2" href="/admin/profile" title="It's time to check your personal information" message="Update your profile for the latest details." button_content="View Profile"}}
+                    {{> admin/dashboard/banner id="content1" href="/admin" title="The system is running smoothly"
+                    message="Check out the reports and stats now." button_content="Go to Dashboard"}}
+                    {{> admin/dashboard/banner id="content2" href="/admin/users" title="Check your Users"
+                    message="Manage your users and update their details." button_content="View Users"
+                    hidden="hidden"}}
+                    {{> admin/dashboard/banner id="content3" href="/admin/products" title="Manage your Products"
+                    message="Update your products to keep the catalog up-to-date." button_content="View Products"
+                    hidden="hidden"}}
+                    {{> admin/dashboard/banner id="content4" href="/admin/orders" title="Review your Orders"
+                    message="Check the latest orders and their status." button_content="View Orders"
+                    hidden="hidden"}}
+                    {{> admin/dashboard/banner id="content5" href="/admin/profile" title="Update your Profile"
+                    message="Make sure your personal information is up to date." button_content="View Profile"
+                    hidden="hidden"}}
                 </header>
 
                 <main class="flex-1 pt-4 overflow-y-auto">
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
-                        <div
-                            class="card rounded-xl p-6 flex flex-col items-center space-y-4 hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
-                            <div
-                                class="bg-blue-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16 hover:bg-blue-600 transition-colors duration-300">
-                                <a href="/admin/users" class="text-white">
-                                    <i class="bi bi-person-fill fs-2"></i>
-                                </a>
-                            </div>
-                            <div class="text-center">
-                                <h2 class="text-xl font-bold text-gray-800">Actived Users</h2>
-                                <p class="text-gray-600 mb-0">Total: {{activedUsers}}</p>
-                            </div>
-                        </div>
-
-                        <div
-                            class="card rounded-xl p-6 flex flex-col items-center space-y-4 hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
-                            <div
-                                class="bg-blue-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16 hover:bg-blue-600 transition-colors duration-300">
-                                <a href="/admin/users" class="text-white">
-                                    <i class="bi bi-person-fill fs-2"></i>
-                                </a>
-                            </div>
-                            <div class="text-center">
-                                <h2 class="text-xl font-bold text-gray-800">Actived Users</h2>
-                                <p class="text-gray-600 mb-0">Total: {{activedUsers}}</p>
-                            </div>
-                        </div>
-
-                        <div
-                            class="card rounded-xl p-6 flex flex-col items-center space-y-4 hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
-                            <div
-                                class="bg-green-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16 hover:bg-green-600 transition-colors duration-300">
-                                <a href="/admin/products" class="text-white">
-                                    <i class="bi bi-box-fill fs-2"></i>
-                                </a>
-                            </div>
-                            <div class="text-center">
-                                <h2 class="text-xl font-bold text-gray-800">Products</h2>
-                                <p class="text-gray-600 mb-0">Total: {{products}}</p>
-                            </div>
-                        </div>
-
-                        <div
-                            class="card rounded-xl p-6 flex flex-col items-center space-y-4 hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
-                            <div
-                                class="bg-yellow-500 text-white p-4 rounded-full flex items-center justify-center w-16 h-16 hover:bg-yellow-600 transition-colors duration-300">
-                                <a href="/admin/orders" class="text-white">
-                                    <i class="bi bi-basket-fill fs-2"></i>
-                                </a>
-                            </div>
-                            <div class="text-center">
-                                <h2 class="text-xl font-bold text-gray-800">Orders</h2>
-                                <p class="text-gray-600 mb-0">Total: {{orders}}</p>
-                            </div>
-                        </div>
+                        {{> admin/dashboard/card href="/admin/users" icon='<i class="bi bi-person-fill fs-2"></i>'
+                        title="Actived Users" content=activedUsers bg="blue-500" hover="blue-600"}}
+                        {{> admin/dashboard/card href="/admin/products" icon='<i class="bi bi-box-fill fs-2"></i>'
+                        title="Products" content=products bg="green-500" hover="green-600"}}
+                        {{> admin/dashboard/card href="/admin/orders" icon='<i class="bi bi-basket-fill fs-2"></i>'
+                        title="Orders" content=orders bg="yellow-500" hover="yellow-600"}}
+                        {{> admin/dashboard/card href="/admin/users" icon='<i class="bi bi-person-fill fs-2"></i>'
+                        title="Actived Users" content=activedUsers }}
                     </div>
 
                     <div class="bg-white shadow rounded-lg p-6 mt-6">
                         <h2 class="text-lg font-bold mb-4">Performance Overview</h2>
                         <canvas id="dashboardChart" class="w-full h-64"></canvas>
                     </div>
+
                 </main>
             </div>
         </main>
@@ -86,24 +53,21 @@
     let currentContent = 1;
 
     document.addEventListener('DOMContentLoaded', () => {
-        setInterval(() => {
-            if (currentContent === 1) {
-                document.getElementById('content1').classList.add('hidden');
-                document.getElementById('content2').classList.remove('hidden');
-                currentContent = 2;
-            } else {
-                document.getElementById('content2').classList.add('hidden');
-                document.getElementById('content1').classList.remove('hidden');
-                currentContent = 1;
-            }
-        }, 3000);
+        let currentContent = 0;
+        const contentIds = ['content1', 'content2', 'content3', 'content4', 'content5'];
+        window.onload = () => {
+            document.getElementById(contentIds[currentContent]).classList.remove('hidden');
+            setInterval(() => {
+                contentIds.forEach(id => document.getElementById(id).classList.add('hidden'));
+                document.getElementById(contentIds[currentContent]).classList.remove('hidden');
+                currentContent = (currentContent + 1) % contentIds.length;
+            }, 2000);
+        };
 
         const users = parseInt('{{users}}') || 0;
         const products = parseInt('{{products}}') || 0;
         const orders = parseInt('{{orders}}') || 0;
-
         const ctx = document.getElementById('dashboardChart').getContext('2d');
-
         const data = {
             labels: ['Users', 'Products', 'Orders'],
             datasets: [
@@ -116,7 +80,6 @@
                 },
             ],
         };
-
         const dashboardChart = new Chart(ctx, {
             type: 'bar',
             data: data,
