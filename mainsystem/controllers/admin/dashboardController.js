@@ -1,23 +1,20 @@
-const User = require('../../models/userModel');
-const Product = require('../../models/productModel');
-const Order = require('../../models/orderModel');
+const UserService = require('../../services/admin/userService');
+const ProductService = require('../../services/admin/productService');
+const OrderService = require('../../services/admin/orderService');
 
 exports.index = async (req, res) => {
     try {
         const personalInfo = req.user.toObject();
-        const [usersCount, productsCount, verifiedCount, activedUsers, ordersCount ] = await Promise.all([
-            User.countDocuments({ role: 'user' }),
-            Product.countDocuments(),
-            User.countDocuments({ isVerified: true }),
-            User.countDocuments({ role: 'user', isActive: true }),
-            Order.countDocuments(),
+        const [usersCount, productsCount, activedUsers, ordersCount ] = await Promise.all([
+            UserService.getQuantity({ role: 'user' }),
+            ProductService.getQuantity(),
+            UserService.getQuantity({ role: 'user', isActive: true }),
+            OrderService.getQuantity(),
         ]);
         const data = {
             users: usersCount,
             products: productsCount,
             orders: ordersCount,
-            verified: verifiedCount,
-            unverified: usersCount - verifiedCount,
             personalInfo,
             activedUsers,
         };

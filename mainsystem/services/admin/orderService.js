@@ -30,6 +30,10 @@ class OrderService {
     static async deleteById(id) {
         return await Order.findByIdAndDelete(id);
     }
+
+    static async getQuantity(filters = {}) {
+        return await Order.countDocuments(filters);
+    }
 }
 
 module.exports = OrderService;
