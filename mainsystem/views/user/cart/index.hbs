@@ -180,7 +180,7 @@
                         <img src="${product.image}" alt="${product.title}" class="w-16 h-16 object-cover rounded-md">
                         <div>
                             <h3 class="text-lg font-semibold text-gray-800">${product.title}</h3>
-                            <p class="text-sm text-gray-600">${product.brand}</p>
+                            ${product.brand ? `<p class="text-sm text-gray-600">${product.brand}</p>` : ''}
                             <p class="text-gray-800 font-bold">$${product.price.toFixed(2)}</p>
                         </div>
                     </div>
@@ -328,6 +328,14 @@
 
         // Update the overall cart total
         updateCartTotal();
+        const totalItems = cart.length;
+        renderPagination(totalItems);
+        if (totalItems === 0) {
+            document.getElementById('cart-container').innerHTML = '<p class="text-center text-gray-600">Your cart is empty.</p>';
+            document.getElementById('pagination').style.display = 'none';
+        } else {
+            updateVisibleItems();
+        }
     }
 
     // Update cart total from the cart stored in the cookie
