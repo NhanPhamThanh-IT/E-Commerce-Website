@@ -329,7 +329,11 @@
         // Update the overall cart total
         updateCartTotal();
         const totalItems = cart.length;
-        renderPagination(totalItems);
+        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
+
         if (totalItems === 0) {
             document.getElementById('cart-container').innerHTML = '<p class="text-center text-gray-600">Your cart is empty.</p>';
             document.getElementById('pagination').style.display = 'none';
