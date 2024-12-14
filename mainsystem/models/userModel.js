@@ -15,9 +15,10 @@ const userSchema = new mongoose.Schema({
     role: { type: String, enum: ['admin', 'user'], default: 'user' },
     phone: { type: String },
     gender: { type: String, enum: ['male', 'female', 'other'] },
-    birthdate: { type: String },
+    birthDate: { type: String },
     loginMethod: { type: String, enum: ['email', 'google', 'facebook'], required: true, default: 'email' },
-    image: { type: String, default: 'profile.png' },
+    image: { type: String, default: "" },
+    avatar: { type: String, default: "" },  
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);

@@ -103,12 +103,9 @@ router.post('/upload-avatar', upload.single('avatar'), (req, res) => {
 
     // Phản hồi về client
     res.status(200).json({ message: 'Avatar uploaded successfully', avatarUrl });
-
-    // Trả về phản hồi hoặc redirect về profile
-    res.redirect('/user/profile');
 });
 
 // Route cập nhật thông tin người dùng
-router.put('/profile', userController.updateUserController);
+router.put('/save-profile', userController.updateUserController);
 
 module.exports = router;

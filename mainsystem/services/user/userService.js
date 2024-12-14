@@ -86,31 +86,19 @@ const getUserByIDService = async (id) => {
 
 const updateUserService = async (id, updateData) => {
     try {
-        // Tìm người dùng theo ID
         const user = await User.findById(id);
-        if (!user) {
-            throw new MyError(404, 'User not found', 'Unable to find user with provided ID');
+        if (!user) throw new MyError(404, 'User not found', 'Unable to find user with the provided ID');
+        if (updateData.birthDate) {
+            updateData.birthDate = new Date(updateData.birthDate).toISOString().split('T')[0];
         }
+        Object.keys(updateData).forEach(key => {
+            if (updateData[key] !== undefined) user[key] = updateData[key];
+        });
 
-        // Cập nhật thông tin
-        if (updateData.name) {
-            user.name = updateData.name; // Cập nhật name nếu có
-        }
-        if (updateData.avatar) {
-            user.avatar = updateData.avatar; // Cập nhật avatar nếu có
-        }
-
-        // Lưu thông tin đã cập nhật
         const updatedUser = await user.save();
-        return {
-            message: 'User updated successfully',
-            user: {
-                name: updatedUser.name,
-                avatar: updatedUser.avatar,
-            },
-        };
+        return { message: 'User updated successfully', updatedUser };
     } catch (error) {
-        console.log(error);
+        console.error(error);
         throw new MyError(500, error.message, error.desc || 'An unexpected error occurred.');
     }
 };

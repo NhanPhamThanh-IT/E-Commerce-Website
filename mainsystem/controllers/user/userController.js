@@ -86,15 +86,12 @@ const getUserByID = async (req, res, next) => {
 
 const updateUserController = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user._id;
         const updateData = req.body;
         const result = await userService.updateUserService(userId, updateData);
-        res.status(200).json(result);
+        res.redirect('/profile');
     } catch (error) {
-        res.status(error.statusCode || 500).json({
-            message: error.message || 'An unexpected error occurred.',
-            description: error.desc || null,
-        });
+        return next(error);
     }
 };
 module.exports = {
