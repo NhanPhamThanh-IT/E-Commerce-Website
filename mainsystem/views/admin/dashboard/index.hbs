@@ -3,16 +3,11 @@
         {{> aside }}
         <main class="flex-1 overflow-y-auto p-4 h-full">
             <div class="flex-1 flex flex-col">
-                <header
-                    class="h-32 bg-gradient-to-r from-blue-500 to-green-500 flex items-center justify-between px-6 relative">
-                    <div class="absolute inset-0 bg-cover bg-center opacity-30"
-                        style="background-image: url('your-banner-image.jpg');"></div>
-                    <div class="relative z-10 flex items-center">
-                        <img src="your-decorative-image.svg" alt="Decorative" class="w-12 h-12 mr-4">
-                        <h1 class="text-2xl font-semibold text-white mb-0">
-                            Welcome, {{personalInfo.lastName}} {{personalInfo.firstName}}!
-                        </h1>
-                    </div>
+                <header class="h-48 flex items-center justify-between px-0 relative rounded-xl">
+                    <div class="absolute inset-0 bg-center bg-[#274354] z-0 rounded-xl"></div>
+
+                    {{> admin/dashboard/banner id="content1" href="/admin" title="The system is running smoothly" message="Check out the reports and stats now." button_content="Go Dashboard"}}
+                    {{> admin/dashboard/banner id="content2" href="/admin/profile" title="It's time to check your personal information" message="Update your profile for the latest details." button_content="View Profile"}}
                 </header>
 
                 <main class="flex-1 pt-4 overflow-y-auto">
@@ -88,7 +83,21 @@
 </div>
 
 <script>
+    let currentContent = 1;
+
     document.addEventListener('DOMContentLoaded', () => {
+        setInterval(() => {
+            if (currentContent === 1) {
+                document.getElementById('content1').classList.add('hidden');
+                document.getElementById('content2').classList.remove('hidden');
+                currentContent = 2;
+            } else {
+                document.getElementById('content2').classList.add('hidden');
+                document.getElementById('content1').classList.remove('hidden');
+                currentContent = 1;
+            }
+        }, 3000);
+
         const users = parseInt('{{users}}') || 0;
         const products = parseInt('{{products}}') || 0;
         const orders = parseInt('{{orders}}') || 0;

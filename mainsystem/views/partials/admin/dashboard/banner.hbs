@@ -1,0 +1,17 @@
+<div class="relative z-10 flex items-center justify-between w-full hidden" id={{id}}>
+    <div class="pl-4 flex-col items-center space-y-4 p-6 rounded-xl shadow-lg">
+        <h1 class="text-xl font-semibold text-white mb-4">
+            {{title}}, {{personalInfo.lastName}}
+            {{personalInfo.firstName}}!
+            <br>
+            {{message}}
+        </h1>
+        <p>
+            <a href={{href}}
+                class="justify-center w-36 block py-2 px-2 rounded-xl bg-slate-500 text-white no-underline hover:bg-black hover:no-underline hover:text-white transition duration-300 ease-in-out flex items-center shadow-md">
+                <span class="font-semibold">{{button_content}}</span>
+            </a>
+        </p>
+    </div>
+    <img src="/system_images/dashboardbanner.png" alt="dashboardbanner" class="h-48 object-contain py-2">
+</div>
