@@ -17,7 +17,6 @@ exports.getProductsByPrice = async (req, res, next) => {
 
 exports.searhProduct = async (req, res, next) => {
     try {
-        console.log(req.params.id)
         const id = req.params.id.split('=');
         const searchBy = id[0] || 'title';
         const value = id[1] || '';

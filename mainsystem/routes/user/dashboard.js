@@ -15,6 +15,7 @@ router.get('/', (req, res) => {
     }
     res.render('login/index');
 });
+
 router.get('/login', (req, res) => {
     if (req.cookies?.token) {
         return res.redirect('/homepage');
@@ -88,24 +89,17 @@ router.get('/homepage', (req, res) => {
 
 router.get('/profile',  (req, res) => {
     const user = req.user.toObject();
-    res.render('profile/index', { user });
+    res.render('user/profile/index', { user });
 });
 
 router.post('/upload-avatar', upload.single('avatar'), (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' });
     }
-
-    // Đường dẫn tệp vừa upload
     const avatarUrl = `/images/${req.file.filename}`;
-
-    // Cập nhật thông tin vào cơ sở dữ liệu
-
-    // Phản hồi về client
     res.status(200).json({ message: 'Avatar uploaded successfully', avatarUrl });
 });
 
-// Route cập nhật thông tin người dùng
 router.put('/save-profile', userController.updateUserController);
 
 module.exports = router;
