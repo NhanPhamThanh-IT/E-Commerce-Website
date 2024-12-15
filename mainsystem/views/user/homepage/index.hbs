@@ -82,7 +82,7 @@
                 <div class="flex justify-between items-center">
                     <button id="add-to-cart"
                         class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
-                        data-product-id="{{this.id}}" data-price="{{this.price}}" data-stock="{{this.stock_quantity}}">
+                        data-product-id="{{this.id}}" data-price="{{this.price}}" data-stock="{{this.stock_quantity}}" data-discount-price="{{calculateDiscountPrice this.price this.discount}}">
                         Add to Cart <i class="fas fa-cart-plus"></i>
                     </button>
                     <div>
@@ -258,6 +258,7 @@
         document.getElementById('add-to-cart').setAttribute('data-product-id', product._id); // Set product ID
         document.getElementById('add-to-cart').setAttribute('data-price', product.price);
         document.getElementById('add-to-cart').setAttribute('data-stock', product.stock_quantity);
+        document.getElementById('add-to-cart').setAttribute('data-discount-price', discountedPrice);
         document.getElementById("stock-quantity").innerText = product.stock_quantity;
         // Fetch related products
         const relatedProductsContainer = document.getElementById('related-products');
@@ -321,13 +322,14 @@
         const quantityInput = document.getElementById('quantity-input');
         const quantity = parseInt(quantityInput.value, 10);
         const price = document.getElementById('add-to-cart').getAttribute('data-price');
+        const discountedPrice = document.getElementById('add-to-cart').getAttribute('data-discount-price');
         const stockQuantity = document.getElementById('add-to-cart').getAttribute('data-stock');
         if (!isNaN(quantity) && quantity > 0) {
             if (quantity > stockQuantity) {
                 alert('Quantity exceeds stock quantity.');
             }
             else {
-                addToCart(productId, quantity, price);
+                addToCart(productId, quantity, discountedPrice);
             }
         } else {
             alert('Please enter a valid quantity.');

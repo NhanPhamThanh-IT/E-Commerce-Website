@@ -166,7 +166,7 @@
         for (const item of itemsToRender) {
             const product = await fetchProductDetails(item.id);
             if (product) {
-                const productTotal = product.price * item.quantity;
+                const productTotal = item.price * item.quantity;
 
                 // Create a new cart item element
                 const cartItem = document.createElement('div');
@@ -180,8 +180,9 @@
                         <img src="${product.image}" alt="${product.title}" class="w-16 h-16 object-cover rounded-md">
                         <div>
                             <h3 class="text-lg font-semibold text-gray-800">${product.title}</h3>
-                            ${product.brand ? `<p class="text-sm text-gray-600">${product.brand}</p>` : ''}
-                            <p class="text-gray-800 font-bold">$${product.price.toFixed(2)}</p>
+                            ${product.brand ? `<p class="text-sm text-gray-600">${product.brand}</p>` : ''}             
+                            <div><p class="text-sm line-through text-gray-500">$${product.price.toFixed(2)}</p> <!-- Original price -->
+                            <p class="text-gray-800 font-bold">$${item.price}</p> <!-- Discounted price --> </div>
                         </div>
                     </div>
                     <div class="flex items-center space-x-4">
