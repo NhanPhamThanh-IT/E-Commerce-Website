@@ -40,31 +40,7 @@
             </h2>
 
             <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                {{#each products}}
-                <div
-                    class="w-full rounded-xl shadow-lg bg-white overflow-hidden transform transition-all hover:scale-105 hover:shadow-xl">
-                    <div class="relative pb-2/3">
-                        <img src="{{this.image}}" alt="{{this.title}}"
-                            class="absolute inset-0 w-full h-full object-cover rounded-t-lg">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 truncate flex items-center gap-1">
-                            {{this.title}}
-                        </h3>
-                        {{#if this.brand}}
-                        <p class="text-sm text-gray-600 mb-2">{{this.brand}}</p>
-                        {{/if}}
-                        <div class="flex justify-between items-center">
-                            <p class="text-lg font-bold text-gray-900">${{this.price}}</p>
-                            <button id="view-details-{{this.id}}"
-                                class="font-semibold bg-blue-500 text-white py-2 px-3 rounded-md hover:bg-blue-700 transition duration-300 transform hover:scale-105"
-                                data-product-id="{{this.id}}">
-                                View
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                {{/each}}
+
             </div>
 
             <div id="pagination-container" class="flex justify-center items-center space-x-6 mt-8">
@@ -106,7 +82,7 @@
                 <div class="flex justify-between items-center">
                     <button id="add-to-cart"
                         class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
-                        data-product-id="{{this.id}}" data-price="{{this.price}}" data-stock="{{this.stock_quantity}}">
+                        data-product-id="{{this.id}}" data-price="{{this.price}}" data-stock="{{this.stock_quantity}}" data-discount-price="{{calculateDiscountPrice this.price this.discount}}">
                         Add to Cart <i class="fas fa-cart-plus"></i>
                     </button>
                     <div>
@@ -148,10 +124,18 @@
 
                 // Render products
                 data.products.forEach(product => {
+                    const discount = product.discount || 0; // Default discount is 0 if not provided
+                    const discountedPrice = (product.price - (product.price * discount / 100)).toFixed(2); // Calculate discounted price
+
                     productsContainer.innerHTML += `
                         <div class="w-full rounded-xl shadow-lg bg-white overflow-hidden transform transition-all hover:scale-105 hover:shadow-xl">
                             <div class="relative">
                                 <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover rounded-t-lg">
+                                ${discount > 0
+                            ? `<div class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold py-1 px-2 rounded-md">
+                                        ${discount}% OFF
+                                    </div>`
+                            : ''}
                             </div>
                             <div class="p-6">
                                 <h3 class="text-lg font-semibold text-gray-900 truncate flex items-center gap-1">
@@ -159,7 +143,12 @@
                                 </h3>
                                 ${product.brand ? `<p class="text-sm text-gray-600 mb-2">${product.brand}</p>` : ''}
                                 <div class="flex justify-between items-center">
-                                    <p class="text-lg font-bold text-gray-900">$${product.price}</p>
+                                    <div>
+                                        <p class="text-lg font-bold text-gray-900">$${discountedPrice}</p>
+                                        ${discount > 0
+                            ? `<p class="text-sm line-through text-gray-500">$${product.price}</p>`
+                            : ''}
+                                    </div>
                                     <button class="font-semibold bg-blue-500 text-white py-2 px-3 rounded-md hover:bg-blue-700 transition duration-300 transform hover:scale-105"
                                             data-product-id="${product._id}">
                                         View
@@ -250,16 +239,26 @@
             return;
         }
         currentModalProductId = product._id;
-
+        const discount = product.discount || 0; 
+        const discountedPrice = (product.price - (product.price * discount / 100)).toFixed(2);
         // Set product details
         document.getElementById('product-title').innerText = product.title;
         document.getElementById('product-image').src = product.image;
         document.getElementById('product-description').innerText = product.description;
-        document.getElementById('product-price').innerText = `$${product.price}`;
+        const priceContainer = document.getElementById('product-price');
+        if (discount > 0) {
+            priceContainer.innerHTML = `
+                <p class="text-lg font-bold text-gray-900">$${discountedPrice}</p>
+                <p class="text-sm line-through text-gray-500">$${product.price}</p>
+            `;
+        } else {
+            priceContainer.innerHTML = `<p class="text-lg font-bold text-gray-900">$${product.price}</p>`;
+        }
         document.getElementById('quantity-input').value = 1;
         document.getElementById('add-to-cart').setAttribute('data-product-id', product._id); // Set product ID
         document.getElementById('add-to-cart').setAttribute('data-price', product.price);
         document.getElementById('add-to-cart').setAttribute('data-stock', product.stock_quantity);
+        document.getElementById('add-to-cart').setAttribute('data-discount-price', discountedPrice);
         document.getElementById("stock-quantity").innerText = product.stock_quantity;
         // Fetch related products
         const relatedProductsContainer = document.getElementById('related-products');
@@ -278,6 +277,8 @@
 
                 if (filteredProducts.length > 0) {
                     filteredProducts.forEach((related) => {
+                        const relatedDiscount = related.discount || 0;
+                        const relatedDiscountedPrice = (related.price - (related.price * relatedDiscount / 100)).toFixed(2);
                         relatedProductsContainer.innerHTML += `
                             <div 
                                 class="flex items-center justify-start space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
@@ -285,7 +286,9 @@
                                 <img src="${related.image}" alt="${related.title}" class="w-20 h-20 object-cover">
                                 <div>
                                     <h4 class="text-sm font-semibold">${related.title}</h4>
-                                    <p class="text-sm text-gray-600">$${related.price}</p>
+                                    ${relatedDiscount > 0? `<p class="text-sm font-bold text-gray-900">$${relatedDiscountedPrice}</p>
+                                    <p class="text-sm line-through text-gray-500">$${related.price}</p>`
+                                    : `<p class="text-sm text-gray-900">$${related.price}</p>`}
                                 </div>
                             </div>
                         `;
@@ -319,13 +322,14 @@
         const quantityInput = document.getElementById('quantity-input');
         const quantity = parseInt(quantityInput.value, 10);
         const price = document.getElementById('add-to-cart').getAttribute('data-price');
+        const discountedPrice = document.getElementById('add-to-cart').getAttribute('data-discount-price');
         const stockQuantity = document.getElementById('add-to-cart').getAttribute('data-stock');
         if (!isNaN(quantity) && quantity > 0) {
             if (quantity > stockQuantity) {
                 alert('Quantity exceeds stock quantity.');
             }
             else {
-                addToCart(productId, quantity, price);
+                addToCart(productId, quantity, discountedPrice);
             }
         } else {
             alert('Please enter a valid quantity.');

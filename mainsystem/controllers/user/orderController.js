@@ -46,7 +46,7 @@ exports.checkout = async (req, res) => {
 
             productDetails.push({ ...product, quantity: item.quantity });
 
-            totalAmount += product.price * item.quantity;
+            totalAmount += product.price * item.quantity * (1 - product.discount / 100);
         }
 
         const user = await User.findOne({ email: req.user.email }).lean();
