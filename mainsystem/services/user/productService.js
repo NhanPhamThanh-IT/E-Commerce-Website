@@ -52,7 +52,7 @@ class ProductService {
         return { products, totalItems };
     }
 
-    static async getByPriceAndCategory (minPrice, maxPrice, category, pageNumber, limitNumber)  {
+    static async getByPriceAndCategory (minPrice, maxPrice, category, minDiscount, pageNumber, limitNumber)  {
         try {
             const query = {};
     
@@ -62,7 +62,9 @@ class ProductService {
             if (minPrice && maxPrice) {
                 query.price = { $gte: minPrice, $lte: maxPrice }; // Filter by price range
             }
-    
+            if (minDiscount) {
+                query.discount = { $gte: minDiscount };
+            }
             const products = await Product.find(query)
                 .skip((pageNumber - 1) * limitNumber) // Skip the products based on page number
                 .limit(limitNumber); // Limit the number of products per page
