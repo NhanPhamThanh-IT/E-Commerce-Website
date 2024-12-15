@@ -1,8 +1,9 @@
 <div class="flex flex-col h-screen bg-gray-100">
+
     <div class="flex">
         {{> aside }}
-        <main class="flex-1 overflow-y-auto p-6 bg-gray-100">
-            {{> mainHeader title="Order List" content="View and manage your recent orders effortlessly"}}
+        <main class="flex-1 overflow-y-auto bg-gray-100">
+            {{> admin/navbar title="Order List" content="View and manage your recent orders effortlessly"}}
 
             <div class="bg-white border border-black rounded-xl shadow-md p-6">
                 <table class="table-auto w-full text-left border border-gray-300 rounded-xl">
@@ -17,8 +18,8 @@
                     <tbody id="orders-container" class="divide-y divide-gray-200">
                         {{#each orders}}
                         <tr>
-                            <td class="px-4 py-2 border border-gray-300">{{this.user_id}}</td>
-                            <td class="px-4 py-2 border border-gray-300">{{this.date}}</td>
+                            <td class="px-4 py-2 border border-gray-300 text-center">{{this.user_id}}</td>
+                            <td class="px-4 py-2 border border-gray-300 text-center">{{this.date}}</td>
                             <td class="px-4 py-2 border border-gray-300 text-center">${{this.total_amount}}</td>
                             <td class="px-4 py-2 border border-gray-300">
                                 <div class="flex justify-center items-center space-x-2">

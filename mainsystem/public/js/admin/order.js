@@ -11,8 +11,8 @@ async function fetchAndRenderOrders(url) {
             data.Orders.forEach(order => {
                 const orderRow = document.createElement('tr');
                 orderRow.innerHTML = `
-                        <td class="px-4 py-2 border border-gray-300">${order.user_id}</td>
-                        <td class="px-4 py-2 border border-gray-300">${order.date}</td>
+                        <td class="px-4 py-2 border border-gray-300 text-center">${order.user_id}</td>
+                        <td class="px-4 py-2 border border-gray-300 text-center">${order.date}</td>
                         <td class="px-4 py-2 border border-gray-300 text-center">${order.total_amount}</td>
                         <td class="px-4 py-2 border border-gray-300">
                             <div class="flex justify-center items-center space-x-2">
