@@ -13,13 +13,13 @@
             {{> admin/navbar title="Users List" content="Explore our curated list of users tailored just for you"}}
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6 text-white">
-                {{> admin/dashboard/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
+                {{> admin/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
                         title="Total Users" content=totalUsers bg="blue-400" hover="blue-400"}}
-                {{> admin/dashboard/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
+                {{> admin/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
                         title="Actived Users" content=totalActiveUsers bg="green-400" hover="green-400"}}
-                {{> admin/dashboard/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
+                {{> admin/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
                         title="Inactived Users" content=totalInactiveUsers bg="orange-400" hover="orange-400"}}
-                {{> admin/dashboard/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
+                {{> admin/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
                         title="Inactived Users" content=totalInactiveUsers bg="blue-500" hover="blue-500"}}
             </div>
 

@@ -6,18 +6,18 @@
                 <header class="h-48 flex items-center justify-between px-0 relative rounded-xl">
                     <div class="absolute inset-0 bg-center bg-[#274354] z-0 rounded-xl"></div>
 
-                    {{> admin/dashboard/banner id="content1" href="/admin" title="The system is running smoothly"
+                    {{> admin/banner id="content1" href="/admin" title="The system is running smoothly"
                     message="Check out the reports and stats now." button_content="Go to Dashboard"}}
-                    {{> admin/dashboard/banner id="content2" href="/admin/users" title="Check your Users"
+                    {{> admin/banner id="content2" href="/admin/users" title="Check your Users"
                     message="Manage your users and update their details." button_content="View Users"
                     hidden="hidden"}}
-                    {{> admin/dashboard/banner id="content3" href="/admin/products" title="Manage your Products"
+                    {{> admin/banner id="content3" href="/admin/products" title="Manage your Products"
                     message="Update your products to keep the catalog up-to-date." button_content="View Products"
                     hidden="hidden"}}
-                    {{> admin/dashboard/banner id="content4" href="/admin/orders" title="Review your Orders"
+                    {{> admin/banner id="content4" href="/admin/orders" title="Review your Orders"
                     message="Check the latest orders and their status." button_content="View Orders"
                     hidden="hidden"}}
-                    {{> admin/dashboard/banner id="content5" href="/admin/profile" title="Update your Profile"
+                    {{> admin/banner id="content5" href="/admin/profile" title="Update your Profile"
                     message="Make sure your personal information is up to date." button_content="View Profile"
                     hidden="hidden"}}
                 </header>
@@ -25,13 +25,13 @@
                 <main class="flex-1 pt-4 overflow-y-auto">
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
-                        {{> admin/dashboard/card href="/admin/users" icon='<i class="bi bi-person-fill fs-2"></i>'
+                        {{> admin/card href="/admin/users" icon='<i class="bi bi-person-fill fs-2"></i>'
                         title="Actived Users" content=activedUsers bg="blue-500" hover="blue-600"}}
-                        {{> admin/dashboard/card href="/admin/products" icon='<i class="bi bi-box-fill fs-2"></i>'
+                        {{> admin/card href="/admin/products" icon='<i class="bi bi-box-fill fs-2"></i>'
                         title="Products" content=products bg="green-500" hover="green-600"}}
-                        {{> admin/dashboard/card href="/admin/orders" icon='<i class="bi bi-basket-fill fs-2"></i>'
+                        {{> admin/card href="/admin/orders" icon='<i class="bi bi-basket-fill fs-2"></i>'
                         title="Orders" content=orders bg="yellow-500" hover="yellow-600"}}
-                        {{> admin/dashboard/card href="/admin/users" icon='<i class="bi bi-person-fill fs-2"></i>'
+                        {{> admin/card href="/admin/users" icon='<i class="bi bi-person-fill fs-2"></i>'
                         title="Actived Users" content=activedUsers }}
                     </div>
 

@@ -1,5 +1,10 @@
-<nav class="flex items-center justify-between p-4 bg-white shadow-md mb-4">
-    <div class="relative flex items-center w-1/3">
+<nav class="flex justify-between p-4 bg-white shadow-md mb-4">
+    <div class="flex-row items-center">
+        <h1 class="flex font-extrabold text-4xl">{{title}}</h1>
+        <p class="text-md">{{content}}</p>
+    </div>
+
+    <div class="relative flex items-center w-1/3 {{hidden_search}}">
         <input type="text" placeholder="Search for..."
             class="w-full px-6 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-400 focus:outline-none">
         <button
