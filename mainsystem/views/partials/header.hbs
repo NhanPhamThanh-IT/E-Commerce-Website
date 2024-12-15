@@ -4,17 +4,30 @@
     </a>
 
     <div class="flex justify-between items-center w-full">
-        <div class="flex items-center space-x-10 ml-10">
-            <a href="/" class="text-lg text-gray-600 hover:text-gray-800 no-underline hover:no-underline">Home</a>
-            <a href="/cart" class="text-lg text-gray-600 hover:text-gray-800 no-underline hover:no-underline">Cart</a>
-            <div class="relative">
-                <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+        <div class="flex items-center justify-start space-x-8 ml-10 py-4">
+            <a href="/" class="text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Home</a>
+            <div class="relative text-lg">
+                <label for="category-filter" class="sr-only">Category</label>
+                <select id="category-filter"
+                    class="block m-0 focus:outline-none sm:text-sm font-semibold text-gray-600 hover:text-gray-800 transition duration-200">
+                    <option value="">All Categories</option>
+                    {{#each categories}}
+                    <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <a href="/cart"
+                class="text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Cart</a>
+            <div class="relative flex items-center">
+                <i class="fa fa-search absolute left-3 top-2.5 text-gray-400"></i>
                 <input id="search-input" type="text" placeholder="Search here"
-                    class="border border-gray-300 rounded-md pl-10 pr-4 py-2 focus:outline-none focus:border-blue-500 w-96">
+                    class="block w-80 pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
             </div>
         </div>
+
         <div class="flex items-center space-x-10 mr-3">
-            <a href="/profile" class="text-lg text-gray-600 hover:text-gray-800 no-underline hover:no-underline">Profile</a>
+            <a href="/profile"
+                class="text-lg text-gray-600 hover:text-gray-800 no-underline hover:no-underline">Profile</a>
             <form action="/logout" method="post" class="mb-0">
                 <button class="text-lg bg-red-500 rounded-lg text-white p-2">Logout</button>
             </form>
