@@ -26,11 +26,19 @@
                     <input id="price-filter-max" type="number" placeholder="Max Price"
                         class="w-full lg:w-1/2 pl-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 </div>
-                <button id="apply-price-filter"
-                    class="mt-4 bg-blue-500 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition duration-300 transform hover:scale-105">
-                    Apply Filter <i class="fas fa-filter"></i>
-                </button>
             </div>
+
+            <!-- Discount Filter -->
+            <div class="mb-8">
+                <label for="discount-filter" class="block text-sm font-medium text-gray-700">Filter by Discount</label>
+                <input id="discount-filter" type="number" placeholder="Min Discount (%)"
+                    class="w-full pl-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+
+            <button id="apply-price-filter"
+                class="mt-4 bg-blue-500 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+                Apply Filter <i class="fas fa-filter"></i>
+            </button>
         </div>
 
         <!-- Products Grid -->
@@ -152,22 +160,24 @@
                 // Render products
                 data.products.forEach(product => {
                     productsContainer.innerHTML += `
-                    <div class="w-full rounded-lg shadow-md bg-white overflow-hidden">
-                        <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-gray-900">
-                                ${product.title}
-                            </h3>
-                            ${product.brand ? `<p class="text-sm text-gray-600 mb-2">${product.brand}</p>` : ''}
-                            <p class="text-gray-800 font-bold mb-4">$${product.price}</p>
-                            <button 
-                                class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-                                data-product-id="${product._id}">
-                                View Details
-                            </button>
+                        <div class="w-full rounded-xl shadow-lg bg-white overflow-hidden transform transition-all hover:scale-105 hover:shadow-xl">
+                            <div class="relative">
+                                <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover rounded-t-lg">
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 truncate flex items-center gap-1">
+                                    <i class="fas fa-tag text-gray-500"></i>
+                                    ${product.title}
+                                </h3>
+                                ${product.brand ? `<p class="text-sm text-gray-600 mb-2">${product.brand}</p>` : ''}
+                                <p class="text-lg font-bold text-gray-900 mb-4">$${product.price}</p>
+                                <button class="bg-blue-500 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition duration-300 transform hover:scale-105"
+                                        data-product-id="${product._id}">
+                                    View Details <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
                 });
 
                 // Render pagination
@@ -372,8 +382,9 @@
         const category = this.value;
         const minPrice = document.getElementById('price-filter-min').value || 0;
         const maxPrice = document.getElementById('price-filter-max').value || 1000000;
+        const minDiscount = document.getElementById('discount-filter').value || 0;
 
-        const url = `/product/price?category=${category}&min=${minPrice}&max=${maxPrice}&page=1&limit=10`;
+        const url = `/product/price?category=${category}&min=${minPrice}&max=${maxPrice}&minDiscount=${minDiscount}&page=1&limit=10`;
         fetchAndRenderProducts(url);
     });
 
@@ -381,9 +392,10 @@
     document.getElementById('apply-price-filter').addEventListener('click', function () {
         const minPrice = document.getElementById('price-filter-min').value || 0;
         const maxPrice = document.getElementById('price-filter-max').value || 1000000;
+        const minDiscount = document.getElementById('discount-filter').value || 0;
 
         const category = document.getElementById('category-filter').value || '';
-        const url = `/product/price?category=${category}&min=${minPrice}&max=${maxPrice}&page=1`;
+        const url = `/product/price?category=${category}&min=${minPrice}&max=${maxPrice}&minDiscount=${minDiscount}&page=1`;
         fetchAndRenderProducts(url);
     });
 

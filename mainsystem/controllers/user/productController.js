@@ -2,15 +2,17 @@ const productService = require('../../services/user/productService');
 
 exports.getProductsByPrice = async (req, res, next) => {
     try {
-        const { min, max, page, limit, category } = req.query;
+        const { min, max, page, limit, category, minDiscount } = req.query;
         const minPrice = parseInt(min) || 0;
         const maxPrice = parseInt(max) || 1000000;
         const pageNumber = parseInt(page) || 1;
         const limitNumber = parseInt(limit) || 10;
         const categoryFilter = category || '';
-        const products = await productService.getByPriceAndCategory(minPrice, maxPrice, categoryFilter, pageNumber, limitNumber);
+        const minDiscountValue = parseInt(minDiscount) || 0;
+        const products = await productService.getByPriceAndCategory(minPrice, maxPrice, categoryFilter, minDiscountValue, pageNumber, limitNumber);
         res.status(200).json(products);
     } catch (error) {
+        console.error('Error fetching products:', error);
         next(error);
     }
 };
