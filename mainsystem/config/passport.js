@@ -47,9 +47,8 @@ module.exports = function (passport) {
         clientID: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
         callbackURL: '/facebook/callback',
-        profileFields: ['id', 'emails', 'name'],
+        profileFields: ['emails', 'name', 'gender', 'picture'],
     }, async (accessToken, refreshToken, facebookData, done) => {
-        console.log(facebookData)
         if (!facebookData?.emails[0]?.value) {
             return done(null, false, { message: 'Email not provided by Facebook' });
         }
@@ -62,7 +61,7 @@ module.exports = function (passport) {
                 lastName: facebookData.name.familyName,
                 email: facebookData.emails[0].value,
                 gender: facebookData.gender,
-                image: facebookData.profileUrl,
+                image: facebookData.photos[0].value,
                 username: facebookData.displayName,
                 password: 'none',
                 loginMethod: 'facebook',
