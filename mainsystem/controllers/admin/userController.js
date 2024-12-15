@@ -1,4 +1,5 @@
 const User = require('../../models/userModel');
+const UserServices = require('../../services/admin/userService');
 
 const USERS_PER_PAGE = 5;
 
@@ -24,10 +25,11 @@ const getUsersWithPagination = async (page) => {
     ];
 
     const result = await User.aggregate(pipeline);
+    const totalActiveUsers = await UserServices.getQuantity({ role: "user", isActive: true });
     const users = result[0]?.data || [];
     const totalUsers = result[0]?.totalCount[0]?.count || 0;
     const totalPages = Math.ceil(totalUsers / USERS_PER_PAGE);
-    return { users, totalUsers, totalPages };
+    return { users, totalUsers, totalPages, totalActiveUsers, totalInactiveUsers: totalUsers - totalActiveUsers };
 };
 
 exports.index = async (req, res) => {
@@ -39,11 +41,14 @@ exports.index = async (req, res) => {
             return res.render('admin/users/profile', { user });
         }
         const { users, totalUsers, totalPages } = await getUsersWithPagination(parseInt(page));
+        const totalActiveUsers = await UserServices.getQuantity({ role: "user", isActive: true });
         const response = {
             users,
             totalPages,
             currentPage: page,
             totalUsers,
+            totalActiveUsers,
+            totalInactiveUsers: totalUsers - totalActiveUsers
         };
         return req.query.page
             ? res.json(response)

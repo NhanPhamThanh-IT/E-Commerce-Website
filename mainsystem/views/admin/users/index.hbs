@@ -10,18 +10,19 @@
 
             {{> mainHeader title="Users List" content="Explore our curated list of users tailored just for you"}}
 
-            <div class="text-center mb-6">
-                <div
-                    class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-xl shadow-md p-6">
-                    <h1 class="text-4xl font-extrabold tracking-tight">{{ totalUsers }} Users</h1>
-                    <p class="text-white mt-2 text-lg mb-0">
-                        Explore our curated list of users tailored just for you
-                    </p>
-                </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6 text-white">
+                {{> admin/dashboard/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
+                        title="Total Users" content=totalUsers bg="blue-400" hover="blue-400"}}
+                {{> admin/dashboard/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
+                        title="Actived Users" content=totalActiveUsers bg="green-400" hover="green-400"}}
+                {{> admin/dashboard/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
+                        title="Inactived Users" content=totalInactiveUsers bg="orange-400" hover="orange-400"}}
+                {{> admin/dashboard/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
+                        title="Inactived Users" content=totalInactiveUsers bg="blue-500" hover="blue-500"}}
             </div>
 
             <div
-                class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl shadow-2xl p-8 mb-4 backdrop-blur-lg hover:rounded-xl">
+                class="bg-black text-white rounded-xl shadow-2xl p-8 mb-4 backdrop-blur-lg hover:rounded-xl">
                 <table class="w-full text-left bg-white shadow-lg rounded-xl">
                     <thead>
                         <tr style="background-color:#f5f5f4" class="rounded-t-xl">
