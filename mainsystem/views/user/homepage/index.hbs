@@ -2,34 +2,41 @@
 <main class="container mx-auto px-0">
 
     <div class="flex">
-        <div class="w-1/6 bg-slate-700 py-6 px-2 shadow-lg sticky top-0 h-full">
+        <div class="w-1/5 bg-gray-100 shadow-md py-6 px-3 sticky top-0 h-full">
             <div class="mb-8">
-                <h2 class="text-sm font-semibold text-gray-800 mb-2 text-white">Filter by Price</h2>
-                <div class="flex space-x-2">
-                    <input id="price-filter-min" type="number" placeholder="Min Price"
+                <h2 class="text-sm font-semibold text-gray-800 mb-2 text-black">Filter by Price</h2>
+                <div class="flex space-x-4">
+                    <input id="price-filter-min" type="number" placeholder="Min"
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm placeholder-gray-500">
-                    <input id="price-filter-max" type="number" placeholder="Max Price"
+                    <input id="price-filter-max" type="number" placeholder="Max"
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm placeholder-gray-500">
                 </div>
             </div>
 
             <div class="mb-8">
-                <h2 class="text-sm font-semibold text-gray-800 mb-2 text-white">Filter by Discount</h2>
+                <h2 class="text-sm font-semibold text-gray-800 mb-2 text-black">Filter by Discount</h2>
                 <input id="discount-filter" type="number" placeholder="Min Discount (%)"
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm placeholder-gray-500">
             </div>
 
-            <button id="apply-price-filter"
-                class="w-full bg-green-400 text-white py-2 rounded-md font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 transition transform duration-300 hover:scale-105">
-                Apply Filter <i class="fas fa-filter"></i>
-            </button>
+            <div class="mt-4">
+                <button id="apply-price-filter"
+                    class="text-base w-full bg-green-400 text-white py-2 rounded-md font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 transition transform duration-300 hover:scale-105">
+                    Apply Filter <i class="fas fa-filter"></i>
+                </button>
+            </div>
         </div>
 
-        <div class="w-5/6 p-6">
+        <div class="w-4/5 p-6 bg-white flex-row">
+            
+            <div class="mb-6 container mx-auto">
+                <img src="/system_images/user_homepage_banner.png" alt="sale_banner" class="h-1/5 w-full">
+            </div>
 
-            <h2 class="text-4xl font-extrabold text-gray-900 mb-6 flex items-center gap-2">
-                <i class="fas fa-box-open text-blue-500"></i>
-                Products
+            <h2 class="flex space-x-4 bg-[#274354] border-2 border-white p-4 rounded-2xl text-3xl font-bold text-white mb-6 flex items-center gap-2 justify-center">
+                <i class="fas fa-box-open"></i>
+                <span>List Of Products</span>
+                <i class="fas fa-box-open"></i>
             </h2>
 
             <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -320,7 +327,6 @@
                 alert('Quantity exceeds stock quantity.');
             }
             else {
-                console.log('Adding to cart:', productId, quantity, price);
                 addToCart(productId, quantity, price);
             }
         } else {
@@ -369,7 +375,7 @@
         const maxPrice = document.getElementById('price-filter-max').value || 1000000;
         const minDiscount = document.getElementById('discount-filter').value || 0;
 
-        const url = `/product/price?category=${category}&min=${minPrice}&max=${maxPrice}&minDiscount=${minDiscount}&page=1&limit=10`;
+        const url = `/product/price?category=${category}&min=${minPrice}&max=${maxPrice}&minDiscount=${minDiscount}&page=1&limit=8`;
         fetchAndRenderProducts(url);
     });
 
