@@ -55,3 +55,38 @@ exports.getOrderInfo = async (req, res, next) => {
         return res.status(500).json({ message: 'An error occurred while getting order info.' });
     }
 }
+
+const Order = require('../../models/orderModel');
+
+exports.searchOrders = async (req, res) => {
+    try {
+        const { field, query } = req.query;
+
+        if (!field || !query) {
+            return res.status(400).json({ message: 'Both field and query parameters are required.' });
+        }
+
+        const allowedFields = ['user_id', 'date', 'total_amount'];
+        if (!allowedFields.includes(field)) {
+            return res.status(400).json({ message: `Invalid field. Allowed fields are: ${allowedFields.join(', ')}` });
+        }
+
+        const filter = {
+            [field]: { $regex: query, $options: 'i' }
+        };
+
+        const orders = await Order.find(filter);
+
+        if (orders.length === 0) {
+            return res.status(404).json({ message: 'No orders found.' });
+        }
+
+        res.json({ Orders: orders });
+    } catch (error) {
+        console.error('Error in searchOrders:', error);
+        res.status(500).json({
+            message: 'An error occurred while searching for orders.',
+            error: error.message,
+        });
+    }
+};

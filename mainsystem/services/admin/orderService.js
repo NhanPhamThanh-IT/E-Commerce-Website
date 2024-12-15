@@ -34,6 +34,10 @@ class OrderService {
     static async getQuantity(filters = {}) {
         return await Order.countDocuments(filters);
     }
+
+    static async searchOrder(query) {
+        return await Order.findById(query).lean();
+    }
 }
 
 module.exports = OrderService;
