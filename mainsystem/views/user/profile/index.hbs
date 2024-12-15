@@ -1,115 +1,90 @@
 {{> header}}
 
-<section class="profile-section py-10 bg-gray-50">
-    <div class="container mx-auto p-8 rounded-xl shadow-lg border border-gray-200 bg-white">
-        <!-- Profile Header -->
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-semibold text-gray-800">Profile</h2>
-            <p class="text-lg text-gray-500 mt-2">View and update your profile details</p>
+<section class="profile-section p-8 bg-gradient-to-r from-blue-50 via-white to-blue-50">
+    <div class="container mx-auto p-8 rounded-lg shadow-lg border border-gray-200 bg-white">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-800">Profile</h2>
+            <p class="text-gray-600 text-sm">Manage and update your profile details</p>
         </div>
 
-        <!-- Profile Form -->
-        <form action="/save-profile" method="POST" class="space-y-8" enctype="application/x-www-form-urlencoded"
-            id="profileForm">
-            <input type="hidden" name="_method" value="PUT" />
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <form action="/save-profile" method="POST" class="space-y-6" enctype="application/x-www-form-urlencoded" id="profileForm">
+            <input type="hidden" name="_method" value="PUT">
 
-                <!-- Left Column: Avatar Section -->
-                <div class="flex flex-col items-center justify-center bg-gray-100 p-6 rounded-xl shadow-lg h-full">
-                    <div class="w-36 h-36 rounded-full overflow-hidden shadow-xl mb-6">
-                        <img id="avatar" referrerPolicy="no-referrer" src="{{#if user.avatar}}/images/{{user.avatar}}
-                        {{else if user.image}}{{user.image}}
-                        {{else}}/images/profile.png
-                        {{/if}}" alt="User Avatar" class="w-full h-full object-cover" />
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Avatar Section -->
+                <div class="col-span-1 flex flex-col items-center bg-gray-100 p-6 rounded-lg shadow-md">
+                    <div class="w-32 h-32 rounded-full overflow-hidden shadow-md mb-4">
+                        <img id="avatar" referrerPolicy="no-referrer" src="{{#if user.avatar}}/images/{{user.avatar}}{{else if user.image}}{{user.image}}{{else}}/images/profile.png{{/if}}" 
+                            alt="User Avatar" class="w-full h-full object-cover">
                     </div>
-                    <label for="avatarInput"
-                        class="cursor-pointer bg-black text-white px-4 py-2 rounded-md transition hover:bg-gray-700">
-                        Upload Avatar
-                    </label>
-                    <input type="file" name="avatar" accept="image/jpeg, image/png, image/jpg" id="avatarInput"
-                        class="hidden" />
+                    <label for="avatarInput" class="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded transition hover:bg-blue-500">Upload Avatar</label>
+                    <input type="file" name="avatar" id="avatarInput" accept="image/jpeg,image/png,image/jpg" class="hidden">
                 </div>
 
-                <!-- Right Column: User Info Section -->
-                <div class="space-y-8">
-                    <!-- Name Section -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <!-- Username -->
+                <!-- Profile Details -->
+                <div class="col-span-2 space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="username" class="block text-sm font-medium text-gray-800">Username</label>
-                            <input type="text" name="username" id="username" value="{{user.username}}"
-                                class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-black focus:border-black" />
+                            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                            <input type="text" id="username" name="username" value="{{user.username}}" 
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300">
                         </div>
-                        <!-- First Name -->
                         <div>
-                            <label for="firstName" class="block text-sm font-medium text-gray-800">First Name</label>
-                            <input type="text" name="firstName" id="firstName" value="{{user.firstName}}"
-                                class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-black focus:border-black"
-                                required />
+                            <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                            <input type="text" id="firstName" name="firstName" value="{{user.firstName}}" 
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300" required>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <!-- Last Name -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="lastName" class="block text-sm font-medium text-gray-800">Last Name</label>
-                            <input type="text" name="lastName" id="lastName" value="{{user.lastName}}"
-                                class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-black focus:border-black"
-                                required />
+                            <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" value="{{user.lastName}}" 
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300" required>
                         </div>
-                        <!-- Gender -->
                         <div>
-                            <label for="gender" class="block text-sm font-medium text-gray-800">Gender</label>
-                            <select id="gender" name="gender"
-                                class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-black focus:border-black">
-                                <option value="female" {{#if (eq user.gender 'female' )}}selected{{/if}}>Female</option>
-                                <option value="male" {{#if (eq user.gender 'male' )}}selected{{/if}}>Male</option>
-                                <option value="other" {{#if (eq user.gender 'other' )}}selected{{/if}}>Other</option>
+                            <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
+                            <select id="gender" name="gender" class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300">
+                                <option value="female" {{#if (eq user.gender 'female')}}selected{{/if}}>Female</option>
+                                <option value="male" {{#if (eq user.gender 'male')}}selected{{/if}}>Male</option>
+                                <option value="other" {{#if (eq user.gender 'other')}}selected{{/if}}>Other</option>
                             </select>
                         </div>
                     </div>
 
-                    <!-- Date of Birth and Phone Number -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <!-- Birth Date -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="birthDate" class="block text-sm font-medium text-gray-800">Birth Date</label>
-                            <input type="date" id="birthDate" name="birthDate" value="{{formatDateForInput user.birthDate}}"
-                                class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-black focus:border-black"
-                                required />
+                            <label for="birthDate" class="block text-sm font-medium text-gray-700">Birth Date</label>
+                            <input type="date" id="birthDate" name="birthDate" value="{{formatDateForInput user.birthDate}}" 
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300" required>
                         </div>
-                        <!-- Phone -->
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-800">Phone</label>
-                            <input type="text" id="phone" name="phone" value="{{user.phone}}"
-                                class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-black focus:border-black"
-                                required />
-                            <p id="phoneError" class="text-red-500 text-sm mt-1 hidden">Please enter a valid phone
-                                number (e.g., +1234567890).</p>
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                            <input type="text" id="phone" name="phone" value="{{user.phone}}" 
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300" required>
+                            <p id="phoneError" class="text-red-500 text-sm mt-1 hidden">Invalid phone number.</p>
                         </div>
                     </div>
 
-                    <!-- Address -->
-                    <div class="grid grid-cols-1 gap-8">
-                        <div>
-                            <label for="address" class="block text-sm font-medium text-gray-800">Address</label>
-                            <textarea id="address" name="address" rows="3"
-                                class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-black focus:border-black">{{user.address}}</textarea>
-                        </div>
-                    </div>
-
-                    <!-- Save Changes Button -->
-                    <div class="text-right mt-8">
-                        <button type="submit"
-                            class="bg-black text-white px-8 py-3 rounded-md transition hover:bg-gray-800">Save
-                            Changes</button>
+                    <div>
+                        <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                        <textarea id="address" name="address" rows="3" 
+                            class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300">{{user.address}}</textarea>
                     </div>
                 </div>
+            </div>
+
+            <!-- Save Changes -->
+            <div class="text-right">
+                <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg transition hover:bg-blue-500">
+                    Save Changes
+                </button>
             </div>
         </form>
     </div>
 </section>
 
+{{> footer}}
 
 <script>
     const uploadButton = document.getElementById('avatarInput');
