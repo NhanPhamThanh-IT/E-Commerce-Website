@@ -1,4 +1,12 @@
-const Order = require('../../models/orderModel'); 
+const Order = require('../../models/orderModel');
+
+const paginate = async (model, query = {}, currentPage = 1, itemsPerPage = 5) => {
+    const skip = (currentPage - 1) * itemsPerPage;
+    const orders = await model.find(query).lean().skip(skip).limit(itemsPerPage);
+    const totalItems = await model.countDocuments(query);
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    return { orders, totalItems, totalPages, currentPage };
+};
 
 class OrderService {
     static async getAll(filters = {}) {
@@ -11,20 +19,12 @@ class OrderService {
 
     static async search(field, value, currentPage = 1, itemsPerPage = 5) {
         const query = {};
-        const skip = (currentPage - 1) * itemsPerPage;
         query[field] = { $regex: value, $options: 'i' };
-        const Orders = await Order.find(query).lean().skip(skip).limit(itemsPerPage);
-        const totalItems = await Order.countDocuments(query);
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        return { Orders, totalItems, totalPages, currentPage };
+        return await paginate(Order, query, currentPage, itemsPerPage);
     }
 
     static async getAllWithPagination(currentPage = 1, itemsPerPage = 5) {
-        const skip = (currentPage - 1) * itemsPerPage;
-        const Orders = await Order.find().lean().skip(skip).limit(itemsPerPage);
-        const totalItems = await Order.countDocuments();
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        return { Orders, totalItems, totalPages, currentPage };
+        return await paginate(Order, {}, currentPage, itemsPerPage);
     }
 
     static async deleteById(id) {
@@ -35,8 +35,16 @@ class OrderService {
         return await Order.countDocuments(filters);
     }
 
-    static async searchOrder(query) {
-        return await Order.findById(query).lean();
+    static async searchOrders(field, query, currentPage = 1, itemsPerPage = 5) {
+        const allowedFields = ['user_id', 'date', 'total_amount'];
+
+        if (!allowedFields.includes(field)) {
+            throw new Error(`Invalid field. Allowed fields are: ${allowedFields.join(', ')}`);
+        }
+        const filter = {
+            [field]: { $regex: query, $options: 'i' }
+        };
+        return await paginate(Order, filter, currentPage, itemsPerPage);
     }
 }
 

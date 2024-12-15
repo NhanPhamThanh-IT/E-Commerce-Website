@@ -7,7 +7,6 @@ async function fetchAndRenderOrders(url) {
     try {
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data);
         ordersContainer.innerHTML = '';
 
         if (response.ok && data.Orders && data.Orders.length > 0) {
