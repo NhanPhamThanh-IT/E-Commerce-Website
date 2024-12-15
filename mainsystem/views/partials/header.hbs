@@ -5,19 +5,9 @@
 
     <div class="flex justify-between items-center w-full">
         <div class="flex items-center justify-start space-x-8 ml-10 py-4">
-            <a href="/" class="text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Home</a>
-            <div class="relative text-lg">
-                <label for="category-filter" class="sr-only">Category</label>
-                <select id="category-filter"
-                    class="block m-0 focus:outline-none sm:text-sm font-semibold text-gray-600 hover:text-gray-800 transition duration-200">
-                    <option value="">All Categories</option>
-                    {{#each categories}}
-                    <option value="{{this}}">{{this}}</option>
-                    {{/each}}
-                </select>
-            </div>
+            <a href="/" class="hover:scale-150 no-underline hover:no-underline text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Home</a>
             <a href="/cart"
-                class="text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Cart</a>
+                class="hover:scale-150 no-underline hover:no-underline text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Cart</a>
             <div class="relative flex items-center">
                 <i class="fa fa-search absolute left-3 top-2.5 text-gray-400"></i>
                 <input id="search-input" type="text" placeholder="Search here"
@@ -26,8 +16,22 @@
         </div>
 
         <div class="flex items-center space-x-10 mr-3">
+            <p class="text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Category</p>
+            <div class="relative text-lg">
+                <label for="category-filter" class="sr-only">Category</label>
+                <select id="category-filter"
+                    class="block m-0 focus:outline-none text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">
+                    <option value="">All Categories</option>
+                    {{#each categories}}
+                    <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-10 mr-3">
             <a href="/profile"
-                class="text-lg text-gray-600 hover:text-gray-800 no-underline hover:no-underline">Profile</a>
+                class="hover:scale-150 no-underline hover:no-underline text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Profile</a>
             <form action="/logout" method="post" class="mb-0">
                 <button class="text-lg bg-red-500 rounded-lg text-white p-2">Logout</button>
             </form>
