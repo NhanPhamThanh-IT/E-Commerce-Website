@@ -3,48 +3,50 @@
     <div class="flex">
         {{> aside }}
         <main class="flex-1 overflow-y-auto bg-gray-100">
-            {{> admin/navbar action="/admin/orders/search" title="Order List" content="View and manage your recent orders effortlessly"}}
-
-            <div class="bg-white border border-black rounded-xl shadow-md p-6">
-                <table class="table-auto w-full text-left border border-gray-300 rounded-xl">
-                    <thead class="bg-black text-white">
-                        <tr class="">
-                            <th class="px-4 py-2 border border-gray-300 text-center">User ID</th>
-                            <th class="px-4 py-2 border border-gray-300 text-center">Date</th>
-                            <th class="px-4 py-2 border border-gray-300 text-center">Total Amount</th>
-                            <th class="px-4 py-2 border border-gray-300 text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="orders-container" class="divide-y divide-gray-200">
-                        {{#each orders}}
-                        <tr>
-                            <td class="px-4 py-2 border border-gray-300 text-center">{{this.user_id}}</td>
-                            <td class="px-4 py-2 border border-gray-300 text-center">{{this.date}}</td>
-                            <td class="px-4 py-2 border border-gray-300 text-center">${{this.total_amount}}</td>
-                            <td class="px-4 py-2 border border-gray-300">
-                                <div class="flex justify-center items-center space-x-2">
-                                    <form class="my-0 mb-0">
-                                        <input type="hidden" name="_id" value="{{this._id}}" class="mx-auto" />
-                                        <button type="button" onclick="openViewModal('{{this._id}}')"
-                                            class="view-button bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600 transition duration-800 font-bold mx-auto">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </form>
-                                    <form class="my-0 mb-0">
-                                        <input type="hidden" name="_id" value="{{this._id}}" class="mx-auto" />
-                                        <button type="button" onclick="openDeleteModal('{{this._id}}')"
-                                            class="delete-button bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition duration-800 font-bold mx-auto">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
+            {{> admin/navbar action="/admin/orders/search" title="Order List" content="View and manage your recent
+            orders effortlessly"}}
+            <div class="px-4">
+                <div class="bg-white border border-black rounded-xl shadow-md p-6">
+                    <table class="table-auto w-full text-left border border-gray-300 rounded-xl">
+                        <thead class="bg-black text-white">
+                            <tr class="">
+                                <th class="px-4 py-2 border border-gray-300 text-center">User ID</th>
+                                <th class="px-4 py-2 border border-gray-300 text-center">Date</th>
+                                <th class="px-4 py-2 border border-gray-300 text-center">Total Amount</th>
+                                <th class="px-4 py-2 border border-gray-300 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-container" class="divide-y divide-gray-200">
+                            {{#each orders}}
+                            <tr>
+                                <td class="px-4 py-2 border border-gray-300 text-center">{{this.user_id}}</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center">{{this.date}}</td>
+                                <td class="px-4 py-2 border border-gray-300 text-center">${{this.total_amount}}</td>
+                                <td class="px-4 py-2 border border-gray-300">
+                                    <div class="flex justify-center items-center space-x-2">
+                                        <form class="my-0 mb-0">
+                                            <input type="hidden" name="_id" value="{{this._id}}" class="mx-auto" />
+                                            <button type="button" onclick="openViewModal('{{this._id}}')"
+                                                class="view-button bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600 transition duration-800 font-bold mx-auto">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </form>
+                                        <form class="my-0 mb-0">
+                                            <input type="hidden" name="_id" value="{{this._id}}" class="mx-auto" />
+                                            <button type="button" onclick="openDeleteModal('{{this._id}}')"
+                                                class="delete-button bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition duration-800 font-bold mx-auto">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="pagination-container" class="flex justify-center mt-4"></div>
             </div>
-            <div id="pagination-container" class="flex justify-center mt-4"></div>
         </main>
     </div>
     <div>

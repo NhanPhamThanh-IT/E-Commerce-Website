@@ -7,7 +7,7 @@ exports.index = async (req, res, next) => {
         const itemsPerPage = parseInt(limit) || 5;
         const { orders, totalItems, totalPages, currentPage } = await OrderService.getAllWithPagination(currentpage, itemsPerPage);
         return res.render('admin/orders/index', {
-            orders,
+            Orders: orders,
             totalItems,
             currentPage: page,
             totalPages,
@@ -69,7 +69,7 @@ exports.searchOrders = async (req, res) => {
         const currentPage = parseInt(page) || 1;
         const itemsPerPage = parseInt(limit) || 5;
         const result = await OrderService.searchOrders(field, query, currentPage, itemsPerPage);
-        res.json({ Orders: result.orders, totalItems: result.totalItems, totalPages: result.totalPages, currentPage: result.currentPage });
+        res.json({ orders: result.orders, totalItems: result.totalItems, totalPages: result.totalPages, currentPage: result.currentPage });
     } catch (error) {
         console.error('Error in searchOrders:', error.message);
         res.status(500).json({

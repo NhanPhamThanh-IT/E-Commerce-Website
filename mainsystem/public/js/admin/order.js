@@ -7,10 +7,10 @@ async function fetchAndRenderOrders(url) {
     try {
         const response = await fetch(url);
         const data = await response.json();
+        console.log(data)
         ordersContainer.innerHTML = '';
-
-        if (response.ok && data.Orders && data.Orders.length > 0) {
-            data.Orders.forEach(order => {
+        if (response.ok && data.orders && data.orders.length > 0) {
+            data.orders.forEach(order => {
                 const orderRow = document.createElement('tr');
                 orderRow.innerHTML = `
                     <td class="px-4 py-2 border border-gray-300 text-center">${order.user_id}</td>
@@ -85,3 +85,81 @@ document.getElementById('search-form').addEventListener('submit', function (even
     const url = `${action}?field=${field}&query=${encodeURIComponent(query)}&page=${page}`;
     fetchAndRenderOrders(url);
 });
+
+////////////////////////////////////////////
+//      View and delete order modals      //
+////////////////////////////////////////////
+
+async function openViewModal(orderId) {
+    const modal = document.getElementById('viewModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    try {
+        const response = await fetch(`/admin/orders/info/${orderId}`);
+        if (!response.ok)
+            throw new Error('Failed to fetch order details');
+        const orderData = await response.json();
+        document.getElementById('view-user-id').textContent = orderData.user_id || 'N/A';
+        document.getElementById('view-date').textContent = orderData.date || 'N/A';
+        document.getElementById('view-total-amount').textContent = `$${orderData.total_amount || 0}`;
+        const itemsList = document.getElementById('view-items');
+        itemsList.innerHTML = '';
+        if (orderData.items && orderData.items.length > 0) {
+            orderData.items.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${item.name} (x${item.quantity})`;
+                itemsList.appendChild(listItem);
+            });
+        } else {
+            const listItem = document.createElement('li');
+            listItem.textContent = 'No items found';
+            itemsList.appendChild(listItem);
+        }
+    } catch (error) {
+        console.error('Error fetching order details:', error);
+        alert('Failed to load order details. Please try again.');
+        closeViewModal();
+    }
+}
+
+function closeViewModal() {
+    const modal = document.getElementById('viewModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+function openDeleteModal(orderId) {
+    const modal = document.getElementById('deleteModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+    confirmDeleteButton.onclick = () => handleDeleteOrder(orderId);
+}
+
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+async function handleDeleteOrder(orderId) {
+    closeDeleteModal();
+    try {
+        const response = await fetch(`/admin/orders/delete/${orderId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ orderId }),
+        });
+        if (response.ok) {
+            alert('Order deleted successfully');
+            fetchAndRenderOrders('/admin/orders/api?page=1');
+        } else {
+            alert('Failed to delete the order. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error deleting order:', error);
+        alert('An error occurred. Please try again.');
+    }
+}
