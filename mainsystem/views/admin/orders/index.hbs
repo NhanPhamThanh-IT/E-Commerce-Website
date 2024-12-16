@@ -11,24 +11,31 @@
                 <option value="date">Date</option>
             </select>
             '}}
+
             <div class="px-4">
-                <div class="bg-white border border-black rounded-xl shadow-md p-6">
-                    <table class="table-auto w-full text-left border border-gray-300 rounded-xl">
+                <div class="bg-black rounded-xl shadow-md p-6">
+                    <table class="table-auto bg-white w-full text-left rounded-xl">
                         <thead class="bg-black text-white">
-                            <tr class="">
-                                <th class="px-4 py-2 border border-gray-300 text-center">User ID</th>
-                                <th class="px-4 py-2 border border-gray-300 text-center">Date</th>
-                                <th class="px-4 py-2 border border-gray-300 text-center">Total Amount</th>
-                                <th class="px-4 py-2 border border-gray-300 text-center">Actions</th>
+                            <tr class="bg-[#f5f5f4] text-gray-600" class="rounded-t-xl">
+                                <th class="px-6 py-4 font-bold text-lg text-center w-32 rounded-t-xl">
+                                    User ID
+                                </th>
+                                <th class="px-6 py-4 font-bold text-lg text-center rounded-t-xl">Date
+                                </th>
+                                <th class="px-6 py-4 font-bold text-lg text-center rounded-t-xl">Total Amount
+                                </th>
+                                <th class="px-6 py-4 font-bold text-lg text-center w-48 rounded-t-xl">
+                                    Actions
+                                </th>
                             </tr>
                         </thead>
-                        <tbody id="orders-container" class="divide-y divide-gray-200">
+                        <tbody id="orders-container" class="divide-y divide-gray-200 rounded-b-xl">
                             {{#each orders}}
                             <tr>
-                                <td class="px-4 py-2 border border-gray-300 text-center">{{this.user_id}}</td>
-                                <td class="px-4 py-2 border border-gray-300 text-center">{{this.date}}</td>
-                                <td class="px-4 py-2 border border-gray-300 text-center">${{this.total_amount}}</td>
-                                <td class="px-4 py-2 border border-gray-300">
+                                <td class="px-4 py-3 text-center">{{this.user_id}}</td>
+                                <td class="px-4 py-3 text-center">{{this.date}}</td>
+                                <td class="px-4 py-3 text-center">${{this.total_amount}}</td>
+                                <td class="px-4 py-3">
                                     <div class="flex justify-center items-center space-x-2">
                                         <form class="my-0 mb-0">
                                             <input type="hidden" name="_id" value="{{this._id}}" class="mx-auto" />
@@ -51,7 +58,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div id="pagination-container" class="flex justify-center mt-4"></div>
+                <div id="pagination-container" class="flex justify-center my-4"></div>
             </div>
         </main>
     </div>

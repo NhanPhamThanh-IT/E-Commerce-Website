@@ -13,10 +13,10 @@ async function fetchAndRenderOrders(url) {
             data.orders.forEach(order => {
                 const orderRow = document.createElement('tr');
                 orderRow.innerHTML = `
-                    <td class="px-4 py-2 border border-gray-300 text-center">${order.user_id}</td>
-                    <td class="px-4 py-2 border border-gray-300 text-center">${order.date}</td>
-                    <td class="px-4 py-2 border border-gray-300 text-center">${order.total_amount}</td>
-                    <td class="px-4 py-2 border border-gray-300">
+                    <td class="px-4 py-3 text-center">${order.user_id}</td>
+                    <td class="px-4 py-3 text-center">${order.date}</td>
+                    <td class="px-4 py-3 text-center">${order.total_amount}</td>
+                    <td class="px-4 py-3">
                         <div class="flex justify-center items-center space-x-2">
                             <form class="my-0 mb-0">
                                 <input type="hidden" name="_id" value="${order._id}" class="mx-auto"/>
