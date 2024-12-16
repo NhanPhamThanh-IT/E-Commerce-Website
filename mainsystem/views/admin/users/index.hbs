@@ -4,57 +4,62 @@
 
         <main class="flex-1 overflow-y-auto bg-gray-100 relative h-full">
 
-            <div id="loading"
-                class="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 bg-opacity-75 z-50 hidden">
-                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
-                <div class="mt-4 text-center text-gray-700 font-semibold">Loading...</div>
-            </div>
-            
-            {{> admin/navbar title="Users List" content="Explore our curated list of users tailored just for you"}}
+            {{> admin/navbar title="Users List" content="Explore our curated list of users tailored just for you" options=""}}
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6 text-white">
-                {{> admin/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
-                        title="Total Users" content=totalUsers bg="blue-400" hover="blue-400"}}
-                {{> admin/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
-                        title="Actived Users" content=totalActiveUsers bg="green-400" hover="green-400"}}
-                {{> admin/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
-                        title="Inactived Users" content=totalInactiveUsers bg="orange-400" hover="orange-400"}}
-                {{> admin/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
-                        title="Inactived Users" content=totalInactiveUsers bg="blue-500" hover="blue-500"}}
-            </div>
+            <div class="px-4">
+                <div id="loading"
+                    class="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 bg-opacity-75 z-50 hidden">
+                    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+                    <div class="mt-4 text-center text-gray-700 font-semibold">Loading...</div>
+                </div>
 
-            <div
-                class="bg-black text-white rounded-xl shadow-2xl p-8 mb-4 backdrop-blur-lg hover:rounded-xl">
-                <table class="w-full text-left bg-white shadow-lg rounded-xl">
-                    <thead>
-                        <tr style="background-color:#f5f5f4" class="rounded-t-xl">
-                            <th class="px-6 py-4 font-bold text-lg text-gray-600 text-center w-32 rounded-t-xl">Avatar
-                            </th>
-                            <th class="px-6 py-4 font-bold text-lg text-gray-600 text-center rounded-t-xl">Full Name
-                            </th>
-                            <th class="px-6 py-4 font-bold text-lg text-gray-600 text-center rounded-t-xl">Email</th>
-                            <th class="px-6 py-4 font-bold text-lg text-gray-600 text-center w-48 rounded-t-xl">Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="user-list" class="rounded-b-xl">
-                    </tbody>
-                </table>
-                <div id="pagination-controls" class="flex items-center mt-10 gap-4">
-                    <button id="prev"
-                        class="w-auto font-bold px-4 py-2 bg-gray-600 text-white rounded-lg transition duration-300 hover:bg-gray-900 {{#if (lt currentPage totalPages)}}{{else}}bg-gray-300 cursor-not-allowed text-transparent{{/if}}">
-                        Previous
-                    </button>
-                    <span id="current-page"
-                        class="mx-auto w-auto font-bold px-10 py-2 bg-gray-600 text-white rounded-lg transition duration-300">
-                        Page 1
-                    </span>
-                    <button id="next"
-                        class="w-auto font-bold px-10 py-2 bg-gray-600 text-white rounded-lg transition duration-300 hover:bg-gray-900 {{#if (lt currentPage totalPages)}}{{else}}bg-gray-300 cursor-not-allowed text-transparent{{/if}}">
-                        Next
-                    </button>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6 text-white">
+                    {{> admin/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
+                    title="Total Users" content=totalUsers bg="blue-400" hover="blue-400"}}
+                    {{> admin/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
+                    title="Actived Users" content=totalActiveUsers bg="green-400" hover="green-400"}}
+                    {{> admin/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
+                    title="Inactived Users" content=totalInactiveUsers bg="orange-400" hover="orange-400"}}
+                    {{> admin/card href='/' icon='<i class="bi bi-person-fill fs-2"></i>'
+                    title="Inactived Users" content=totalInactiveUsers bg="blue-500" hover="blue-500"}}
+                </div>
+
+                <div class="bg-black text-white rounded-xl shadow-2xl p-8 mb-4 backdrop-blur-lg hover:rounded-xl">
+                    <table class="w-full text-left bg-white shadow-lg rounded-xl">
+                        <thead>
+                            <tr style="background-color:#f5f5f4" class="rounded-t-xl">
+                                <th class="px-6 py-4 font-bold text-lg text-gray-600 text-center w-32 rounded-t-xl">
+                                    Avatar
+                                </th>
+                                <th class="px-6 py-4 font-bold text-lg text-gray-600 text-center rounded-t-xl">Full Name
+                                </th>
+                                <th class="px-6 py-4 font-bold text-lg text-gray-600 text-center rounded-t-xl">Email
+                                </th>
+                                <th class="px-6 py-4 font-bold text-lg text-gray-600 text-center w-48 rounded-t-xl">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-list" class="rounded-b-xl">
+                        </tbody>
+                    </table>
+                    <div id="pagination-controls" class="flex items-center mt-10 gap-4">
+                        <button id="prev"
+                            class="w-auto font-bold px-4 py-2 bg-gray-600 text-white rounded-lg transition duration-300 hover:bg-gray-900 {{#if (lt currentPage totalPages)}}{{else}}bg-gray-300 cursor-not-allowed text-transparent{{/if}}">
+                            Previous
+                        </button>
+                        <span id="current-page"
+                            class="mx-auto w-auto font-bold px-10 py-2 bg-gray-600 text-white rounded-lg transition duration-300">
+                            Page 1
+                        </span>
+                        <button id="next"
+                            class="w-auto font-bold px-10 py-2 bg-gray-600 text-white rounded-lg transition duration-300 hover:bg-gray-900 {{#if (lt currentPage totalPages)}}{{else}}bg-gray-300 cursor-not-allowed text-transparent{{/if}}">
+                            Next
+                        </button>
+                    </div>
                 </div>
             </div>
+
         </main>
 
         <div id="deleteModal"

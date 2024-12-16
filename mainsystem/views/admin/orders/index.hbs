@@ -4,7 +4,13 @@
         {{> aside }}
         <main class="flex-1 overflow-y-auto bg-gray-100">
             {{> admin/navbar action="/admin/orders/search" title="Order List" content="View and manage your recent
-            orders effortlessly"}}
+            orders effortlessly"
+            options='<select name="field"
+                class="pl-3 pr-2 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 hover:border-blue-400 transition">
+                <option value="user_id">User ID</option>
+                <option value="date">Date</option>
+            </select>
+            '}}
             <div class="px-4">
                 <div class="bg-white border border-black rounded-xl shadow-md p-6">
                     <table class="table-auto w-full text-left border border-gray-300 rounded-xl">
