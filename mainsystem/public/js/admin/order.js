@@ -48,20 +48,59 @@ async function fetchAndRenderOrders(url) {
 function renderPagination(totalPages, currentPage, url) {
     const paginationContainer = document.getElementById('pagination-container');
     paginationContainer.innerHTML = '';
-    for (let i = 1; i <= totalPages; i++) {
-        const button = document.createElement('button');
-        button.className = `bg-neutral-500 hover:bg-black text-white font-bold py-2 px-4 rounded mx-1 ${i === currentPage ? 'opacity-50 cursor-not-allowed' : ''}`;
-        button.textContent = i;
-        button.disabled = i === currentPage;
-        button.addEventListener('click', () => {
+
+    paginationContainer.className = 'flex justify-between items-center my-4';
+
+    const prevButton = document.createElement('button');
+    prevButton.className = `bg-neutral-500 hover:bg-black text-white font-bold py-2 px-4 rounded mx-1 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`;
+    prevButton.textContent = 'Previous';
+    prevButton.disabled = currentPage === 1;
+    prevButton.addEventListener('click', () => {
+        if (currentPage > 1) {
             const baseUrl = url.split('?')[0];
             const queryParams = new URLSearchParams(url.split('?')[1]);
-            queryParams.set('page', i);
+            queryParams.set('page', currentPage - 1);
             fetchAndRenderOrders(`${baseUrl}?${queryParams.toString()}`);
-        });
-        paginationContainer.appendChild(button);
+        }
+    });
+    paginationContainer.appendChild(prevButton);
+
+    const pageDropdown = document.createElement('select');
+    pageDropdown.className = 'bg-neutral-500 text-white font-bold py-2 px-4 rounded mx-1 appearance-none';
+    for (let i = 1; i <= totalPages; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        if (i === currentPage) {
+            option.selected = true;
+        }
+        pageDropdown.appendChild(option);
     }
+    
+    pageDropdown.addEventListener('change', (e) => {
+        const selectedPage = parseInt(e.target.value);
+        const baseUrl = url.split('?')[0];
+        const queryParams = new URLSearchParams(url.split('?')[1]);
+        queryParams.set('page', selectedPage);
+        fetchAndRenderOrders(`${baseUrl}?${queryParams.toString()}`);
+    });
+    paginationContainer.appendChild(pageDropdown);
+
+    const nextButton = document.createElement('button');
+    nextButton.className = `bg-neutral-500 hover:bg-black text-white font-bold py-2 px-4 rounded mx-1 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`;
+    nextButton.textContent = 'Next';
+    nextButton.disabled = currentPage === totalPages;
+    nextButton.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+            const baseUrl = url.split('?')[0];
+            const queryParams = new URLSearchParams(url.split('?')[1]);
+            queryParams.set('page', currentPage + 1);
+            fetchAndRenderOrders(`${baseUrl}?${queryParams.toString()}`);
+        }
+    });
+    paginationContainer.appendChild(nextButton);
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchAndRenderOrders('/admin/orders/api?page=1');
