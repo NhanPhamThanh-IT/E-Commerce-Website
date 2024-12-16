@@ -96,7 +96,7 @@ router.post('/upload-avatar', upload.single('avatar'), (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' });
     }
-    const avatarUrl = `/images/${req.file.filename}`;
+    const avatarUrl = `/user_images/${req.file.filename}`;
     res.status(200).json({ message: 'Avatar uploaded successfully', avatarUrl });
 });
 

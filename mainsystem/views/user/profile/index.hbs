@@ -14,7 +14,7 @@
                 <!-- Avatar Section -->
                 <div class="col-span-1 flex flex-col items-center bg-gray-100 p-6 rounded-lg shadow-md">
                     <div class="w-32 h-32 rounded-full overflow-hidden shadow-md mb-4">
-                        <img id="avatar" referrerPolicy="no-referrer" src="{{#if user.avatar}}/images/{{user.avatar}}{{else if user.image}}{{user.image}}{{else}}/images/profile.png{{/if}}" 
+                        <img id="avatar" referrerPolicy="no-referrer" src="{{#if user.avatar}}/user_images/{{user.avatar}}{{else if user.image}}{{user.image}}{{else}}/user_images/profile.png{{/if}}" 
                             alt="User Avatar" class="w-full h-full object-cover">
                     </div>
                     <label for="avatarInput" class="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded transition hover:bg-blue-500">Upload Avatar</label>
