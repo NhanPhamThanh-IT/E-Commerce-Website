@@ -1,82 +1,84 @@
-const Product = require('../../models/productModel');
+const ProductService = require('../../services/admin/productService');
 
-exports.getProducts = async (req, res) => {
+exports.index = async (req, res, next) => {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = 6;
-        const skip = (page - 1) * limit;
-        const totalProducts = await Product.countDocuments();
-        const products = await Product.find()
-            .lean()
-            .skip(skip)
-            .limit(limit)
-            .sort({ createdAt: -1 });
-        res.render('admin/products/index', {
-            products,
+        const { page, limit } = req.query;
+        const currentpage = parseInt(page) || 1;
+        const itemsPerPage = parseInt(limit) || 5;
+        const { products, totalItems, totalPages, currentPage } = await ProductService.getAllWithPagination(currentpage, itemsPerPage);
+        return res.render('admin/products/index', {
+            Products: products,
+            totalItems,
             currentPage: page,
-            totalPages: Math.ceil(totalProducts / limit),
+            totalPages,
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
+        next(error);
     }
 };
 
-exports.getProductDetails = async (req, res) => {
+exports.getAllProducts = async (req, res, next) => {
     try {
-        const productId = req.params.id;
-        const product = await Product.findById(productId).lean();
-        if (!product) {
-            return res.status(404).send('Product not found');
-        }
-        res.render('admin/products/details', { product });
+        const { page, limit } = req.query;
+        const currentPage = parseInt(page) || 1;
+        const itemsPerPage = parseInt(limit) || 5;
+        const result = await ProductService.getAllWithPagination(currentPage, itemsPerPage);
+        res.status(200).json(result);
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
+        next(error);
     }
 };
 
-exports.editProduct = async (req, res) => {
+exports.getProductInfo = async (req, res, next) => {
     try {
-        const productId = req.params.id;
+        const { id } = req.params;
+        const product = await ProductService.getById(id);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        return res.status(200).json(product);
+    } catch (error) {
+        console.error('Error getting product info:', error);
+        next(error);
+    }
+};
+
+exports.editProduct = async (req, res, next) => {
+    try {
+        const { id } = req.params;
         const { title, category, description, price, stock_quantity } = req.body;
         if (!title || !category || !description || !price || !stock_quantity) {
-            return res.status(400).send('All fields are required');
+            return res.status(400).json({ message: 'All fields are required' });
         }
-        if (price < 0 || stock_quantity < 0) {
-            return res.status(400).send('Price and stock quantity cannot be negative');
+
+        const updatedProduct = await ProductService.updateById(id, { title, category, description, price, stock_quantity });
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
         }
-        const product = await Product.findByIdAndUpdate(
-            productId,
-            { title, category, description, price, stock_quantity },
-            { new: true, runValidators: true }
-        ).lean();
-        if (!product) {
-            return res.status(404).send('Product not found');
-        }
-        res.redirect(`/admin/products/${productId}`);
+
+        res.redirect(`/admin/products/${id}`);
     } catch (error) {
-        console.error('Error updating product:', error);
-        if (error.name === 'ValidationError') {
-            return res.status(400).send('Validation Error: ' + error.message);
-        }
-        res.status(500).send('Internal Server Error');
+        next(error);
     }
 };
 
-exports.deleteProduct = async (req, res) => {
-    const { _action } = req.body;
-    const { id } = req.params;
+exports.deleteProduct = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { _action } = req.body;
 
-    if (_action === 'delete') {
-        try {
-            await Product.findByIdAndDelete(id);
-            res.redirect('/admin/products');
-        } catch (err) {
-            console.error(err);
-            res.status(500).send('Error deleting product');
+        if (_action !== 'delete') {
+            return res.status(400).json({ message: 'Invalid action' });
         }
-    } else {
-        res.status(400).send('Invalid action');
+
+        const deletedProduct = await ProductService.deleteById(id);
+        if (!deletedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        res.status(200).json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        next(error);
     }
 };
