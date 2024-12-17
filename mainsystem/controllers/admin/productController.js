@@ -86,3 +86,20 @@ exports.searchProducts = async (req, res) => {
         });
     }
 };
+
+exports.addProduct = async (req, res, next) => {
+    try {
+        const { title, category, description, price, stock_quantity, brand, model, color, discount, image } = req.body;
+        if (!title || !category || !description || !price || !stock_quantity || !brand || !model || !color || !discount || !image) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+        const newProduct = await ProductService.addProduct({ title, category, description, price, stock_quantity, brand, model, color, discount, image });
+        if (!newProduct) {
+            return res.status(500).json({ message: 'An error occurred while adding the product' });
+        }
+        return res.status(201).json(newProduct);
+    } catch (error) {
+        console.error('Error adding product:', error);
+        next(error);
+    }
+}

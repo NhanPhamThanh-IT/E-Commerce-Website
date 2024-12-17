@@ -263,3 +263,37 @@ async function handleDeleteProduct(productId) {
         alert('An error occurred. Please try again.');
     }
 }
+
+document.getElementById("addProductForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const formObject = {};
+    formData.forEach((value, key) => {
+        formObject[key] = value;
+    });
+    try {
+        const response = await fetch("/admin/products/add", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formObject),
+        });
+        if (response.ok) {
+            const result = await response.json();
+            alert("Product added successfully!");
+            console.log(result);
+            closeAddProductModal();
+        } else {
+            alert("Failed to add product.");
+            console.error("Error:", response.statusText);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An unexpected error occurred.");
+    }
+});
+
+function closeAddProductModal() {
+    document.getElementById('addProductModal').classList.add('hidden');
+}

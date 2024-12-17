@@ -52,6 +52,10 @@ class ProductService {
         };
         return await paginate(Product, filter, currentPage, itemsPerPage);
     }
+
+    static async addProduct(productData) {
+        return await Product.create(productData);
+    }
 }
 
 module.exports = ProductService;
