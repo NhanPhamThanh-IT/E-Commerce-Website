@@ -175,37 +175,6 @@ function closeViewModal() {
     reviewButton.onclick = () => openReviewModal();
 }
 
-function openDeleteModal(productId) {
-    const modal = document.getElementById('deleteModal');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-    const confirmDeleteButton = document.getElementById('confirmDeleteButton');
-    confirmDeleteButton.onclick = () => handleDeleteProduct(productId);
-}
-
-function closeDeleteModal() {
-    const modal = document.getElementById('deleteModal');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-}
-
-async function handleDeleteProduct(productId) {
-    closeDeleteModal();
-    try {
-        const response = await fetch(`/admin/products/delete/${productId}`, {
-            method: 'DELETE',
-        });
-        if (response.ok) {
-            alert('Product deleted successfully');
-            fetchAndRenderProducts('/admin/products/api?page=1');
-        } else {
-            alert('Failed to delete product.');
-        }
-    } catch (error) {
-        console.error('Error deleting product:', error);
-    }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     fetchAndRenderProducts('/admin/products/api?page=1');
 });
@@ -258,3 +227,39 @@ document.getElementById('search-form').addEventListener('submit', function (even
     const url = `${action}?field=${field}&query=${encodeURIComponent(query)}&page=${page}`;
     fetchAndRenderProducts(url);
 });
+
+function openDeleteModal(productId) {
+    const modal = document.getElementById('deleteModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+    confirmDeleteButton.onclick = () => handleDeleteProduct(productId);
+}
+
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+async function handleDeleteProduct(productId) {
+    closeDeleteModal();
+    try {
+        const response = await fetch(`/admin/products/delete/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ productId }),
+        });
+        if (response.ok) {
+            alert('Product deleted successfully');
+            fetchAndRenderProducts('/admin/products/api?page=1');
+        } else {
+            alert('Failed to delete the product. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        alert('An error occurred. Please try again.');
+    }
+}
