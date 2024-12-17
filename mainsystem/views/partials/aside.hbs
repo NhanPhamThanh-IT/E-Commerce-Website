@@ -1,9 +1,9 @@
 <aside class="w-64 bg-white text-black flex border-slate-400 border-r-2 flex-col h-screen sticky top-0">
     <div class="py-3 px-3 space-y-6 rounded-t-lg mb-20">
         <div
-            class="flex space-x-4 items-center py-2 border justify-center border-slate-400 bg-white shadow-md rounded-lg">
+            class="flex space-x-4 items-center py-2 border-2 border-black justify-center border-slate-400 bg-white shadow-md rounded-xl">
             <img src="/system_images/Logo.png" alt="Logo" class="w-16 h-auto">
-            <h1 class="font-bold text-slate-600">TrippleN Shop</h1>
+            <h1 class="font-bold text-black" style="-webkit-text-stroke: 1px #f3d2c3;">TrippleN Shop</h1>
         </div>
 
         <p class="font-semibold mt-5 text-slate-600 text-base">Statistics</p>
@@ -80,12 +80,12 @@
         const pageName = item.dataset.page;
         if (currentPage.includes(pageName)) {
             item.style.backgroundColor = "black";
-            item.style.color = "white";
+            item.style.color = "#f3d2c3";
         }
     });
 
     if (currentPage === 'admin') {
         menuItems[0].style.backgroundColor = "black";
-        menuItems[0].style.color = "white";
+        menuItems[0].style.color = "#f3d2c3";
     }
 </script>
