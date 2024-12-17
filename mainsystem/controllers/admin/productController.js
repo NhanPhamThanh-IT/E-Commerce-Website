@@ -37,19 +37,21 @@ exports.getProductInfo = async (req, res, next) => {
 exports.editProduct = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const { title, category, description, price, stock_quantity } = req.body;
-        if (!title || !category || !description || !price || !stock_quantity) {
+        const { title, category, description, price, stock_quantity, brand, model, color, discount, image } = req.body;
+        if (!title || !category || !description || !price || !stock_quantity || !brand || !model || !color || !discount || !image) {
             return res.status(400).json({ message: 'All fields are required' });
         }
-        const updatedProduct = await ProductService.updateById(id, { title, category, description, price, stock_quantity });
+        const updatedProduct = await ProductService.updateById(id, { title, category, description, price, stock_quantity, brand, model, color, discount, image });
         if (!updatedProduct) {
-            return res.status(404).json({ message: 'Product not found' });
+            return res.status(500).json({ message: 'An error occurred while updating the product' });
         }
-        res.redirect(`/admin/products/${id}`);
-    } catch (error) {
+        return res.status(200).json(updatedProduct);
+    }
+    catch (error) {
+        console.error('Error updating product:', error);
         next(error);
     }
-};
+}
 
 exports.deleteProduct = async (req, res, next) => {
     try {

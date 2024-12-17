@@ -149,7 +149,7 @@ async function openViewModal(productId) {
 
         document.getElementById('editButton').innerHTML = '';
         document.getElementById('editButton').innerHTML = `
-            <button type="button" onclick="handleEdit('${productId}')"
+            <button type="button" onclick="handleEdit('${product._id}')"
                 class="p-2 bg-teal-400 text-white rounded-lg hover:bg-teal-600 transition">
                 <i class="fas fa-pencil-alt"></i>
             </button>
@@ -326,6 +326,36 @@ async function handleEdit(productId) {
         closeEditProductModal();
     }
 }
+
+document.getElementById("editProductForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const formObject = {};
+    formData.forEach((value, key) => {
+        formObject[key] = value;
+    });
+    try {
+        const response = await fetch(this.action, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formObject),
+        });
+        if (response.ok) {
+            const result = await response.json();
+            alert("Product updated successfully!");
+            console.log(result);
+            closeEditProductModal();
+        } else {
+            alert("Failed to update product.");
+            console.error("Error:", response.statusText);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("An unexpected error occurred.");
+    }
+});
 
 function closeEditProductModal() {
     const modal = document.getElementById('editProductModal');
