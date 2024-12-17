@@ -19,10 +19,6 @@ const paginate = async (model, query = {}, currentPage = 1, itemsPerPage = 5) =>
 };
 
 class OrderService {
-    static async getAll(filters = {}) {
-        return await Order.find(filters).lean();
-    }
-
     static async getById(id) {
         return await Order.findById(id).lean();
     }

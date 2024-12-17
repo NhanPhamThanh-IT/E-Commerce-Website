@@ -2,8 +2,12 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../../controllers/admin/userController');
 
+// router.post('/delete', userController.delete);
+// router.post('/edit', userController.edit);
+router.get('/api', userController.getAllUsers);
+router.post('/delete/:id', userController.deleteUser);
+//router.post('/edit/:id', userController.editUser);
+router.get('/search', userController.searchUsers);
 router.get('/', userController.index);
-router.post('/delete', userController.delete);
-router.post('/edit', userController.edit);
 
 module.exports = router;
