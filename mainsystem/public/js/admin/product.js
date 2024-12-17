@@ -123,7 +123,7 @@ async function openViewModal(productId) {
     try {
         const response = await fetch(`/admin/products/info/${productId}`);
         const product = await response.json();
-        console.log(product);
+
         document.getElementById('view-title').textContent = product.title || 'N/A';
         document.getElementById('view-category').textContent = product.category || 'N/A';
         document.getElementById('view-desc').textContent = product.description || 'N/A';
@@ -146,6 +146,16 @@ async function openViewModal(productId) {
                 document.getElementById('review-container').appendChild(reviewCard);
             });
         }
+
+        document.getElementById('editButton').innerHTML = '';
+        document.getElementById('editButton').innerHTML = `
+            <button type="button" onclick="handleEdit()"
+                class="p-2 bg-teal-400 text-white rounded-lg hover:bg-teal-600 transition">
+                <a href="/admin/products/edit/${productId}" class="text-white">
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
+            </button>
+        `;
 
     } catch (error) {
         console.error('Error fetching product details:', error);
@@ -216,4 +226,16 @@ function closeReviewModal() {
     const reviewButton = document.getElementById('reviewButton');
     reviewButton.innerHTML = 'View <i class="fas fa-comment"></i>';
     reviewButton.onclick = () => openReviewModal();
+}
+
+// Open add modal
+
+function openAddProductModal() {
+    const modal = document.getElementById('addProductModal');
+    modal.classList.remove('hidden');
+}
+
+function closeAddProductModal() {
+    const modal = document.getElementById('addProductModal');
+    modal.classList.add('hidden');
 }
