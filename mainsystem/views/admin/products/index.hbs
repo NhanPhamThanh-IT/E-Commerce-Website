@@ -2,8 +2,22 @@
     <div class="flex">
         {{> aside }}
         <main class="flex-1 overflow-y-auto bg-gray-100">
-            {{> admin/navbar title="Product List" content="Browse through our curated list of products available for
-            you"}}
+            {{> admin/navbar 
+                title="Product List" 
+                content="Browse through our curated list of products available for you"
+                options='<select name="field"
+                class="pl-3 pr-2 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 hover:border-blue-400 transition">
+                    <option value="title">Title</option>
+                    <option value="brand">Brand</option>
+                    <option value="category">Category</option>
+                </select>'
+                action="/admin/products/search"
+            }}
+
+            <button type="button" onclick="openAddProductModal()">
+                Add New Product
+            </button>
+
             <div class="px-4">
                 <div class="bg-[#f3d2c3] rounded-xl shadow-md p-6">
                     <div id="products-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -41,30 +55,144 @@
 </div>
 
 <!-- View Modal -->
-<div id="viewModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-    <div class="bg-white rounded-lg shadow-lg w-96 p-6">
-        <h2 class="text-lg font-bold mb-4">Product Details</h2>
-        <div class="flex justify-between mb-4">
-            <p class="text-sm text-gray-600">Product Title:</p>
-            <p id="view-title" class="text-sm text-gray-800"></p>
+<div id="viewModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 space-x-4"
+    role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="bg-[#f3d2c3] rounded-xl shadow-lg w-full sm:w-96 p-6">
+        <div class="flex justify-between items-center mb-3">
+            <h2 id="modal-title" class="text-lg font-bold text-gray-600">Product Details</h2>
+            <div class="flex justify-end space-x-2 items-center">
+                <div id="editButton">
+                    {{!-- --}}
+                </div>
+                <button type="button" onclick="closeViewModal()"
+                    class="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
         </div>
-        <div class="flex justify-between mb-4">
-            <p class="text-sm text-gray-600">Category:</p>
-            <p id="view-category" class="text-sm text-gray-800"></p>
+        <div class="bg-white rounded-xl shadow-md py-2 px-3 border-2 border-slate-500">
+            <div class="flex justify-between mb-3">
+                <p class="text-sm text-gray-600">Product Title</p>
+                <p id="view-title" class="text-sm text-gray-800 font-semibold"></p>
+            </div>
+            <div class="flex justify-between mb-3">
+                <p class="text-sm text-gray-600">Category</p>
+                <p id="view-category" class="text-sm text-gray-800 font-semibold"></p>
+            </div>
+            <div class="flex justify-between mb-3 space-x-10">
+                <p class="text-sm text-gray-600">Description</p>
+                <p id="view-desc" class="text-sm text-gray-800 text-justify font-semibold"></p>
+            </div>
+            <div class="flex justify-between mb-3">
+                <p class="text-sm text-gray-600">Price (USD)</p>
+                <p id="view-price" class="text-sm text-gray-800 font-semibold"></p>
+            </div>
+            <div class="flex justify-between mb-3">
+                <p class="text-sm text-gray-600">Discount (%)</p>
+                <p id="view-discount" class="text-sm text-gray-800 font-semibold"></p>
+            </div>
+            <div class="flex justify-between mb-3">
+                <p class="text-sm text-gray-600">Stock Quantity</p>
+                <p id="view-stock" class="text-sm text-gray-800 font-semibold"></p>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="text-sm text-gray-600">Reviews</p>
+                <button id="reviewButton" type="button" onclick="openReviewModal()"
+                    class="px-2 py-1 text-white bg-sky-500 rounded-lg hover:bg-sky-700 transition">
+                    View <i class="fas fa-comment"></i>
+                </button>
+            </div>
         </div>
-        <div class="flex justify-between mb-4">
-            <p class="text-sm text-gray-600">Price:</p>
-            <p id="view-price" class="text-sm text-gray-800"></p>
+    </div>
+    <div id="reviewModal" class="bg-[#f3d2c3] rounded-xl shadow-lg p-6 hidden">
+        <h2 class="text-lg font-bold mb-4 text-gray-600">List of Reviews</h2>
+        <div id="review-container"
+            class="grid grid-cols-1 w-full sm:w-96 max-h-96 overflow-y-scroll space-y-2 scroll-smooth pl-2 pr-4 py-2">
+            <!-- Reviews will be dynamically rendered here -->
         </div>
-        <div class="flex justify-between mb-4">
-            <p class="text-sm text-gray-600">Stock Quantity:</p>
-            <p id="view-stock" class="text-sm text-gray-800"></p>
-        </div>
-        <div class="flex justify-end">
-            <button onclick="closeViewModal()"
-                class="px-4 py-2 text-gray-700 bg-gray-300 rounded-lg hover:bg-gray-400 transition">
-                Close
+    </div>
+</div>
+
+<!-- Add Modal -->
+<div id="addProductModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-[#f3d2c3] rounded-xl shadow-lg w-full max-w-screen-lg p-6">
+        <div class="flex justify-between items-center mb-2">
+            <h2 class="text-lg font-bold text-gray-700">Add New Product</h2>
+            <button type="button" onclick="closeAddProductModal()" class="text-gray-700 hover:text-red-500 transition">
+                <i class="fas fa-times text-xl"></i>
             </button>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-3 border-2 border-slate-500">
+            <form id="addProductForm" action="/admin/products/add" method="POST" enctype="multipart/form-data" class="mb-0">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-3">
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-600">Product Title</label>
+                        <input type="text" id="title" name="title"
+                            class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300"
+                            required>
+                    </div>
+                    <div>
+                        <label for="category" class="block text-sm font-medium text-gray-600">Category</label>
+                        <input type="text" id="category" name="category"
+                            class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300"
+                            required>
+                    </div>
+                    <div>
+                        <label for="price" class="block text-sm font-medium text-gray-600">Price (USD)</label>
+                        <input type="number" id="price" name="price" min="0"
+                            class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300"
+                            required>
+                    </div>
+                    <div>
+                        <label for="stock_quantity" class="block text-sm font-medium text-gray-600">Stock
+                            Quantity</label>
+                        <input type="number" id="stock_quantity" name="stock_quantity" min="0"
+                            class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300">
+                    </div>
+                    <div>
+                        <label for="brand" class="block text-sm font-medium text-gray-600">Brand</label>
+                        <input type="text" id="brand" name="brand"
+                            class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300">
+                    </div>
+                    <div>
+                        <label for="model" class="block text-sm font-medium text-gray-600">Model</label>
+                        <input type="text" id="model" name="model"
+                            class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300">
+                    </div>
+                    <div>
+                        <label for="color" class="block text-sm font-medium text-gray-600">Color</label>
+                        <input type="text" id="color" name="color"
+                            class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300">
+                    </div>
+                    <div>
+                        <label for="discount" class="block text-sm font-medium text-gray-600">Discount (%)</label>
+                        <input type="number" id="discount" name="discount" min="0" max="100" value="0"
+                            class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="block text-sm font-medium text-gray-600">Product Description</label>
+                    <textarea id="description" name="description" rows="3"
+                        class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300"
+                        required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="block text-sm font-medium text-gray-600">Product Image URLs</label>
+                    <input type="text" id="image" name="image" placeholder="Comma-separated image URLs"
+                        class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300">
+                </div>
+                <div class="flex justify-end space-x-4 mt-3">
+                    <button type="button" onclick="closeAddProductModal()"
+                        class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-400 transition">
+                        <i class="fas fa-times mr-2"></i> Cancel
+                    </button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                        <i class="fas fa-check mr-2"></i> Accept
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

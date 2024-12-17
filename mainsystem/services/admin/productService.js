@@ -43,8 +43,7 @@ class ProductService {
     }
 
     static async searchProducts(field, query, currentPage = 1, itemsPerPage = 6) {
-        const allowedFields = ['title', 'category', 'description', 'price'];
-
+        const allowedFields = ['title', 'category', 'brand' ];
         if (!allowedFields.includes(field)) {
             throw new Error(`Invalid field. Allowed fields are: ${allowedFields.join(', ')}`);
         }
