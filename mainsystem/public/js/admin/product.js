@@ -12,8 +12,9 @@ async function fetchAndRenderProducts(url) {
             productsContainer.innerHTML = '';
             data.products.forEach(product => {
                 const productCard = document.createElement('div');
-                productCard.className = 'bg-white rounded-lg shadow-md p-4';
+                productCard.className = 'bg-white rounded-xl shadow-md p-4 border-2 border-[#f3d2c3] hover:scale-105 transition-transform cursor-pointer';
                 productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.image}" class="w-full h-48 object-contain mb-2 rounded-lg">
                     <h3 class="font-bold text-lg mb-2">${product.title}</h3>
                     <p class="text-gray-600 mb-2">Category: ${product.category}</p>
                     <p class="text-gray-600 mb-2">Price: $${product.price}</p>
