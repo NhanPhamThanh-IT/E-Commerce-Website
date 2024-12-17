@@ -73,3 +73,23 @@ exports.deleteProduct = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.searchProducts = async (req, res) => {
+    try {
+        const { field, query, page, limit } = req.query;
+        if (!field || !query) {
+            return res.status(400).json({ message: 'Both field and query parameters are required.' });
+        }
+        const currentPage = parseInt(page) || 1;
+        const itemsPerPage = parseInt(limit) || 6;
+        const result = await ProductService.searchProducts(field, query, currentPage, itemsPerPage);
+        console.log('searchProducts result:', result);
+        res.json({ products: result.products, totalItems: result.totalItems, totalPages: result.totalPages, currentPage: result.currentPage });
+    } catch (error) {
+        console.error('Error in searchOrders:', error.message);
+        res.status(500).json({
+            message: 'An error occurred while searching for orders.',
+            error: error.message,
+        });
+    }
+};

@@ -239,3 +239,22 @@ function closeAddProductModal() {
     const modal = document.getElementById('addProductModal');
     modal.classList.add('hidden');
 }
+
+document.getElementById('search-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const field = document.querySelector('select[name="field"]').value;
+    const query = document.querySelector('input[name="query"]').value.trim();
+
+    if (!field || !query) {
+        alert('Please select a field and enter a value to search.');
+        return;
+    }
+
+    const action = this.getAttribute('action');
+
+    const page = new URLSearchParams(window.location.search).get('page') || 1;
+
+    const url = `${action}?field=${field}&query=${encodeURIComponent(query)}&page=${page}`;
+    fetchAndRenderProducts(url);
+});
