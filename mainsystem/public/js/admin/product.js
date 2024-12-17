@@ -40,31 +40,56 @@ function renderPagination(totalPages, currentPage, url) {
     const paginationContainer = document.getElementById('pagination-container');
     paginationContainer.innerHTML = '';
 
-    if (currentPage > 1) {
-        const prevButton = document.createElement('button');
-        prevButton.className = 'bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition';
-        prevButton.textContent = 'Previous';
-        prevButton.onclick = () => fetchAndRenderProducts(`${url}?page=${currentPage - 1}`);
-        paginationContainer.appendChild(prevButton);
-    }
+    paginationContainer.className = 'flex justify-between items-center my-4';
 
-    for (let i = 1; i <= totalPages; i++) {
-        const pageButton = document.createElement('button');
-        pageButton.className = `px-4 py-2 rounded ${i === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-500 text-white hover:bg-gray-600 transition'}`;
-        pageButton.textContent = i;
-        if (i !== currentPage) {
-            pageButton.onclick = () => fetchAndRenderProducts(`${url}?page=${i}`);
+    const prevButton = document.createElement('button');
+    prevButton.className = `bg-neutral-500 hover:bg-black text-white font-bold py-2 px-4 rounded mx-1 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`;
+    prevButton.textContent = 'Previous';
+    prevButton.disabled = currentPage === 1;
+    prevButton.addEventListener('click', () => {
+        if (currentPage > 1) {
+            const baseUrl = url.split('?')[0];
+            const queryParams = new URLSearchParams(url.split('?')[1]);
+            queryParams.set('page', currentPage - 1);
+            fetchAndRenderProducts(`${baseUrl}?${queryParams.toString()}`);
         }
-        paginationContainer.appendChild(pageButton);
-    }
+    });
+    paginationContainer.appendChild(prevButton);
 
-    if (currentPage < totalPages) {
-        const nextButton = document.createElement('button');
-        nextButton.className = 'bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition';
-        nextButton.textContent = 'Next';
-        nextButton.onclick = () => fetchAndRenderProducts(`${url}?page=${currentPage + 1}`);
-        paginationContainer.appendChild(nextButton);
+    const pageDropdown = document.createElement('select');
+    pageDropdown.className = 'bg-neutral-500 text-white font-bold py-2 px-4 rounded mx-1 appearance-none text-center';
+    for (let i = 1; i <= totalPages; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        if (i === currentPage) {
+            option.selected = true;
+        }
+        pageDropdown.appendChild(option);
     }
+    
+    pageDropdown.addEventListener('change', (e) => {
+        const selectedPage = parseInt(e.target.value);
+        const baseUrl = url.split('?')[0];
+        const queryParams = new URLSearchParams(url.split('?')[1]);
+        queryParams.set('page', selectedPage);
+        fetchAndRenderProducts(`${baseUrl}?${queryParams.toString()}`);
+    });
+    paginationContainer.appendChild(pageDropdown);
+
+    const nextButton = document.createElement('button');
+    nextButton.className = `bg-neutral-500 hover:bg-black text-white font-bold py-2 px-10 rounded mx-1 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`;
+    nextButton.textContent = 'Next';
+    nextButton.disabled = currentPage === totalPages;
+    nextButton.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+            const baseUrl = url.split('?')[0];
+            const queryParams = new URLSearchParams(url.split('?')[1]);
+            queryParams.set('page', currentPage + 1);
+            fetchAndRenderProducts(`${baseUrl}?${queryParams.toString()}`);
+        }
+    });
+    paginationContainer.appendChild(nextButton);
 }
 
 async function openViewModal(productId) {

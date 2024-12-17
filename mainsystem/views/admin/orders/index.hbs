@@ -30,31 +30,7 @@
                             </tr>
                         </thead>
                         <tbody id="orders-container" class="divide-y divide-gray-200 rounded-b-xl">
-                            {{#each orders}}
-                            <tr>
-                                <td class="px-4 py-3 text-center">{{this.user_id}}</td>
-                                <td class="px-4 py-3 text-center">{{this.date}}</td>
-                                <td class="px-4 py-3 text-center">${{this.total_amount}}</td>
-                                <td class="px-4 py-3">
-                                    <div class="flex justify-center items-center space-x-2">
-                                        <form class="my-0 mb-0">
-                                            <input type="hidden" name="_id" value="{{this._id}}" class="mx-auto" />
-                                            <button type="button" onclick="openViewModal('{{this._id}}')"
-                                                class="view-button bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600 transition duration-800 font-bold mx-auto">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                        </form>
-                                        <form class="my-0 mb-0">
-                                            <input type="hidden" name="_id" value="{{this._id}}" class="mx-auto" />
-                                            <button type="button" onclick="openDeleteModal('{{this._id}}')"
-                                                class="delete-button bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition duration-800 font-bold mx-auto">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            {{/each}}
+                            {{!-- Orders will be rendered at here --}}
                         </tbody>
                     </table>
                 </div>

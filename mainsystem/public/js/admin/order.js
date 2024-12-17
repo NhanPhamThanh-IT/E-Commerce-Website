@@ -101,7 +101,6 @@ function renderPagination(totalPages, currentPage, url) {
     paginationContainer.appendChild(nextButton);
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
     fetchAndRenderOrders('/admin/orders/api?page=1');
 });
