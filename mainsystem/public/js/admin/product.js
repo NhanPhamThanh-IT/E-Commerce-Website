@@ -160,6 +160,9 @@ function closeViewModal() {
     viewModal.classList.add('hidden');
     viewModal.classList.remove('flex');
     reviewModal.classList.add('hidden');
+    const reviewButton = document.getElementById('reviewButton');
+    reviewButton.innerHTML = 'View <i class="fas fa-comment"></i>';
+    reviewButton.onclick = () => openReviewModal();
 }
 
 function openDeleteModal(productId) {
@@ -203,7 +206,7 @@ function openReviewModal() {
     const modal = document.getElementById('reviewModal');
     modal.classList.remove('hidden');
     const reviewButton = document.getElementById('reviewButton');
-    reviewButton.textContent = 'Close Reviews';
+    reviewButton.innerHTML = 'Close <i class="fas fa-comment"></i>';
     reviewButton.onclick = () => closeReviewModal();
 }
 
@@ -211,6 +214,6 @@ function closeReviewModal() {
     const modal = document.getElementById('reviewModal');
     modal.classList.add('hidden');
     const reviewButton = document.getElementById('reviewButton');
-    reviewButton.textContent = 'View Reviews';
+    reviewButton.innerHTML = 'View <i class="fas fa-comment"></i>';
     reviewButton.onclick = () => openReviewModal();
 }

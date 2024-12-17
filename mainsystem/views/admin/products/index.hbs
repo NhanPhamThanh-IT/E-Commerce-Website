@@ -41,45 +41,60 @@
 </div>
 
 <!-- View Modal -->
-<div id="viewModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 space-x-4" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
-    <div class="bg-white rounded-xl shadow-lg w-full sm:w-96 p-6">
-        <h2 id="modal-title" class="text-lg font-bold mb-4">Product Details</h2>
-        <div class="flex justify-between mb-4">
-            <p class="text-sm text-gray-600">Product Title</p>
-            <p id="view-title" class="text-sm text-gray-800"></p>
+<div id="viewModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 space-x-4"
+    role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="bg-[#f3d2c3] rounded-xl shadow-lg w-full sm:w-96 p-6">
+        <div class="flex justify-between items-center mb-3">
+            <h2 id="modal-title" class="text-lg font-bold text-gray-600">Product Details</h2>
+            <div class="flex justify-end space-x-2 items-center">
+                <button type="button" onclick="handleEdit()"
+                    class="p-2 bg-teal-400 text-white rounded-lg hover:bg-teal-600 transition">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+                <button type="button" onclick="closeViewModal()"
+                    class="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
         </div>
-        <div class="flex justify-between mb-4">
-            <p class="text-sm text-gray-600">Category</p>
-            <p id="view-category" class="text-sm text-gray-800"></p>
-        </div>
-        <div class="flex justify-between mb-4 space-x-10">
-            <p class="text-sm text-gray-600">Description</p>
-            <p id="view-desc" class="text-sm text-gray-800 text-justify"></p>
-        </div>
-        <div class="flex justify-between mb-4">
-            <p class="text-sm text-gray-600">Price (USD)</p>
-            <p id="view-price" class="text-sm text-gray-800"></p>
-        </div>
-        <div class="flex justify-between mb-4">
-            <p class="text-sm text-gray-600">Discount (%)</p>
-            <p id="view-discount" class="text-sm text-gray-800"></p>
-        </div>
-        <div class="flex justify-between mb-4">
-            <p class="text-sm text-gray-600">Stock Quantity</p>
-            <p id="view-stock" class="text-sm text-gray-800"></p>
-        </div>
-        <div class="flex justify-end space-x-2">
-            <button type="button" onclick="closeViewModal()" class="px-4 py-2 text-gray-700 bg-gray-300 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition">
-                Close
-            </button>
-            <button id="reviewButton" type="button" onclick="openReviewModal()" class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-                View Reviews
-            </button>
+        <div class="bg-white rounded-xl shadow-md py-2 px-3 border-2 border-slate-500">
+            <div class="flex justify-between mb-3">
+                <p class="text-sm text-gray-600">Product Title</p>
+                <p id="view-title" class="text-sm text-gray-800 font-semibold"></p>
+            </div>
+            <div class="flex justify-between mb-3">
+                <p class="text-sm text-gray-600">Category</p>
+                <p id="view-category" class="text-sm text-gray-800 font-semibold"></p>
+            </div>
+            <div class="flex justify-between mb-3 space-x-10">
+                <p class="text-sm text-gray-600">Description</p>
+                <p id="view-desc" class="text-sm text-gray-800 text-justify font-semibold"></p>
+            </div>
+            <div class="flex justify-between mb-3">
+                <p class="text-sm text-gray-600">Price (USD)</p>
+                <p id="view-price" class="text-sm text-gray-800 font-semibold"></p>
+            </div>
+            <div class="flex justify-between mb-3">
+                <p class="text-sm text-gray-600">Discount (%)</p>
+                <p id="view-discount" class="text-sm text-gray-800 font-semibold"></p>
+            </div>
+            <div class="flex justify-between mb-3">
+                <p class="text-sm text-gray-600">Stock Quantity</p>
+                <p id="view-stock" class="text-sm text-gray-800 font-semibold"></p>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="text-sm text-gray-600">Reviews</p>
+                <button id="reviewButton" type="button" onclick="openReviewModal()"
+                    class="px-2 py-1 text-white bg-sky-500 rounded-lg hover:bg-sky-700 transition">
+                    View <i class="fas fa-comment"></i>
+                </button>
+            </div>
         </div>
     </div>
     <div id="reviewModal" class="bg-[#f3d2c3] rounded-xl shadow-lg p-6 hidden">
-        <h2 class="text-lg font-bold mb-4">List of Reviews</h2>
-        <div id="review-container" class="grid grid-cols-1 w-full sm:w-96 max-h-96 overflow-y-scroll space-y-2 scroll-smooth pl-2 pr-4 py-2">
+        <h2 class="text-lg font-bold mb-4 text-gray-600">List of Reviews</h2>
+        <div id="review-container"
+            class="grid grid-cols-1 w-full sm:w-96 max-h-96 overflow-y-scroll space-y-2 scroll-smooth pl-2 pr-4 py-2">
             <!-- Reviews will be dynamically rendered here -->
         </div>
     </div>
