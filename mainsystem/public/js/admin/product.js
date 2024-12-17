@@ -149,11 +149,9 @@ async function openViewModal(productId) {
 
         document.getElementById('editButton').innerHTML = '';
         document.getElementById('editButton').innerHTML = `
-            <button type="button" onclick="handleEdit()"
+            <button type="button" onclick="handleEdit('${productId}')"
                 class="p-2 bg-teal-400 text-white rounded-lg hover:bg-teal-600 transition">
-                <a href="/admin/products/edit/${productId}" class="text-white">
-                    <i class="fas fa-pencil-alt"></i>
-                </a>
+                <i class="fas fa-pencil-alt"></i>
             </button>
         `;
 
@@ -296,4 +294,41 @@ document.getElementById("addProductForm").addEventListener("submit", async funct
 
 function closeAddProductModal() {
     document.getElementById('addProductModal').classList.add('hidden');
+}
+
+async function handleEdit(productId) {
+    const modal = document.getElementById('editProductModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    closeViewModal();
+
+    try {
+        const response = await fetch(`/admin/products/info/${productId}`);
+        const product = await response.json();
+
+        document.getElementById('edit_title').value = product.title || '';
+        document.getElementById('edit_category').value = product.category || '';
+        document.getElementById('edit_price').value = product.price || 0;
+        document.getElementById('edit_stock_quantity').value = product.stock_quantity || 0;
+        document.getElementById('edit_brand').value = product.brand || '';
+        document.getElementById('edit_model').value = product.model || '';
+        document.getElementById('edit_color').value = product.color || '';
+        document.getElementById('edit_discount').value = product.discount || 0;
+        document.getElementById('edit_description').value = product.description || '';
+        document.getElementById('edit_image').value = product.image || '';
+
+        const form = document.getElementById('editProductForm');
+        form.action = `/admin/products/edit/${productId}`;
+
+    } catch (error) {
+        console.error('Error fetching product data for editing:', error);
+        alert('Failed to load product details. Please try again.');
+        closeEditProductModal();
+    }
+}
+
+function closeEditProductModal() {
+    const modal = document.getElementById('editProductModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
 }

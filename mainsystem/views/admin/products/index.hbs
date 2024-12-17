@@ -197,4 +197,71 @@
     </div>
 </div>
 
+<!-- Edit Modal -->
+<div id="editProductModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-[#f3d2c3] rounded-xl shadow-lg w-full max-w-screen-lg p-6">
+        <div class="flex justify-between items-center mb-2">
+            <h2 class="text-lg font-bold text-gray-700">Edit Product</h2>
+            <button type="button" onclick="closeEditProductModal()" class="text-gray-700 hover:text-red-500 transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-3 border-2 border-slate-500">
+            <form id="editProductForm" action="#" method="POST" class="mb-0">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-3">
+                    <div>
+                        <label for="edit_title" class="block text-sm font-medium text-gray-600">Product Title</label>
+                        <input type="text" id="edit_title" name="title" class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300" required>
+                    </div>
+                    <div>
+                        <label for="edit_category" class="block text-sm font-medium text-gray-600">Category</label>
+                        <input type="text" id="edit_category" name="category" class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300" required>
+                    </div>
+                    <div>
+                        <label for="edit_price" class="block text-sm font-medium text-gray-600">Price (USD)</label>
+                        <input type="number" id="edit_price" name="price" min="0" class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300" required>
+                    </div>
+                    <div>
+                        <label for="edit_stock_quantity" class="block text-sm font-medium text-gray-600">Stock Quantity</label>
+                        <input type="number" id="edit_stock_quantity" name="stock_quantity" min="0" class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300">
+                    </div>
+                    <div>
+                        <label for="edit_brand" class="block text-sm font-medium text-gray-600">Brand</label>
+                        <input type="text" id="edit_brand" name="brand" class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300">
+                    </div>
+                    <div>
+                        <label for="edit_model" class="block text-sm font-medium text-gray-600">Model</label>
+                        <input type="text" id="edit_model" name="model" class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300">
+                    </div>
+                    <div>
+                        <label for="edit_color" class="block text-sm font-medium text-gray-600">Color</label>
+                        <input type="text" id="edit_color" name="color" class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300">
+                    </div>
+                    <div>
+                        <label for="edit_discount" class="block text-sm font-medium text-gray-600">Discount (%)</label>
+                        <input type="number" id="edit_discount" name="discount" min="0" max="100" class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="edit_description" class="block text-sm font-medium text-gray-600">Product Description</label>
+                    <textarea id="edit_description" name="description" rows="3" class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="edit_image" class="block text-sm font-medium text-gray-600">Product Image URLs</label>
+                    <input type="text" id="edit_image" name="image" placeholder="Comma-separated image URLs" class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300">
+                </div>
+                <div class="flex justify-end space-x-4 mt-3">
+                    <button type="button" onclick="closeEditProductModal()" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-400 transition">
+                        <i class="fas fa-times mr-2"></i> Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                        <i class="fas fa-check mr-2"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script src="/js/admin/product.js"></script>
