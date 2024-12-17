@@ -13,7 +13,7 @@ async function fetchAndRenderOrders(url) {
             data.orders.forEach(order => {
                 const orderRow = document.createElement('tr');
                 orderRow.innerHTML = `
-                    <td class="px-4 py-3 text-center">${order.user_id}</td>
+                    <td class="px-4 py-3 text-center">${order.user_name}</td>
                     <td class="px-4 py-3 text-center">${order.date}</td>
                     <td class="px-4 py-3 text-center">${order.total_amount}</td>
                     <td class="px-4 py-3">
@@ -142,10 +142,15 @@ async function openViewModal(orderId) {
         document.getElementById('view-total-amount').textContent = `$${orderData.total_amount || 0}`;
         const itemsList = document.getElementById('view-items');
         itemsList.innerHTML = '';
-        if (orderData.items && orderData.items.length > 0) {
-            orderData.items.forEach(item => {
+        if (orderData.list_of_items && orderData.list_of_items.length > 0) {
+            orderData.list_of_items.forEach(item => {
                 const listItem = document.createElement('li');
-                listItem.textContent = `${item.name} (x${item.quantity})`;
+                listItem.className = 'flex flex-col w-full flex-wrap';
+                listItem.innerHTML = `
+                    <p class="text-justify">${item.title}</p>
+                    <p class="flex justify-end text-green-500">Quantity:  <span class="text-green-500 font-semibold"> ${item.quantity}
+                    </span></p>
+                `;
                 itemsList.appendChild(listItem);
             });
         } else {

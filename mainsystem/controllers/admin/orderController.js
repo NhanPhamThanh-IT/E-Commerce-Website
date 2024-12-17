@@ -2,16 +2,7 @@ const OrderService = require('../../services/admin/orderService');
 
 exports.index = async (req, res, next) => {
     try {
-        const { page, limit } = req.query;
-        const currentpage = parseInt(page) || 1;
-        const itemsPerPage = parseInt(limit) || 5;
-        const { orders, totalItems, totalPages, currentPage } = await OrderService.getAllWithPagination(currentpage, itemsPerPage);
-        return res.render('admin/orders/index', {
-            Orders: orders,
-            totalItems,
-            currentPage: page,
-            totalPages,
-        });
+        return res.render('admin/orders/index', {});
     } catch (error) {
         next(error);
     }
@@ -23,6 +14,7 @@ exports.getAllOrders = async (req, res, next) => {
         const currentPage = parseInt(page) || 1;
         const itemsPerPage = parseInt(limit) || 5;
         const result = await OrderService.getAllWithPagination(currentPage, itemsPerPage);
+        const orders = result.orders[0];
         res.status(200).json(result);
     } catch (error) {
         next(error);

@@ -7,7 +7,7 @@
             orders effortlessly"
             options='<select name="field"
                 class="pl-3 pr-2 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 hover:border-blue-400 transition">
-                <option value="user_id">User ID</option>
+                <option value="user_name">User Name</option>
                 <option value="date">Date</option>
             </select>
             '}}
@@ -17,8 +17,8 @@
                     <table class="table-auto bg-white w-full text-left rounded-xl">
                         <thead class="bg-black text-white rounded-t-xl">
                             <tr class="bg-[#f5f5f4] text-gray-600">
-                                <th class="px-6 py-4 font-bold text-lg text-center w-32 rounded-tl-xl">
-                                    User ID
+                                <th class="px-6 py-4 font-bold text-lg text-center w-48 rounded-tl-xl">
+                                    User Name
                                 </th>
                                 <th class="px-6 py-4 font-bold text-lg text-center">Date
                                 </th>
@@ -65,7 +65,7 @@
     <div class="bg-white rounded-lg shadow-lg w-96 p-6">
         <h2 class="text-lg font-bold mb-4">Order Details</h2>
         <div class="flex justify-between mb-4">
-            <p class="text-sm text-gray-600">User ID:</p>
+            <p class="text-sm text-gray-600">User Name:</p>
             <p id="view-user-id" class="text-sm text-gray-800"></p>
         </div>
         <div class="flex justify-between mb-4">
@@ -78,7 +78,7 @@
         </div>
         <div class="flex justify-between mb-4">
             <p class="text-sm text-gray-600">Items:</p>
-            <ul id="view-items" class="text-sm text-gray-800 list-disc ml-4"></ul>
+            <ul id="view-items" class="text-sm text-gray-800 list-disc ml-4 overflow-y-auto h-64"></ul>
         </div>
         <div class="flex justify-end">
             <button onclick="closeViewModal()"
