@@ -17,7 +17,9 @@ async function fetchAndRenderProducts(url) {
                     <div class="flex flex-col justify-between h-full">
                         <div>
                             <img src="${product.image}" alt="${product.image}" class="w-full h-48 object-contain mb-2 rounded-lg">
-                            <h3 class="font-bold text-lg mb-2 text-slate-500">${product.title}</h3>
+                            <h3 class="font-bold text-lg mb-2 text-slate-500 truncate">
+                                ${product.title}
+                            </h3>
                         </div>
                         <div>
                             <p class="text-gray-600 mb-2">
@@ -43,6 +45,12 @@ async function fetchAndRenderProducts(url) {
                             class="delete-button bg-red-500 text-white w-8 py-2 rounded-lg hover:bg-red-600 transition duration-300 font-bold">
                             <i class="fas fa-trash-alt"></i>
                         </button>
+                        <form action="/admin/products/info/${product._id}" method="GET" class="mb-0">
+                            <button
+                                class="delete-button bg-red-500 text-white w-8 py-2 rounded-lg hover:bg-red-600 transition duration-300 font-bold">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
                     </div>
                 `;
                 productsContainer.appendChild(productCard);
