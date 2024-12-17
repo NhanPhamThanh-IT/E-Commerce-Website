@@ -45,12 +45,6 @@ async function fetchAndRenderProducts(url) {
                             class="delete-button bg-red-500 text-white w-8 py-2 rounded-lg hover:bg-red-600 transition duration-300 font-bold">
                             <i class="fas fa-trash-alt"></i>
                         </button>
-                        <form action="/admin/products/info/${product._id}" method="GET" class="mb-0">
-                            <button
-                                class="delete-button bg-red-500 text-white w-8 py-2 rounded-lg hover:bg-red-600 transition duration-300 font-bold">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>
                     </div>
                 `;
                 productsContainer.appendChild(productCard);
@@ -129,10 +123,30 @@ async function openViewModal(productId) {
     try {
         const response = await fetch(`/admin/products/info/${productId}`);
         const product = await response.json();
+        console.log(product);
         document.getElementById('view-title').textContent = product.title || 'N/A';
         document.getElementById('view-category').textContent = product.category || 'N/A';
-        document.getElementById('view-price').textContent = `$${product.price || 0}`;
+        document.getElementById('view-desc').textContent = product.description || 'N/A';
+        document.getElementById('view-price').textContent = `${product.price || 0}`;
+        document.getElementById('view-discount').textContent = `${product.discount || 0}`;
         document.getElementById('view-stock').textContent = product.stock_quantity || 0;
+
+        document.getElementById('review-container').innerHTML = '';
+        if (product.reviews && product.reviews.length > 0) {
+            product.reviews.forEach(review => {
+                const reviewCard = document.createElement('div');
+                reviewCard.className = 'bg-white border-2 border-slate-500 rounded-xl shadow-md px-4 pt-3 mb-4 h-24';
+                reviewCard.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-lg text-slate-500">${review.reviewerName}</h3>
+                        <p class="text-gray-600">${review.rating} ⭐</p>
+                    </div>
+                    <p class="text-gray-600 mt-2 w-full truncate">${review.comment}</p>
+                `;
+                document.getElementById('review-container').appendChild(reviewCard);
+            });
+        }
+
     } catch (error) {
         console.error('Error fetching product details:', error);
         alert('Failed to load product details. Please try again.');
@@ -141,9 +155,11 @@ async function openViewModal(productId) {
 }
 
 function closeViewModal() {
-    const modal = document.getElementById('viewModal');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
+    const viewModal = document.getElementById('viewModal');
+    const reviewModal = document.getElementById('reviewModal');
+    viewModal.classList.add('hidden');
+    viewModal.classList.remove('flex');
+    reviewModal.classList.add('hidden');
 }
 
 function openDeleteModal(productId) {
@@ -180,3 +196,21 @@ async function handleDeleteProduct(productId) {
 document.addEventListener('DOMContentLoaded', () => {
     fetchAndRenderProducts('/admin/products/api?page=1');
 });
+
+// Open review modal
+
+function openReviewModal() {
+    const modal = document.getElementById('reviewModal');
+    modal.classList.remove('hidden');
+    const reviewButton = document.getElementById('reviewButton');
+    reviewButton.textContent = 'Close Reviews';
+    reviewButton.onclick = () => closeReviewModal();
+}
+
+function closeReviewModal() {
+    const modal = document.getElementById('reviewModal');
+    modal.classList.add('hidden');
+    const reviewButton = document.getElementById('reviewButton');
+    reviewButton.textContent = 'View Reviews';
+    reviewButton.onclick = () => openReviewModal();
+}

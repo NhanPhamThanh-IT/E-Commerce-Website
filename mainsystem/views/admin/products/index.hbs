@@ -41,30 +41,46 @@
 </div>
 
 <!-- View Modal -->
-<div id="viewModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-    <div class="bg-white rounded-lg shadow-lg w-96 p-6">
-        <h2 class="text-lg font-bold mb-4">Product Details</h2>
+<div id="viewModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 space-x-4" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="bg-white rounded-xl shadow-lg w-full sm:w-96 p-6">
+        <h2 id="modal-title" class="text-lg font-bold mb-4">Product Details</h2>
         <div class="flex justify-between mb-4">
-            <p class="text-sm text-gray-600">Product Title:</p>
+            <p class="text-sm text-gray-600">Product Title</p>
             <p id="view-title" class="text-sm text-gray-800"></p>
         </div>
         <div class="flex justify-between mb-4">
-            <p class="text-sm text-gray-600">Category:</p>
+            <p class="text-sm text-gray-600">Category</p>
             <p id="view-category" class="text-sm text-gray-800"></p>
         </div>
+        <div class="flex justify-between mb-4 space-x-10">
+            <p class="text-sm text-gray-600">Description</p>
+            <p id="view-desc" class="text-sm text-gray-800 text-justify"></p>
+        </div>
         <div class="flex justify-between mb-4">
-            <p class="text-sm text-gray-600">Price:</p>
+            <p class="text-sm text-gray-600">Price (USD)</p>
             <p id="view-price" class="text-sm text-gray-800"></p>
         </div>
         <div class="flex justify-between mb-4">
-            <p class="text-sm text-gray-600">Stock Quantity:</p>
+            <p class="text-sm text-gray-600">Discount (%)</p>
+            <p id="view-discount" class="text-sm text-gray-800"></p>
+        </div>
+        <div class="flex justify-between mb-4">
+            <p class="text-sm text-gray-600">Stock Quantity</p>
             <p id="view-stock" class="text-sm text-gray-800"></p>
         </div>
-        <div class="flex justify-end">
-            <button onclick="closeViewModal()"
-                class="px-4 py-2 text-gray-700 bg-gray-300 rounded-lg hover:bg-gray-400 transition">
+        <div class="flex justify-end space-x-2">
+            <button type="button" onclick="closeViewModal()" class="px-4 py-2 text-gray-700 bg-gray-300 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition">
                 Close
             </button>
+            <button id="reviewButton" type="button" onclick="openReviewModal()" class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                View Reviews
+            </button>
+        </div>
+    </div>
+    <div id="reviewModal" class="bg-[#f3d2c3] rounded-xl shadow-lg p-6 hidden">
+        <h2 class="text-lg font-bold mb-4">List of Reviews</h2>
+        <div id="review-container" class="grid grid-cols-1 w-full sm:w-96 max-h-96 overflow-y-scroll space-y-2 scroll-smooth pl-2 pr-4 py-2">
+            <!-- Reviews will be dynamically rendered here -->
         </div>
     </div>
 </div>
