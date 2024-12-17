@@ -5,10 +5,10 @@
     <!-- Total Balance Card -->
     <div class="bg-gradient-to-r from-blue-50 to-indigo-100 rounded-lg shadow-xl p-6 mb-8 max-w-5xl mx-auto">
         <div class="flex justify-between items-center">
-            <h2 class="text-2xl font-semibold text-left text-gray-500">Total Balance</h2> 
+            <h2 class="text-2xl font-semibold text-left text-gray-500">Total Balance</h2>
         </div>
         <div class="flex justify-between items-center mt-2">
-            <p class="text-3xl font-bold text-gray-900">${{balance}}</p> 
+            <p class="text-3xl font-bold text-gray-900">${{balance}}</p>
             <button
                 class="bg-gradient-to-r from-green-400 to-blue-500 text-white py-2 px-6 rounded-lg hover:from-green-500 hover:to-blue-600 shadow-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50 flex items-center"
                 onclick="toggleAddFundsModal()">
@@ -29,47 +29,56 @@
             <p class="text-gray-600 text-lg">Email: <span class="font-semibold text-gray-900">{{user.email}}</span></p>
         </div>
         <h2 class="text-xl font-semibold text-left text-gray-800 mb-4">Payment History</h2>
-        <div class="space-y-3">
-            {{#each orders}}
-            <div class="bg-white rounded-lg p-4 shadow-md">
-                <p class="text-gray-800"><span class="font-semibold">Order ID:</span> {{this._id}}</p>
-                <p class="text-gray-800"><span class="font-semibold">Date:</span> {{this.date}}</p>
-                <p class="text-gray-800"><span class="font-semibold">Amount:</span> ${{this.amount}}</p>
-                <p class="text-gray-800"><span class="font-semibold">Status:</span> {{this.status}}</p>
-            </div>
+        <div class="overflow-x-auto">
+            {{#if paymentHistory.length}}
+            <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                <thead class="bg-gray-100 border-b">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Order ID</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">User ID</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Date</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each paymentHistory}}
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="px-6 py-4 text-sm text-gray-800">{{this.order_id}}</td>
+                        <td class="px-6 py-4 text-sm text-gray-800">{{this.user_id}}</td>
+                        <td class="px-6 py-4 text-sm text-gray-800">{{this.date}}</td>
+                        <td class="px-6 py-4 text-sm text-gray-800 font-semibold">${{this.total_payment}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
             {{else}}
-            <p class="text-gray-600 text-center">No payment history available.</p>
-            {{/each}}
+            <p class="text-gray-600 text-center mt-4">No payment history available.</p>
+            {{/if}}
         </div>
+
     </div>
     <!-- Add Money Modal -->
     <div id="add-funds-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg transform transition-all duration-300 ease-in-out scale-95 hover:scale-100">
+        <div
+            class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg transform transition-all duration-300 ease-in-out scale-95 hover:scale-100">
             <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Add Funds</h2>
             <form id="add-money-form" class="space-y-4">
                 <div class="flex flex-col">
                     <label for="amount" class="text-lg font-medium text-gray-700 mb-2">Enter Amount:</label>
-                    <input 
-                        type="number" 
-                        id="amount" 
-                        name="amount"
+                    <input type="number" id="amount" name="amount"
                         class="border border-gray-300 rounded-lg px-4 py-3 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 ease-in-out hover:shadow-md"
-                        placeholder="Enter amount to add" 
-                        required 
-                    />
+                        placeholder="Enter amount to add" required />
                 </div>
                 <div class="flex justify-end space-x-4">
-                    <button 
-                        type="button" 
+                    <button type="button"
                         class="bg-gray-300 text-gray-800 py-2 px-6 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-all duration-200 ease-in-out flex items-center space-x-2"
                         onclick="toggleAddFundsModal()">
-                        <i class="fa-solid fa-times text-gray-700"></i> 
+                        <i class="fa-solid fa-times text-gray-700"></i>
                         <span>Cancel</span>
                     </button>
-                    <button 
-                        type="submit"
+                    <button type="submit"
                         class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200 ease-in-out flex items-center space-x-2">
-                        <i class="fa-solid fa-circle-dollar-to-slot text-white"></i> 
+                        <i class="fa-solid fa-circle-dollar-to-slot text-white"></i>
                         <span>Add Money</span>
                     </button>
                 </div>
