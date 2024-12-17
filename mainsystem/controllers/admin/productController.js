@@ -2,16 +2,7 @@ const ProductService = require('../../services/admin/productService');
 
 exports.index = async (req, res, next) => {
     try {
-        const { page, limit } = req.query;
-        const currentpage = parseInt(page) || 1;
-        const itemsPerPage = parseInt(limit) || 6;
-        const { products, totalItems, totalPages, currentPage } = await ProductService.getAllWithPagination(currentpage, itemsPerPage);
-        return res.render('admin/products/index', {
-            Products: products,
-            totalItems,
-            currentPage: page,
-            totalPages,
-        });
+        return res.render('admin/products/index');
     } catch (error) {
         next(error);
     }
