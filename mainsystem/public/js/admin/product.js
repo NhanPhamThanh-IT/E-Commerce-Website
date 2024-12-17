@@ -12,16 +12,45 @@ async function fetchAndRenderProducts(url) {
             productsContainer.innerHTML = '';
             data.products.forEach(product => {
                 const productCard = document.createElement('div');
-                productCard.className = 'bg-white rounded-xl shadow-md p-4 border-2 border-slate-500 hover:scale-105 transition-transform cursor-pointer';
+                productCard.className = 'relative bg-white rounded-xl shadow-md px-4 pt-4 pb-3 border-2 border-slate-500 hover:scale-105 transition-transform cursor-pointer';
                 productCard.innerHTML = `
-                    <img src="${product.image}" alt="${product.image}" class="w-full h-48 object-contain mb-2 rounded-lg">
-                    <h3 class="font-bold text-lg mb-2">${product.title}</h3>
-                    <p class="text-gray-600 mb-2">Category: ${product.category}</p>
-                    <p class="text-gray-600 mb-2">Price: $${product.price}</p>
-                    <p class="text-gray-600 mb-2">Stock: ${product.stock_quantity}</p>
-                    <div class="flex justify-end space-x-2">
-                        <button onclick="openViewModal('${product._id}')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">View</button>
-                        <button onclick="openDeleteModal('${product._id}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">Delete</button>
+                    <div class="flex flex-col justify-between h-full">
+                        <div>
+                            <img src="${product.image}" alt="${product.image}" class="w-full h-48 object-contain mb-2 rounded-lg">
+                            <h3 class="font-bold text-lg mb-2 text-slate-500 truncate">
+                                ${product.title}
+                            </h3>
+                        </div>
+                        <div>
+                            <p class="text-gray-600 mb-2">
+                            <i class="fas fa-tags"></i>
+                                ${product.category}
+                            </p>
+                            <div class="flex justify-between">
+                                <p class="text-gray-600 text-base">
+                                    💸
+                                    ${product.price} USD
+                                </p>
+                                <p class="text-gray-600 text-base">Stock: ${product.stock_quantity}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="absolute top-3 right-5 flex flex-col items-center space-y-2">
+                        <button onclick="openViewModal('${product._id}')"
+                            class="view-button bg-blue-500 text-white w-8 py-2 rounded-lg hover:bg-blue-600 transition duration-300 font-bold">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button onclick="openDeleteModal('${product._id}')"
+                            class="delete-button bg-red-500 text-white w-8 py-2 rounded-lg hover:bg-red-600 transition duration-300 font-bold">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                        <form action="/admin/products/info/${product._id}" method="GET" class="mb-0">
+                            <button
+                                class="delete-button bg-red-500 text-white w-8 py-2 rounded-lg hover:bg-red-600 transition duration-300 font-bold">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
                     </div>
                 `;
                 productsContainer.appendChild(productCard);
@@ -68,7 +97,7 @@ function renderPagination(totalPages, currentPage, url) {
         }
         pageDropdown.appendChild(option);
     }
-    
+
     pageDropdown.addEventListener('change', (e) => {
         const selectedPage = parseInt(e.target.value);
         const baseUrl = url.split('?')[0];
