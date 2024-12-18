@@ -1,16 +1,16 @@
-<div class="relative z-10 flex items-center justify-between w-full {{hidden}}" id={{id}}>
+<div class="relative z-10 flex items-center justify-between {{hidden}}" id={{id}}>
     <div class="pl-4 flex-col items-center space-y-4 p-6 rounded-xl shadow-lg">
-        <h1 class="text-xl font-semibold text-[#f3d2c3] mb-4">
+        <h1 class="text-xl font-semibold text-[#f3d2c3] mb-4 w-full">
             {{title}}, {{personalInfo.lastName}}
             {{personalInfo.firstName}}!
             <br>
             {{message}}
         </h1>
-        <p>
+        <div class="{{width}}">
             <a href={{href}}
-                class="justify-center w-48 block py-2 px-2 rounded-xl bg-[#f3d2c3] text-black no-underline hover:no-underline hover:scale-110 transition duration-300 ease-in-out flex items-center shadow-md">
+                class="justify-center block py-2 px-2 rounded-xl bg-[#f3d2c3] text-black no-underline hover:no-underline hover:scale-110 transition duration-300 ease-in-out flex items-center shadow-md">
                 <span class="font-semibold">{{button_content}}</span>
             </a>
-        </p>
+        </div>
     </div>
 </div>
