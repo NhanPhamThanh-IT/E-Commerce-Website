@@ -55,11 +55,29 @@
     document.addEventListener('DOMContentLoaded', () => {
         let currentContent = 0;
         const contentIds = ['content1', 'content2', 'content3', 'content4', 'content5'];
+
         window.onload = () => {
-            document.getElementById(contentIds[currentContent]).classList.remove('hidden');
+            const currentElement = document.getElementById(contentIds[currentContent]);
+            currentElement.classList.remove('hidden');
+            currentElement.style.opacity = 1;
+            currentElement.style.transition = 'opacity 1s ease-in-out';
+
             setInterval(() => {
-                contentIds.forEach(id => document.getElementById(id).classList.add('hidden'));
-                document.getElementById(contentIds[currentContent]).classList.remove('hidden');
+                contentIds.forEach(id => {
+                    const element = document.getElementById(id);
+                    element.style.opacity = 0;
+                    element.style.transition = 'opacity 1s ease-in-out';
+
+                    setTimeout(() => {
+                        element.classList.add('hidden');
+                    }, 1000);
+                });
+
+                const nextElement = document.getElementById(contentIds[currentContent]);
+                nextElement.classList.remove('hidden');
+                nextElement.style.opacity = 1;
+                nextElement.style.transition = 'opacity 1s ease-in-out';
+
                 currentContent = (currentContent + 1) % contentIds.length;
             }, 2000);
         };

@@ -38,11 +38,11 @@ async function fetchAndRenderProducts(url) {
                     
                     <div class="absolute top-3 right-5 flex flex-col items-center space-y-2">
                         <button onclick="openViewModal('${product._id}')"
-                            class="view-button bg-blue-500 text-white w-8 py-2 rounded-lg hover:bg-blue-600 transition duration-300 font-bold">
+                            class="view-button bg-blue-500 text-white w-8 py-2 rounded-lg hover:bg-blue-600 transition duration-400 font-bold">
                             <i class="fas fa-eye"></i>
                         </button>
                         <button onclick="openDeleteModal('${product._id}')"
-                            class="delete-button bg-red-500 text-white w-8 py-2 rounded-lg hover:bg-red-600 transition duration-300 font-bold">
+                            class="delete-button bg-red-500 text-white w-8 py-2 rounded-lg hover:bg-red-600 transition duration-400 font-bold">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </div>
@@ -67,9 +67,53 @@ function renderPagination(totalPages, currentPage, url) {
     paginationContainer.className = 'flex justify-between items-center my-4';
 
     const prevButton = document.createElement('button');
-    prevButton.className = `bg-neutral-500 hover:bg-black text-white font-bold py-2 px-4 rounded mx-1 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`;
+    prevButton.className = `w-24 bg-neutral-500 text-white font-bold py-2 rounded mx-1 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`;
     prevButton.textContent = 'Previous';
     prevButton.disabled = currentPage === 1;
+    if (currentPage > 1) {
+        prevButton.addEventListener('mouseenter', () => {
+            prevButton.style.cursor = 'pointer';
+            prevButton.className = 'w-24 bg-black text-[#f3d2c3] font-bold py-2 rounded mx-1 transition-all duration-400 ease-in-out';
+
+            prevButton.innerHTML = `<div style="
+                position: relative;
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+            ">
+                <span style="
+                    display: inline-block;
+                    white-space: nowrap;
+                    animation: marquee 2s linear infinite;
+                ">
+                    <i class="fas fa-chevron-left fa-solid"></i>
+                    <i class="fas fa-chevron-left fa-solid"></i>
+                    <i class="fas fa-chevron-left fa-solid"></i>
+                    <i class="fas fa-chevron-left fa-solid"></i>
+                    <i class="fas fa-chevron-left fa-solid"></i>
+                </span>
+            </div>`;
+
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes marquee {
+                    0% {
+                        transform: translateX(100%);
+                    }
+                    100% {
+                        transform: translateX(-100%);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    }
+
+    prevButton.addEventListener('mouseleave', () => {
+        prevButton.innerHTML = 'Previous';
+        prevButton.className = `w-24 bg-neutral-500 text-white font-bold py-2 rounded mx-1 transition-all duration-400 ease-in-out ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`;
+    });
+
     prevButton.addEventListener('click', () => {
         if (currentPage > 1) {
             const baseUrl = url.split('?')[0];
@@ -102,9 +146,52 @@ function renderPagination(totalPages, currentPage, url) {
     paginationContainer.appendChild(pageDropdown);
 
     const nextButton = document.createElement('button');
-    nextButton.className = `bg-neutral-500 hover:bg-black text-white font-bold py-2 px-10 rounded mx-1 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`;
+    nextButton.className = `w-24 bg-neutral-500 text-white font-bold py-2 rounded mx-1 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`;
     nextButton.textContent = 'Next';
     nextButton.disabled = currentPage === totalPages;
+
+    if (currentPage < totalPages) {
+        nextButton.addEventListener('mouseenter', () => {
+            nextButton.style.cursor = 'pointer';
+            nextButton.className = 'w-24 bg-black text-[#f3d2c3] font-bold py-2 rounded mx-1 transition-all duration-400 ease-in-out';
+            nextButton.innerHTML = `<div style="
+                position: relative;
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+            ">
+                <span style="
+                    display: inline-block;
+                    white-space: nowrap;
+                    animation: marquee 2s linear infinite;
+                ">
+                    <i class="fas fa-chevron-right fa-solid"></i>
+                    <i class="fas fa-chevron-right fa-solid"></i>
+                    <i class="fas fa-chevron-right fa-solid"></i>
+                    <i class="fas fa-chevron-right fa-solid"></i>
+                    <i class="fas fa-chevron-right fa-solid"></i>
+                </span>
+            </div>`;
+
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes marquee {
+                    0% {
+                        transform: translateX(-100%);
+                    }
+                    100% {
+                        transform: translateX(100%);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    }
+
+    nextButton.addEventListener('mouseleave', () => {
+        nextButton.innerHTML = 'Next';
+        nextButton.className = `w-24 bg-neutral-500 text-white font-bold py-2 rounded mx-1 transition-all duration-400 ease-in-out ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`;
+    });
     nextButton.addEventListener('click', () => {
         if (currentPage < totalPages) {
             const baseUrl = url.split('?')[0];
