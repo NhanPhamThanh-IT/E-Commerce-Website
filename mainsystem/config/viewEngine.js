@@ -38,7 +38,7 @@ const configViewEngine = (app) => {
         const day = String(parsedDate.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     });
-    
+
     hbs.create({}).handlebars.registerHelper('calculateItemTotal', (price, quantity, discount) => {
         const discountedPrice = price - (price * discount / 100);
         const total = discountedPrice * quantity;

@@ -57,14 +57,20 @@ class ProductService {
         return await Product.create(productData);
     }
 
-    static async getDistinctValue(field) {
+    static async getStatisticDistinctValue(field) {
         try {
             const distinctValues = await Product.distinct(field);
-            return distinctValues;
+            const countPromises = distinctValues.map(item => 
+                Product.countDocuments({ [field]: item }).then(count => ({ value: item, count }))
+            );
+            
+            const counts = await Promise.all(countPromises);
+            return counts;
         } catch (error) {
             throw new Error('Error getting distinct values: ' + error.message);
         }
     }
+    
 }
 
 module.exports = ProductService;

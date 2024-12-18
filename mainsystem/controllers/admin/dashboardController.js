@@ -9,7 +9,7 @@ exports.index = async (req, res) => {
             UserService.getQuantity({ role: 'user' }),
             UserService.getQuantity({ role: 'user', isActive: true }),
             ProductService.getQuantity(),
-            ProductService.getDistinctValue('category'),
+            ProductService.getStatisticDistinctValue('category'),
             OrderService.getQuantity(),
         ]);
 
@@ -18,9 +18,10 @@ exports.index = async (req, res) => {
             users: usersCount,
             activedUsers,
             products: productsCount,
-            categories,
+            categories: JSON.stringify(categories),
             orders: ordersCount,
         };
+
         res.render('admin/dashboard/index', data);
     } catch (err) {
         console.error('Error fetching data:', err);

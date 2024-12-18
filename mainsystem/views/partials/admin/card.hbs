@@ -1,17 +1,16 @@
-<div
-    class="bg-white rounded-xl px-6 py-4 flex flex justify-between items-center hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden shadow-md">
-    <div>
-        <h2 class="text-4xl font-bold text-black">{{content}}</h2>
-        <p class="text-gray-500 mb-0"> {{title}}</p>
-    </div>
+<button id={{ id }} type="button">
     <div
-        class="bg-black p-2 rounded-full flex items-center justify-center w-16 h-16">
-        <p>
-            <a href={{href}} class="text-[#f3d2c3] hover:text-[#f3d2c3] no-underline hover:no-underline">
-                {{{icon}}}
-            </a>
-        </p>
+        class="bg-white rounded-xl px-6 py-4 flex flex justify-between items-center hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden shadow-md">
+        <div>
+            <h2 class="text-4xl font-bold text-black">{{content}}</h2>
+            <p class="text-gray-500 mb-0"> {{title}}</p>
+        </div>
+        <div class="bg-black p-2 rounded-full flex items-center justify-center w-16 h-16">
+            <p>
+                <a href={{href}} class="text-[#f3d2c3] hover:text-[#f3d2c3] no-underline hover:no-underline">
+                    {{{icon}}}
+                </a>
+            </p>
+        </div>
     </div>
-</div>
-
-{{!-- rgba(255,228,216,0.7) --}}
+</button>
