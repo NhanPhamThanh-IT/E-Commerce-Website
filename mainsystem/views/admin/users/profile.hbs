@@ -72,7 +72,7 @@
     </main>
 
     <!-- Edit User Modal -->
-    <div id="editModal"
+    <div id="editModal" 
       class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 hidden z-50 transition-opacity duration-300 ease-in-out">
       <div class="bg-white p-6 rounded-lg shadow-xl transform transition-transform duration-300 scale-95">
         <div class="flex justify-between items-center mb-4">
@@ -84,7 +84,7 @@
             </svg>
           </button>
         </div>
-        <form id="edit-form" action="/admin/users/edit" method="POST">
+        <form id="edit-form" action="/admin/users/edit" data-user-id="{{user._id}}">
           <div class="grid grid-cols-1 gap-4 mb-4">
             <input type="hidden" name="old_email" value="{{user.email}}" />
             <input type="text" name="firstName" placeholder="First Name" value="{{user.firstName}}"
@@ -170,6 +170,7 @@
   cancelEditButton.addEventListener('click', closeEditModal);
   closeEditModalButton.addEventListener('click', closeEditModal);
 
+
   // Delete User Modal Logic
   const deleteUserButton = document.getElementById('deleteUser');
   const deleteModal = document.getElementById('deleteModal');
@@ -189,4 +190,33 @@
   deleteUserButton.addEventListener('click', openDeleteModal);
   cancelDeleteButton.addEventListener('click', closeDeleteModal);
   closeDeleteModalButton.addEventListener('click', closeDeleteModal);
+
+  document.getElementById('edit-form').addEventListener('submit',async function(e)
+  {
+    e.preventDefault();
+    const form = new FormData(this);
+    const formObject={};
+    form.forEach((value,key)=>{
+      formObject[key]=value;
+    });
+    // chua co id
+      const userId = this.getAttribute('data-user-id');
+    try{
+      const response = await fetch(`/admin/users/edit/${userId}`,{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify(formObject)
+      });
+      const data = await response.json();
+      console.log(data);
+      if (response.ok){
+        window.location.reload();
+        closeEditModal();
+      }
+    }catch(err){
+      console.error(err);
+    }
+  });
 </script>

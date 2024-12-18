@@ -1,4 +1,5 @@
 const UserServices = require('../../services/admin/userService');
+const mongoose = require('mongoose');
 
 exports.index = async (req, res, next) => {
     try {
@@ -69,3 +70,42 @@ exports.searchUsers=async(req,res)=>{
     }
 };
 
+exports.viewUser=async(req,res)=>{
+    try{
+        const{id}=req.params;
+        const user=await UserServices.getById(id);
+        if(!user){
+            return res.status(404).json({message:'User not found'});
+        }
+        return res.render('admin/users/profile',{user});
+    }catch (error) {
+        console.error('Error getting user info:', error);
+        return res.status(500).json({ message: 'An error occurred while getting user info.' });
+    }
+}
+exports.editUser = async (req, res) => {
+    try {
+        const { id } = req.params; // Lấy id từ URL
+        const data = req.body; // Lấy dữ liệu cập nhật từ body
+        console.log(id);
+        console.log('Update Data:', data);
+        // Kiểm tra xem id có hợp lệ hay không
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: 'Invalid user ID format' });
+        }
+
+        // Cập nhật thông tin user
+        const updatedUser = await UserServices.updateById(id, data);
+        console.log('Updated User:', updatedUser);
+        // Nếu không tìm thấy user
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Trả về thông tin user sau khi cập nhật
+        return res.status(200).json(updatedUser);
+    } catch (error) {
+        console.error('Error updating user:', error);
+        return res.status(500).json({ message: 'An error occurred while updating the user.' });
+    }
+};

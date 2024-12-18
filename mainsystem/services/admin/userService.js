@@ -48,6 +48,8 @@ class UserService {
         filter['role'] = 'user';
         return await paginate(User, filter, currentPage, itemsPerPage);
     }
-
+    static async updateById(id, data) {
+        return await User.findByIdAndUpdate(id, data, { new: true });
+    }
 }
 module.exports = UserService;

@@ -20,9 +20,8 @@ async function fetchAndRenderUsers(url) {
                     <td class="px-4 py-3 text-center">${user.email}</td>
                     <td class="px-4 py-3">
                         <div class="flex justify-center items-center space-x-2">
-                            <form class="my-0 mb-0">
-                                <input type="hidden" name="_id" value="${user._id}" class="mx-auto"/>
-                                <button type="button" onclick="openViewModal('${user._id}')" class="view-button bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600 transition duration-800 font-bold mx-auto">
+                            <form class="my-0 mb-0" action="/admin/users/view/${user._id}" method="GET">
+                                <button type="submit" class="view-button bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600 transition duration-800 font-bold mx-auto">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </form>
@@ -127,3 +126,46 @@ document.getElementById('search-form').addEventListener('submit', function (even
     
     fetchAndRenderUsers(url);
 });
+
+////////////////////////////////////////////
+//      Edit and delete order modals      //
+////////////////////////////////////////////
+
+
+function openDeleteModal(userId) {
+    const modal = document.getElementById('deleteModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+    confirmDeleteButton.onclick = () => handleDeleteUser(userId);
+}
+
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+
+
+async function handleDeleteUser(userId) {
+    closeDeleteModal();
+    try {
+        const response = await fetch(`/admin/users/delete/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId }),
+        });
+        if (response.ok) {
+            alert('User deleted successfully');
+            fetchAndRenderUsers('/admin/users/api?page=1');
+        } else {
+            alert('Failed to delete the user. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error deleting order:', error);
+        alert('An error occurred. Please try again.');
+    }
+}
