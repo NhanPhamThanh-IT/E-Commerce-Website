@@ -21,7 +21,8 @@
                     message="Make sure your personal information is up to date." button_content="View Profile"
                     hidden="hidden"}}
 
-                    <img src="/system_images/dashboardbanner.gif" alt="dashboardbanner" class="h-48 object-contain py-2 z-50">
+                    <img src="/system_images/dashboardbanner.gif" alt="dashboardbanner"
+                        class="h-48 object-contain py-2 z-50">
                 </header>
 
                 <main class="flex-1 pt-4 overflow-y-auto">
@@ -37,6 +38,32 @@
                         title="Actived Users" content=activedUsers }}
                     </div>
 
+                    {{!-- Product Overview --}}
+
+                    <div class="container mx-auto p-6">
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Products Overview</h2>
+
+                            <div class="flex justify-between mb-4">
+                                <p class="text-lg text-gray-700">Total Categories</p>
+                                <p class="text-lg font-semibold text-gray-800">{{categories.length}}</p>
+                            </div>
+
+                            <div class="flex flex-row space-x-10 justify-between">
+                                <p class="text-lg text-gray-700">Categories</p>
+                                <div class="flex flex-wrap gap-x-1 gap-y-2 justify-end">
+                                    {{#each categories}}
+                                    <div
+                                        class="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full border-2 border-blue-500 hover:bg-blue-200 transition duration-300 ease-in-out">
+                                        <span>{{this}}</span>
+                                    </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{!-- Performance overview --}}
                     <div class="bg-white shadow rounded-lg p-6 mt-6">
                         <h2 class="text-lg font-bold mb-4">Performance Overview</h2>
                         <canvas id="dashboardChart" class="w-full h-64"></canvas>

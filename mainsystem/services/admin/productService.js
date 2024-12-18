@@ -43,7 +43,7 @@ class ProductService {
     }
 
     static async searchProducts(field, query, currentPage = 1, itemsPerPage = 6) {
-        const allowedFields = ['title', 'category', 'brand' ];
+        const allowedFields = ['title', 'category', 'brand'];
         if (!allowedFields.includes(field)) {
             throw new Error(`Invalid field. Allowed fields are: ${allowedFields.join(', ')}`);
         }
@@ -55,6 +55,15 @@ class ProductService {
 
     static async addProduct(productData) {
         return await Product.create(productData);
+    }
+
+    static async getDistinctValue(field) {
+        try {
+            const distinctValues = await Product.distinct(field);
+            return distinctValues;
+        } catch (error) {
+            throw new Error('Error getting distinct values: ' + error.message);
+        }
     }
 }
 

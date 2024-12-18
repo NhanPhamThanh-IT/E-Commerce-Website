@@ -5,18 +5,21 @@ const OrderService = require('../../services/admin/orderService');
 exports.index = async (req, res) => {
     try {
         const personalInfo = req.user.toObject();
-        const [usersCount, productsCount, activedUsers, ordersCount ] = await Promise.all([
+        const [usersCount, activedUsers, productsCount, categories, ordersCount,  ] = await Promise.all([
             UserService.getQuantity({ role: 'user' }),
-            ProductService.getQuantity(),
             UserService.getQuantity({ role: 'user', isActive: true }),
+            ProductService.getQuantity(),
+            ProductService.getDistinctValue('category'),
             OrderService.getQuantity(),
         ]);
+
         const data = {
-            users: usersCount,
-            products: productsCount,
-            orders: ordersCount,
             personalInfo,
+            users: usersCount,
             activedUsers,
+            products: productsCount,
+            categories,
+            orders: ordersCount,
         };
         res.render('admin/dashboard/index', data);
     } catch (err) {

@@ -1,10 +1,12 @@
 <div
-    class="border-2 border-black bg-[rgba(255,228,216,0.8)] card rounded-xl p-6 flex flex-col items-center space-y-4 hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
+    class="border-[2px] border-black bg-[rgba(255,228,216,0.7)] card rounded-xl p-6 flex flex-col items-center space-y-4 hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden">
     <div
         class="bg-{{bg}} hover:text-white text-white p-4 rounded-full flex items-center justify-center w-16 h-16 hover:bg-{{hover}} transition-colors duration-300">
-        <a href={{href}} class="text-white hover:text-white no-underline hover:no-underline">
-            {{{icon}}}
-        </a>
+        <p>
+            <a href={{href}} class="text-white hover:text-white no-underline hover:no-underline">
+                {{{icon}}}
+            </a>
+        </p>
     </div>
     <div class="text-center">
         <h2 class="text-xl font-bold text-black">{{title}}</h2>
