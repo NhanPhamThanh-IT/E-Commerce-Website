@@ -8,10 +8,10 @@ exports.index = async (req, res) => {
 
 exports.edit = async (req, res) => {
     try {
-        const { lastName, firstName, phone, address } = req.body;
+        const { lastName, firstName, phone, address,avatar } = req.body;
         await User.findByIdAndUpdate(
             req.user._id, 
-            { lastName, firstName, phone, address },
+            { lastName, firstName, phone, address, image: '/user_images/'+avatar },
             { new: true, runValidators: true }
         );
         res.redirect('/admin/profile');

@@ -29,3 +29,30 @@ closeModalButton.addEventListener('click', (event) => {
     loadingOverlay.classList.add('hidden');
     loadingOverlay.classList.remove('pointer-events-auto');
 });
+
+document.getElementById('avatarInput').addEventListener('change', () => {
+    const uploadButton = document.getElementById('avatarInput');
+    const avatarImg = document.getElementById('avatar');
+
+    if (uploadButton.files.length > 0) {
+        const formData = new FormData();
+        formData.append('avatar', uploadButton.files[0]);
+
+        fetch(`/admin/profile/upload-avatar`, {
+            method: 'POST',
+            body: formData,
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to upload avatar.');
+                }
+            })
+            .then((data) => {
+                alert(data.message);
+                avatarImg.src = data.avatarUrl;
+            })
+            .catch((error) => console.error('Error uploading avatar:', error));
+    }
+});
