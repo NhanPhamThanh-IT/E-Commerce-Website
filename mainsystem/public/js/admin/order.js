@@ -49,10 +49,10 @@ function renderPagination(totalPages, currentPage, url) {
     const paginationContainer = document.getElementById('pagination-container');
     paginationContainer.innerHTML = '';
 
-    paginationContainer.className = 'flex justify-between items-center my-4';
+    paginationContainer.className = 'flex justify-between items-center my-4 text-white';
 
     const prevButton = document.createElement('button');
-    prevButton.className = `bg-neutral-500 hover:bg-black text-white font-bold py-2 px-4 rounded mx-1 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`;
+    prevButton.className = `bg-neutral-500 hover:bg-black hover:text-[#f3d2c3]  font-bold py-2 px-4 rounded mx-1 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`;
     prevButton.textContent = 'Previous';
     prevButton.disabled = currentPage === 1;
     prevButton.addEventListener('click', () => {
@@ -87,7 +87,7 @@ function renderPagination(totalPages, currentPage, url) {
     paginationContainer.appendChild(pageDropdown);
 
     const nextButton = document.createElement('button');
-    nextButton.className = `bg-neutral-500 hover:bg-black text-white font-bold py-2 px-10 rounded mx-1 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`;
+    nextButton.className = ` hover:bg-black hover:text-[#f3d2c3] bg-neutral-500 font-bold py-2 px-10 rounded mx-1  ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`;
     nextButton.textContent = 'Next';
     nextButton.disabled = currentPage === totalPages;
     nextButton.addEventListener('click', () => {
