@@ -63,7 +63,6 @@ class ProductService {
             const countPromises = distinctValues.map(item => 
                 Product.countDocuments({ [field]: item }).then(count => ({ value: item, count }))
             );
-            
             const counts = await Promise.all(countPromises);
             return counts;
         } catch (error) {

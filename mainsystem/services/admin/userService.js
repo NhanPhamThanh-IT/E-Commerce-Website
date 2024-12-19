@@ -48,8 +48,22 @@ class UserService {
         filter['role'] = 'user';
         return await paginate(User, filter, currentPage, itemsPerPage);
     }
+
     static async updateById(id, data) {
         return await User.findByIdAndUpdate(id, data, { new: true });
+    }
+
+    static async getStatisticDistinctValue(field) {
+        try {
+            const distinctValues = await User.distinct(field);
+            const countPromises = distinctValues.map(item => 
+                User.countDocuments({ [field]: item }).then(count => ({ value: item, count }))
+            );
+            const counts = await Promise.all(countPromises);
+            return counts;
+        } catch (error) {
+            throw new Error('Error getting distinct values: ' + error.message);
+        }
     }
 }
 module.exports = UserService;

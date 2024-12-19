@@ -1,9 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     let currentContent = 0;
     const contentIds = ['content1', 'content2', 'content3', 'content4', 'content5'];
+    let currentChart = null;
 
     const toggleContentVisibility = (id, show) => {
         const element = document.getElementById(id);
+        if (!element) return;
+
         element.style.transition = 'opacity 1s ease-in-out';
         if (show) {
             element.classList.remove('hidden');
@@ -22,88 +25,164 @@ document.addEventListener('DOMContentLoaded', () => {
         currentContent = (currentContent + 1) % contentIds.length;
     };
 
-    toggleContentVisibility(contentIds[currentContent], true);
-    setInterval(cycleContent, 4000);
+    const setLoading = (element, isLoading, options = {}) => {
+        if (!element) return;
 
-    const parseValue = (value) => parseInt(value) || 0;
-    const users = parseValue('{{users}}');
-    const products = parseValue('{{products}}');
-    const orders = parseValue('{{orders}}');
+        const { spinnerId = 'loadingSpinner', spinnerSize = '8', spinnerColor = 'blue-500' } = options;
+        let loadingElement = document.getElementById(spinnerId);
 
-    const createBarChart = (ctx, data, options, plugins = []) => {
-        return new Chart(ctx, { type: 'bar', data, options, plugins });
+        if (!loadingElement) {
+            loadingElement = document.createElement('div');
+            loadingElement.id = spinnerId;
+            loadingElement.className = 'flex justify-center items-center py-4';
+            loadingElement.innerHTML = `
+                <div class="animate-spin rounded-full h-${spinnerSize} w-${spinnerSize} border-t-2 border-${spinnerColor}"></div>`;
+            element.appendChild(loadingElement);
+        }
+
+        loadingElement.style.display = isLoading ? 'flex' : 'none';
+        element.style.opacity = isLoading ? '0.5' : '1';
     };
 
-    // Dashboard Chart
-    createBarChart(
-        document.getElementById('dashboardChart').getContext('2d'),
-        {
-            labels: ['Users', 'Products', 'Orders'],
-            datasets: [{
-                label: 'Count',
-                data: [users, products, orders],
-                backgroundColor: ['#3b82f6', '#10B981', '#F59E0B'],
-                borderColor: ['#4F46E5', '#059669', '#D97706'],
-                borderWidth: 1
-            }]
-        },
-        {
-            responsive: true,
-            plugins: { legend: { display: false } },
-            scales: { y: { beginAtZero: true } }
-        }
-    );
+    const createUserOverviewSection = (data) => {
+        const userOverviewContainer = document.getElementById('userOverviewContainer');
+        if (!userOverviewContainer) return;
 
-    // Categories Chart
-    const categories = JSON.parse('{{{categories}}}');
-    const labels = categories.map(item => item.value);
-    const counts = categories.map(item => item.count);
+        const totalUsersElement = document.createElement('div');
+        totalUsersElement.innerHTML = `
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Users Overview</h2>
+            </div>
+        `;
+        userOverviewContainer.appendChild(totalUsersElement);
+    };
 
-    createBarChart(
-        document.getElementById('categoriesChart').getContext('2d'),
-        {
-            labels,
-            datasets: [{
-                label: 'Product Count',
-                data: counts,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)',
-                    'rgba(255, 206, 86, 0.5)', 'rgba(75, 192, 192, 0.5)',
-                    'rgba(153, 102, 255, 0.5)', 'rgba(255, 159, 64, 0.5)',
-                    'rgba(255, 99, 71, 0.5)', 'rgba(144, 238, 144, 0.5)',
-                    'rgba(255, 165, 0, 0.5)', 'rgba(0, 128, 128, 0.5)'
-                ],
-                borderColor: '#fff',
-                borderWidth: 1
-            }]
-        },
-        {
-            responsive: true,
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: (tooltipItem) => `Count: ${counts[tooltipItem.dataIndex]}`
-                    }
-                }
+    const createProductOverviewSection = (data) => {
+        const productOverviewContainer = document.getElementById('productOverviewContainer');
+        if (!productOverviewContainer) return;
+
+        const totalCategoriesElement = document.createElement('div');
+        totalCategoriesElement.innerHTML = `
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Products Overview</h2>
+                <div class="flex justify-between mb-4">
+                    <p class="text-lg text-gray-700">Total Categories</p>
+                    <p id="total-categories" class="text-lg font-semibold text-gray-800">${data.categories.length}</p>
+                </div>
+                <div class="flex flex-row space-x-10 justify-between mb-4">
+                    <p class="text-lg text-gray-700">Categories</p>
+                    <div id="categories-list" class="flex flex-wrap gap-x-1 gap-y-2 justify-end">
+                        ${data.categories.map(category => `<span class="bg-gray-200 p-2 rounded">${category.name}</span>`).join('')}
+                    </div>
+                </div>
+                <div class="flex justify-between">
+                    <canvas id="categoriesChart" width="500" height="200"></canvas>
+                </div>
+            </div>
+        `;
+        productOverviewContainer.appendChild(totalCategoriesElement);
+        updateCategoriesList(data.categories);
+        updateChart(data.categories);
+    };
+
+    const updateCategoriesList = (categories) => {
+        const categoriesList = document.getElementById('categories-list');
+        if (!categoriesList) return;
+
+        categoriesList.innerHTML = '';
+        categories.forEach(category => {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full border-2 border-blue-500 hover:bg-blue-200 transition duration-300 ease-in-out';
+            categoryDiv.textContent = category.value;
+            categoriesList.appendChild(categoryDiv);
+        });
+    };
+
+    const updateChart = (categories) => {
+        const chartElement = document.getElementById('categoriesChart');
+        if (!chartElement) return;
+
+        const ctx = chartElement.getContext('2d');
+
+        if (currentChart) currentChart.destroy();
+
+        const labels = categories.map(item => item.value);
+        const counts = categories.map(item => item.count);
+
+        currentChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Product Count',
+                    data: counts,
+                    backgroundColor: ['rgba(243, 210, 195, 0.5)'],
+                    borderColor: '#fff',
+                    borderWidth: 1,
+                }],
             },
-            scales: {
-                x: { beginAtZero: true, title: { display: true, text: 'Categories' } },
-                y: { beginAtZero: true, title: { display: true, text: 'Counts' } }
-            }
-        },
-        [{
-            id: 'drawCounts',
-            afterDatasetsDraw: (chart) => {
-                const ctx = chart.ctx;
-                chart.getDatasetMeta(0).data.forEach((bar, index) => {
-                    const value = chart.data.datasets[0].data[index];
-                    const { x, y } = bar.tooltipPosition();
-                    ctx.fillStyle = '#000';
-                    ctx.font = '12px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillText(value, x, y - 5);
-                });
-            }
-        }]
-    );
+            options: {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: (tooltipItem) => `Count: ${counts[tooltipItem.dataIndex]}`,
+                        },
+                    },
+                },
+                scales: {
+                    x: { beginAtZero: true, title: { display: true, text: 'Categories' } },
+                    y: { beginAtZero: true, title: { display: true, text: 'Counts' } },
+                },
+            },
+        });
+    };
+
+    document.getElementById('userOverview').addEventListener('click', async () => {
+        const userOverviewContainer = document.getElementById('userOverviewContainer');
+        if (!userOverviewContainer) return;
+        userOverviewContainer.innerHTML = '';
+
+        userOverviewContainer.classList.toggle('hidden');
+        setLoading(userOverviewContainer, true);
+
+        try {
+            const response = await fetch('/admin/api/user-overview');
+            if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
+            const data = await response.json();
+            console.log(data);
+            if (!data.users) throw new Error('Users data is missing or invalid.');
+
+            createUserOverviewSection(data);
+        } catch (error) {
+            console.error('Error fetching user overview data:', error);
+        } finally {
+            setLoading(userOverviewContainer, false);
+        }
+    });
+
+    document.getElementById('productOverview').addEventListener('click', async () => {
+        const productOverviewContainer = document.getElementById('productOverviewContainer');
+        if (!productOverviewContainer) return;
+        productOverviewContainer.innerHTML = '';
+        
+        productOverviewContainer.classList.toggle('hidden');
+        setLoading(productOverviewContainer, true);
+
+        try {
+            const response = await fetch('/admin/api/product-overview');
+            if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
+            const data = await response.json();
+            if (!data.categories) throw new Error('Categories data is missing or invalid.');
+
+            createProductOverviewSection(data);
+
+        } catch (error) {
+            console.error('Error fetching product overview data:', error);
+        } finally {
+            setLoading(productOverviewContainer, false);
+        }
+    });
+
+    toggleContentVisibility(contentIds[currentContent], true);
+    setInterval(cycleContent, 4000);
 });

@@ -29,39 +29,25 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
                         {{> admin/card href="/admin/users" icon='<i class="bi bi-person-fill fs-2"></i>'
-                        title="Users" content=activedUsers bg="blue-500" hover="blue-600"}}
+                        title="Users" content=activedUsers bg="blue-500" hover="blue-600" id="userOverview"}}
                         {{> admin/card href="/admin/products" icon='<i class="bi bi-box-fill fs-2"></i>'
                         title="Products" content=products bg="green-500" hover="green-600" id="productOverview"}}
                         {{> admin/card href="/admin/orders" icon='<i class="bi bi-basket-fill fs-2"></i>'
-                        title="Orders" content=orders bg="yellow-500" hover="yellow-600"}}
+                        title="Orders" content=orders bg="yellow-500" hover="yellow-600" id="orderOverview"}}
                         {{> admin/card href="/admin/users" icon='<i class="bi bi-person-fill fs-2"></i>'
                         title="Actived Users" content=activedUsers }}
                     </div>
 
-                    {{!-- Product Overview --}}
+                     <!-- Users Overview -->
+                    <div id="userOverviewContainer" class="container mx-auto p-6 hidden"></div>
+                    
+                    <!-- Product Overview -->
+                    <div id="productOverviewContainer" class="container mx-auto p-6 hidden"></div>
 
-                    <div id="productOverviewContainer" class="container mx-auto p-6 hidden">
-                        <div class="bg-white p-6 rounded-lg shadow-lg">
-                            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Products Overview</h2>
+                    <!-- Orders Overview -->
+                    <div id="orderOverviewContainer" class="container mx-auto p-6 hidden"></div>
 
-                            <div class="flex justify-between mb-4">
-                                <p class="text-lg text-gray-700">Total Categories</p>
-                                <p class="text-lg font-semibold text-gray-800">{{categories.length}}</p>
-                            </div>
-
-                            <div class="flex flex-row space-x-10 justify-between mb-4">
-                                <p class="text-lg text-gray-700">Categories</p>
-                                <div id="categories_list" class="flex flex-wrap gap-x-1 gap-y-2 justify-end">
-                                </div>
-                            </div>
-
-                            <div class="flex justify-between">
-                                <canvas id="categoriesChart" width="500" height="200"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{!-- Performance overview --}}
+                    <!-- Performance overview -->
                     <div class="bg-white shadow rounded-lg p-6 mt-6">
                         <h2 class="text-lg font-bold mb-4">Performance Overview</h2>
                         <canvas id="dashboardChart" class="w-full h-64"></canvas>
@@ -76,132 +62,4 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const productOverviewButton = document.getElementById('productOverview');
-        const productOverviewContainer = document.getElementById('productOverviewContainer');
-        if (productOverviewContainer) {
-            productOverviewContainer.classList.add('hidden');
-        }
-        if (productOverviewButton) {
-            const productOverviewTag = productOverviewButton.firstElementChild;
-            productOverviewButton.addEventListener('click', () => {
-                if (productOverviewContainer && productOverviewTag) {
-                    productOverviewTag.className = "bg-[#f3d2c3] bg-opacity-50 rounded-xl px-6 py-4 flex flex justify-between items-center hover:scale-105 transition-all duration-300 ease-in-out overflow-hidden shadow-md"
-                    productOverviewContainer.classList.remove('hidden');
-                }
-            });
-        }
-
-        let currentContent = 0;
-        const contentIds = ['content1', 'content2', 'content3', 'content4', 'content5'];
-
-        const toggleContentVisibility = (id, show) => {
-            const element = document.getElementById(id);
-            element.style.transition = 'opacity 1s ease-in-out';
-            if (show) {
-                element.classList.remove('hidden');
-                element.style.opacity = 1;
-            } else {
-                element.style.opacity = 0;
-                setTimeout(() => element.classList.add('hidden'), 1000);
-            }
-        };
-
-        const categoriesList = document.getElementById('categories_list');
-        const categories = JSON.parse('{{{categories}}}');
-
-        categories.forEach(category => {
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full border-2 border-blue-500 hover:bg-blue-200 transition duration-300 ease-in-out';
-            categoryDiv.textContent = category.value;
-            categoriesList.appendChild(categoryDiv);
-        });
-
-        const cycleContent = () => {
-            const currentId = contentIds[currentContent];
-            const nextId = contentIds[(currentContent + 1) % contentIds.length];
-            toggleContentVisibility(currentId, false);
-            setTimeout(() => toggleContentVisibility(nextId, true), 1000);
-            currentContent = (currentContent + 1) % contentIds.length;
-        };
-
-        toggleContentVisibility(contentIds[currentContent], true);
-        setInterval(cycleContent, 4000);
-
-        const parseValue = (value) => parseInt(value) || 0;
-        const users = parseValue('{{users}}');
-        const products = parseValue('{{products}}');
-        const orders = parseValue('{{orders}}');
-
-        const createBarChart = (ctx, data, options, plugins = []) => {
-            return new Chart(ctx, { type: 'bar', data, options, plugins });
-        };
-
-        // Dashboard Chart
-        createBarChart(
-            document.getElementById('dashboardChart').getContext('2d'),
-            {
-                labels: ['Users', 'Products', 'Orders'],
-                datasets: [{
-                    label: 'Count',
-                    data: [users, products, orders],
-                    backgroundColor: ['#3b82f6', '#10B981', '#F59E0B'],
-                    borderColor: ['#4F46E5', '#059669', '#D97706'],
-                    borderWidth: 1
-                }]
-            },
-            {
-                responsive: true,
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true } }
-            }
-        );
-
-        // Categories Chart
-        const labels = categories.map(item => item.value);
-        const counts = categories.map(item => item.count);
-
-        createBarChart(
-            document.getElementById('categoriesChart').getContext('2d'),
-            {
-                labels,
-                datasets: [{
-                    label: 'Product Count',
-                    data: counts,
-                    backgroundColor: ['rgba(243, 210, 195, 0.5)'],
-                    borderColor: '#fff',
-                    borderWidth: 1
-                }]
-            },
-            {
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: (tooltipItem) => `Count: ${counts[tooltipItem.dataIndex]}`
-                        }
-                    }
-                },
-                scales: {
-                    x: { beginAtZero: true, title: { display: true, text: 'Categories' } },
-                    y: { beginAtZero: true, title: { display: true, text: 'Counts' } }
-                }
-            },
-            [{
-                id: 'drawCounts',
-                afterDatasetsDraw: (chart) => {
-                    const ctx = chart.ctx;
-                    chart.getDatasetMeta(0).data.forEach((bar, index) => {
-                        const value = chart.data.datasets[0].data[index];
-                        const { x, y } = bar.tooltipPosition();
-                        ctx.fillStyle = '#000';
-                        ctx.font = '12px Arial';
-                        ctx.textAlign = 'center';
-                        ctx.fillText(value, x, y - 5);
-                    });
-                }
-            }]
-        );
-    });
-
-</script>
+<script src="/js/admin/dashboard.js"></script>
