@@ -1,36 +1,23 @@
-document.addEventListener('DOMContentLoaded', () => {
-    let currentContent = 0;
-    const contentIds = ['content1', 'content2', 'content3', 'content4', 'content5'];
-    let currentChart = null;
-
-    const toggleContentVisibility = (id, show) => {
+const Utils = {
+    toggleContentVisibility: (id, show, transitionDuration = 1000) => {
         const element = document.getElementById(id);
         if (!element) return;
 
-        element.style.transition = 'opacity 1s ease-in-out';
+        element.style.transition = `opacity ${transitionDuration}ms ease-in-out`;
         if (show) {
             element.classList.remove('hidden');
             element.style.opacity = 1;
         } else {
             element.style.opacity = 0;
-            setTimeout(() => element.classList.add('hidden'), 1000);
+            setTimeout(() => element.classList.add('hidden'), transitionDuration);
         }
-    };
+    },
 
-    const cycleContent = () => {
-        const currentId = contentIds[currentContent];
-        const nextId = contentIds[(currentContent + 1) % contentIds.length];
-        toggleContentVisibility(currentId, false);
-        setTimeout(() => toggleContentVisibility(nextId, true), 1000);
-        currentContent = (currentContent + 1) % contentIds.length;
-    };
-
-    const setLoading = (element, isLoading, options = {}) => {
+    setLoading: (element, isLoading, options = {}) => {
+        const { spinnerId = 'loadingSpinner', spinnerSize = '8', spinnerColor = 'blue-500' } = options;
         if (!element) return;
 
-        const { spinnerId = 'loadingSpinner', spinnerSize = '8', spinnerColor = 'blue-500' } = options;
         let loadingElement = document.getElementById(spinnerId);
-
         if (!loadingElement) {
             loadingElement = document.createElement('div');
             loadingElement.id = spinnerId;
@@ -42,147 +29,181 @@ document.addEventListener('DOMContentLoaded', () => {
 
         loadingElement.style.display = isLoading ? 'flex' : 'none';
         element.style.opacity = isLoading ? '0.5' : '1';
-    };
+    }
+};
 
-    const createUserOverviewSection = (data) => {
+class ChartManager {
+    constructor() {
+        this.charts = {};
+    }
+
+    createChart(chartId, type, data, options) {
+        const chartElement = document.getElementById(chartId);
+        if (!chartElement) return;
+
+        const ctx = chartElement.getContext('2d');
+        if (this.charts[chartId]) this.charts[chartId].destroy();
+
+        this.charts[chartId] = new Chart(ctx, {
+            type,
+            data,
+            options
+        });
+    }
+
+    destroyChart(chartId) {
+        if (this.charts[chartId]) {
+            this.charts[chartId].destroy();
+            delete this.charts[chartId];
+        }
+    }
+}
+
+const chartManager = new ChartManager();
+
+class ContentManager {
+    constructor(contentIds) {
+        this.contentIds = contentIds;
+        this.currentContent = 0;
+    }
+
+    cycleContent() {
+        const currentId = this.contentIds[this.currentContent];
+        const nextId = this.contentIds[(this.currentContent + 1) % this.contentIds.length];
+        Utils.toggleContentVisibility(currentId, false);
+        setTimeout(() => Utils.toggleContentVisibility(nextId, true), 1000);
+        this.currentContent = (this.currentContent + 1) % this.contentIds.length;
+    }
+
+    startCycle(interval = 4000) {
+        Utils.toggleContentVisibility(this.contentIds[this.currentContent], true);
+        setInterval(() => this.cycleContent(), interval);
+    }
+}
+
+const OverviewSections = {
+    createUserOverviewSection: (data) => {
         const userOverviewContainer = document.getElementById('userOverviewContainer');
         if (!userOverviewContainer) return;
 
-        const totalUsersElement = document.createElement('div');
-        totalUsersElement.innerHTML = `
+        userOverviewContainer.innerHTML = `
             <div class="bg-white p-6 rounded-lg shadow-lg">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-4">Users Overview</h2>
+                <canvas id="userGenderPieChart" width="500" height="200"></canvas>
             </div>
         `;
-        userOverviewContainer.appendChild(totalUsersElement);
-    };
 
-    const createProductOverviewSection = (data) => {
+        chartManager.createChart('userGenderPieChart', 'pie', {
+            labels: data.gender.map(item => item.value),
+            datasets: [{
+                data: data.gender.map(item => item.count),
+                backgroundColor: [
+                    'rgba(243, 210, 195, 0.7)',
+                    'rgba(93, 165, 255, 0.7)',
+                    'rgba(255, 123, 129, 0.7)',
+                    'rgba(255, 214, 92, 0.7)',
+                    'rgba(100, 185, 108, 0.7)'
+                ],
+                borderColor: '#fff',
+                borderWidth: 1
+            }]
+        }, {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: (tooltipItem) => `Value: ${data.gender[tooltipItem.dataIndex].count}`
+                    }
+                }
+            }
+        });
+    },
+
+    createProductOverviewSection: (data) => {
         const productOverviewContainer = document.getElementById('productOverviewContainer');
         if (!productOverviewContainer) return;
 
-        const totalCategoriesElement = document.createElement('div');
-        totalCategoriesElement.innerHTML = `
+        productOverviewContainer.innerHTML = `
             <div class="bg-white p-6 rounded-lg shadow-lg">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-4">Products Overview</h2>
                 <div class="flex justify-between mb-4">
                     <p class="text-lg text-gray-700">Total Categories</p>
                     <p id="total-categories" class="text-lg font-semibold text-gray-800">${data.categories.length}</p>
                 </div>
-                <div class="flex flex-row space-x-10 justify-between mb-4">
-                    <p class="text-lg text-gray-700">Categories</p>
-                    <div id="categories-list" class="flex flex-wrap gap-x-1 gap-y-2 justify-end">
-                        ${data.categories.map(category => `<span class="bg-gray-200 p-2 rounded">${category.name}</span>`).join('')}
-                    </div>
-                </div>
-                <div class="flex justify-between">
-                    <canvas id="categoriesChart" width="500" height="200"></canvas>
-                </div>
+                <div id="categories-list" class="flex flex-wrap gap-x-1 gap-y-2"></div>
+                <canvas id="categoriesChart" width="500" height="200"></canvas>
             </div>
         `;
-        productOverviewContainer.appendChild(totalCategoriesElement);
-        updateCategoriesList(data.categories);
-        updateChart(data.categories);
-    };
 
-    const updateCategoriesList = (categories) => {
         const categoriesList = document.getElementById('categories-list');
-        if (!categoriesList) return;
-
-        categoriesList.innerHTML = '';
-        categories.forEach(category => {
+        data.categories.forEach(category => {
             const categoryDiv = document.createElement('div');
             categoryDiv.className = 'text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full border-2 border-blue-500 hover:bg-blue-200 transition duration-300 ease-in-out';
             categoryDiv.textContent = category.value;
             categoriesList.appendChild(categoryDiv);
         });
-    };
 
-    const updateChart = (categories) => {
-        const chartElement = document.getElementById('categoriesChart');
-        if (!chartElement) return;
-
-        const ctx = chartElement.getContext('2d');
-
-        if (currentChart) currentChart.destroy();
-
-        const labels = categories.map(item => item.value);
-        const counts = categories.map(item => item.count);
-
-        currentChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels,
-                datasets: [{
-                    label: 'Product Count',
-                    data: counts,
-                    backgroundColor: ['rgba(243, 210, 195, 0.5)'],
-                    borderColor: '#fff',
-                    borderWidth: 1,
-                }],
-            },
-            options: {
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: (tooltipItem) => `Count: ${counts[tooltipItem.dataIndex]}`,
-                        },
-                    },
-                },
-                scales: {
-                    x: { beginAtZero: true, title: { display: true, text: 'Categories' } },
-                    y: { beginAtZero: true, title: { display: true, text: 'Counts' } },
-                },
-            },
+        chartManager.createChart('categoriesChart', 'bar', {
+            labels: data.categories.map(item => item.value),
+            datasets: [{
+                label: 'Product Count',
+                data: data.categories.map(item => item.count),
+                backgroundColor: 'rgba(243, 210, 195, 0.5)',
+                borderColor: '#fff',
+                borderWidth: 1
+            }]
+        }, {
+            responsive: true,
+            scales: {
+                x: { beginAtZero: true, title: { display: true, text: 'Categories' } },
+                y: { beginAtZero: true, title: { display: true, text: 'Counts' } }
+            }
         });
-    };
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    const contentManager = new ContentManager(['content1', 'content2', 'content3', 'content4', 'content5']);
+    contentManager.startCycle();
 
     document.getElementById('userOverview').addEventListener('click', async () => {
         const userOverviewContainer = document.getElementById('userOverviewContainer');
         if (!userOverviewContainer) return;
-        userOverviewContainer.innerHTML = '';
 
+        userOverviewContainer.innerHTML = '';
         userOverviewContainer.classList.toggle('hidden');
-        setLoading(userOverviewContainer, true);
+        Utils.setLoading(userOverviewContainer, true);
 
         try {
             const response = await fetch('/admin/api/user-overview');
             if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
             const data = await response.json();
-            console.log(data);
-            if (!data.users) throw new Error('Users data is missing or invalid.');
-
-            createUserOverviewSection(data);
+            OverviewSections.createUserOverviewSection(data);
         } catch (error) {
             console.error('Error fetching user overview data:', error);
         } finally {
-            setLoading(userOverviewContainer, false);
+            Utils.setLoading(userOverviewContainer, false);
         }
     });
 
     document.getElementById('productOverview').addEventListener('click', async () => {
         const productOverviewContainer = document.getElementById('productOverviewContainer');
         if (!productOverviewContainer) return;
+
         productOverviewContainer.innerHTML = '';
-        
         productOverviewContainer.classList.toggle('hidden');
-        setLoading(productOverviewContainer, true);
+        Utils.setLoading(productOverviewContainer, true);
 
         try {
             const response = await fetch('/admin/api/product-overview');
             if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
             const data = await response.json();
-            if (!data.categories) throw new Error('Categories data is missing or invalid.');
-
-            createProductOverviewSection(data);
-
+            console.log(data)
+            OverviewSections.createProductOverviewSection(data);
         } catch (error) {
             console.error('Error fetching product overview data:', error);
         } finally {
-            setLoading(productOverviewContainer, false);
+            Utils.setLoading(productOverviewContainer, false);
         }
     });
-
-    toggleContentVisibility(contentIds[currentContent], true);
-    setInterval(cycleContent, 4000);
 });
