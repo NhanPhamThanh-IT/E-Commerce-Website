@@ -6,14 +6,21 @@
     <div class="bg-white rounded-lg shadow-md p-6 mb-8 max-w-5xl mx-auto border border-gray-200">
         <div class="flex justify-between items-center">
             <h2 class="text-2xl font-semibold text-left text-gray-600">Total Balance</h2>
+            <a href="https://localhost:3000/user" class="no-underline hover:no-underline">
+            <button
+                class="py-2 px-7 bg-red-500 font-bold text-white py-2 px-6 rounded-lg hover:bg-red-600 flex items-center">
+                <i class="fa-solid fa-house mr-3"></i>
+                Return
+            </button>
+            </a>
         </div>
         <div class="flex justify-between items-center mt-4">
             <p class="text-3xl font-bold text-gray-800">${{balance}}</p>
             <button
                 onclick="toggleAddFundsModal()"
-                class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 shadow focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 flex items-center">
+                class="py-2 px-[25px] bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-600 focus:outline-none flex items-center">
                 <i class="fa-solid fa-circle-dollar-to-slot mr-3"></i>
-                Add Funds
+                Deposit
             </button>
         </div>
     </div>
