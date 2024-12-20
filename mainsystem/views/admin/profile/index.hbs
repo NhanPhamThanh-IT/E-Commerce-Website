@@ -1,4 +1,5 @@
-<div id="loadingOverlay" class="fixed inset-0 z-100 bg-gray-500 bg-opacity-50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 hidden">
+<div id="loadingOverlay"
+    class="fixed inset-0 z-100 bg-gray-500 bg-opacity-50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 hidden">
     <div class="spinner-border text-white" role="status">
         <span class="sr-only">Loading...</span>
     </div>
@@ -7,13 +8,14 @@
 <div class="flex flex-col h-screen bg-gray-100">
     <div class="flex">
         {{> aside }}
-        
+
         <main class="flex-1 overflow-y-auto bg-gray-100">
-            
-            {{> admin/navbar hidden_search="hidden" title="Profile Details" content="Browse through our curated list of products available
+
+            {{> admin/navbar hidden_search="hidden" title="Profile Details" content="Browse through our curated list of
+            products available
             for you"}}
 
-            <div class="bg-white text-black rounded-xl shadow-2xl mx-4 mb-4">
+            <div class="bg-[#f3d2c3] text-black rounded-xl shadow-2xl mx-4 mb-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 rounded-xl">
                     <div class="space-y-6 flex flex-col justify-end">
                         <div class="flex justify-between flex-grow">
@@ -27,10 +29,14 @@
                                     </form>
                                 </div>
                                 <div class="col-span-4 text-black p-4 rounded-lg">
-                                    <div class="flex justify-center">
+                                    <div class="flex flex-col items-center justify-center">
                                         <div
-                                            class="overflow-hidden rounded-full shadow-lg w-40 h-40 border-2 border-white bg-white">
+                                            class="overflow-hidden rounded-full shadow-lg w-60 h-60 border-2 border-white bg-white mr-10">
                                             <img src="{{adminInfo.image}}" alt="Avatar"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="overflow-hidden w-80 h-80 mr-10 ml-4 -translate-x-8">
+                                            <img src="/system_images/hello.gif" alt="Additional GIF"
                                                 class="w-full h-full object-cover">
                                         </div>
                                     </div>
@@ -38,48 +44,49 @@
                             </div>
                         </div>
 
-                        <div
-                            class="border-zinc-300 border-2 bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                            <span class="text-lg block font-semibold text-blue-700">Full Name</span>
-                            <span class="text-lg font-medium flex justify-end">{{adminInfo.lastName}}
-                                {{adminInfo.firstName}}</span>
-                        </div>
-                        <div
-                            class="border-zinc-300 border-2 bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                            <span class="text-lg block font-semibold text-blue-700">Email</span>
-                            <span class="text-lg font-medium flex justify-end">{{adminInfo.email}}</span>
-                        </div>
-                        <div
-                            class="border-zinc-300 border-2 bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                            <span class="text-lg block font-semibold text-blue-700">Role</span>
-                            <span class="text-lg font-medium flex justify-end">{{adminInfo.role}}</span>
-                        </div>
+
                     </div>
 
                     <div class="space-y-6">
                         <div
-                            class="border-zinc-300 border-2 bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                            <span class="text-lg block font-semibold text-blue-700">Username</span>
+                            class="border-black border-2 bg-white text-gray-800 p-2 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex justify-between items-center">
+                            <span class="text-lg font-semibold text-[#422006]">Full Name</span>
+                            <span class="text-lg font-medium justify-end">{{adminInfo.lastName}}
+                                {{adminInfo.firstName}}</span>
+                        </div>
+                        <div
+                            class="border-black border-2 bg-white text-gray-800 p-2 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex justify-between items-center">
+                            <span class="text-lg block font-semibold text-[#422006]">Email</span>
+                            <span class="text-lg font-medium flex justify-end">{{adminInfo.email}}</span>
+                        </div>
+                        <div
+                            class="border-black border-2 bg-white text-gray-800 p-2 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex justify-between items-center">
+                            <span class="text-lg block font-semibold text-[#422006]">Role</span>
+                            <span class="text-lg font-medium flex justify-end">{{adminInfo.role}}</span>
+                        </div>
+                        <div
+                            class="border-black border-2 bg-white text-gray-800 p-2 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex justify-between items-center">
+                            <span class="text-lg block font-semibold text-[#422006]">Username</span>
                             <span class="text-lg font-medium flex justify-end">{{adminInfo.username}}</span>
                         </div>
                         <div
-                            class="border-zinc-300 border-2 bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                            <span class="text-lg block font-semibold text-blue-700">Birthdate</span>
+                            class="border-black border-2 bg-white text-gray-800 p-2 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex justify-between items-center">
+                            <span class="text-lg block font-semibold text-[#422006]">Birthdate</span>
                             <span class="text-lg font-medium flex justify-end">{{adminInfo.birthDate}}</span>
                         </div>
                         <div
-                            class="border-zinc-300 border-2 bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                            <span class="text-lg block font-semibold text-blue-700">Phone</span>
+                            class="border-black border-2 bg-white text-gray-800 p-2 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex justify-between items-center">
+                            <span class="text-lg block font-semibold text-[#422006]">Phone</span>
                             <span class="text-lg font-medium flex justify-end">{{adminInfo.phone}}</span>
                         </div>
                         <div
-                            class="border-zinc-300 border-2 bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                            <span class="text-lg block font-semibold text-blue-700">Address</span>
+                            class="border-black border-2 bg-white text-gray-800 p-2 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex justify-between items-center">
+                            <span class="text-lg block font-semibold text-[#422006]">Address</span>
                             <span class="text-lg font-medium flex justify-end">{{adminInfo.address}}</span>
                         </div>
                         <div
-                            class="border-zinc-300 border-2 bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                            <span class="text-lg block font-semibold text-blue-700">Login Method</span>
+                            class="border-black border-2  border-2 bg-white text-gray-800 p-2 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex justify-between items-center ">
+                            <span class="text-lg block font-semibold text-[#422006]">Login Method</span>
                             <span class="text-lg font-medium flex justify-end">{{adminInfo.loginMethod}}</span>
                         </div>
                     </div>
@@ -94,7 +101,7 @@
 
 <div id="editProfileModal"
     class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 hidden">
-    <div class="bg-white p-6 rounded-lg w-1/3">
+    <div class="bg-[#f3d2c3] p-6 rounded-lg w-1/3">
         <h2 class="text-xl font-bold mb-4 text-black">Edit Profile</h2>
         <form action="/admin/profile/edit" method="POST" class="mb-0">
             <div class="mb-4">
@@ -117,12 +124,16 @@
                 <input type="text" id="address" name="address" class="w-full px-3 py-2 border border-gray-300 rounded"
                     value="{{adminInfo.address}}" required>
             </div>
-            
+
             <div class="mb-4">
-                <label for="avatarInput" class="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded transition hover:bg-blue-500">Upload Avatar</label>
-                <input type="file" name="avatar" id="avatarInput" accept="image/jpeg,image/png,image/jpg" class="hidden">
+                <label for="avatarInput"
+                    class="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded transition hover:bg-blue-500">Upload
+                    Avatar</label>
+                <input type="file" name="avatar" id="avatarInput" accept="image/jpeg,image/png,image/jpg"
+                    class="hidden">
                 <div class="w-32 h-32 rounded-full overflow-hidden shadow-md mt-4">
-                    <img id="avatar" referrerPolicy="no-referrer" src="{{#if adminInfo.avatar}}/user_images/{{adminInfo.avatar}}{{else if adminInfo.image}}{{adminInfo.image}}{{else}}/user_images/profile.png{{/if}}" 
+                    <img id="avatar" referrerPolicy="no-referrer"
+                        src="{{#if adminInfo.avatar}}/user_images/{{adminInfo.avatar}}{{else if adminInfo.image}}{{adminInfo.image}}{{else}}/user_images/profile.png{{/if}}"
                         alt="Admin Avatar" class="w-full h-full object-cover">
                 </div>
             </div>
