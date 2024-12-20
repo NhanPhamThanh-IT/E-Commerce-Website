@@ -65,8 +65,7 @@ router.use(Auth.jwtAuth)
 router.use(Auth.isAuthenticated);
 
 router.get('/user', Auth.isUser, dashboardController.index);
-
-router.get('/cart', async (req, res) => {
+router.get('/cart', Auth.isUser, async (req, res) => {
     const user = await userModel.findById(req.user._id).lean();
     if (!user) {
         return res.status(404).json({ error: 'User not found' });
@@ -87,7 +86,7 @@ router.get('/homepage', (req, res) => {
     res.redirect('/login');
 })
 
-router.get('/profile',  (req, res) => {
+router.get('/profile', Auth.isUser, (req, res) => {
     const user = req.user.toObject();
     res.render('user/profile/index', { user });
 });
