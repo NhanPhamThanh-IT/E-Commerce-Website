@@ -1,43 +1,49 @@
-<div class="flex items-center justify-center w-screen h-screen bg-gray-100">
-    <div class="auth-container max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg border-2 border-gray-400">
-        <h2 class="text-3xl font-semibold text-center text-indigo-700 mb-6">Create an Account</h2>
-        <form id="signupForm" class="space-y-6">
-            <div class="form-group">
-                <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
-                <input type="text"
-                    class="form-input w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                    id="firstName" name="firstName" placeholder="Your first name" required>
+<div class="flex min-h-screen">
+    <!-- Left Column: Background Image -->
+    <div class="w-1/2 bg-cover bg-center">
+        <img src="/system_images/Register.gif" alt="logo" class="h-full object-cover">
+    </div>
+
+    <!-- Right Column: Form -->
+    <div class="w-1/2 flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600">
+        <div class="auth-container max-w-md mx-auto p-8 bg-white rounded-xl shadow-xl border border-gray-200">
+            <h2 class="text-3xl font-bold text-center text-indigo-700 mb-8">Create an Account</h2>
+            <form id="signupForm" class="space-y-6">
+                <div class="form-group">
+                    <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                    <input type="text"
+                        class="form-input w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                        id="firstName" name="firstName" placeholder="Your first name" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                    <input type="text"
+                        class="form-input w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                        id="lastName" name="lastName" placeholder="Your last name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email"
+                        class="form-input w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                        id="email" name="email" placeholder="Your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password"
+                        class="form-input w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                        id="password" name="password" placeholder="Your password" required>
+                </div>
+                <button type="submit"
+                    class="w-full py-3 bg-indigo-600 text-white text-lg font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200">
+                    Sign Up
+                </button>
+            </form>
+            <div class="toggle-link text-center mt-6">
+                <span class="text-sm text-gray-600">Already have an account? <a href="/login" class="text-indigo-600 hover:underline">Log in</a></span>
             </div>
-            <div class="form-group">
-                <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
-                <input type="text"
-                    class="form-input w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                    id="lastName" name="lastName" placeholder="Your last name" required>
+            <div class="text-center mt-6">
+                <small class="text-gray-500">By clicking continue, you agree to our <a href="#" class="text-indigo-600 hover:underline">Terms of Service</a> and <a href="#" class="text-indigo-600 hover:underline">Privacy Policy</a>.</small>
             </div>
-            <div class="form-group">
-                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                <input type="email"
-                    class="form-input w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                    id="email" name="email" placeholder="Your email" required>
-            </div>
-            <div class="form-group">
-                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                <input type="password"
-                    class="form-input w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                    id="password" name="password" placeholder="Your password" required>
-            </div>
-            <button type="submit"
-                class="w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">Sign
-                Up</button>
-        </form>
-        <div class="toggle-link text-center mt-4">
-            <span class="text-sm">Already have an account? <a href="/login" class="text-indigo-600 hover:underline">Log
-                    in</a></span>
-        </div>
-        <div class="text-center mt-4">
-            <small class="text-gray-600">By clicking continue, you agree to our <a href="#"
-                    class="text-indigo-600 hover:underline">Terms of Service</a> and <a href="#"
-                    class="text-indigo-600 hover:underline">Privacy Policy</a>.</small>
         </div>
     </div>
 </div>
@@ -64,7 +70,6 @@
                 body: JSON.stringify(formData)
             });
             const data = await response.json();
-            console.log(data)
             if (response.ok) {
                 alert('Registration successful!');
                 window.location.href = '/login';
