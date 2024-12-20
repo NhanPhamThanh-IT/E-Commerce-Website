@@ -1,37 +1,24 @@
 {{> header }}
-<style>
-    /* CSS for fading out and in */
-    .cart-item {
-        opacity: 1;
-        transition: opacity 0.1s ease;
-    }
-
-    .cart-item.hidden {
-        opacity: 0;
-    }
-</style>
 <main class="container mx-auto px-6 py-12">
-    <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Your Cart</h2>
+    <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">Your Cart</h2>
 
-    <div class="flex space-x-12">
+    <div class="flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-12">
         <!-- Cart Section -->
-        <div class="w-1/2 bg-white p-6 rounded-lg shadow-md">
-            <div id="cart-summary" class="mt-6 border-b pt-6">
-                <p id="cart-total" class="text-xl font-semibold text-gray-800">Total: $0.00</p>
+        <div class="w-full md:w-1/2 bg-white p-6 rounded-lg shadow-lg transition-all hover:shadow-2xl">
+            <div id="cart-summary" class="mt-6 border-b pb-6">
+                <p id="cart-total" class="text-2xl font-semibold text-gray-900">Total: $0.00</p>
             </div>
-            <div id="cart-container" class="space-y-6">
-                <!-- Cart items will be dynamically added here -->
+            <div id="cart-container" class="space-y-6 mt-6">
+                <!-- Cart items -->
             </div>
             <div id="pagination" class="mt-6 flex justify-center space-x-2">
-                <!-- Pagination buttons will be dynamically added here -->
+                <!-- Pagination buttons  -->
             </div>
-
-
         </div>
 
         <!-- Address Form Section -->
-        <div class="w-1/2 bg-white p-6 rounded-lg shadow-md">
-            <h3 class="text-3xl font-semibold text-gray-800 mb-8">Enter Your Information</h3>
+        <div class="w-full md:w-1/2 bg-white p-6 rounded-lg shadow-lg transition-all hover:shadow-2xl">
+            <h3 class="text-3xl font-semibold text-gray-900 mb-8">Enter Your Information</h3>
             <form id="address-form" class="space-y-6">
                 <div>
                     <label for="phone" class="block text-lg font-medium text-gray-700">Phone Number</label>
@@ -42,13 +29,13 @@
 
                 <div>
                     <label for="address" class="block text-lg font-medium text-gray-700">Shipping Address</label>
-                    <input id="address" name="address" type="text"
+                    <textarea id="address" name="address" rows="4"
                         class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        rows="4" required value="{{user.address}}"></input>
+                        required>{{user.address}}</textarea>
                 </div>
 
                 <button type="submit"
-                    class="bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-800 transition w-full">
+                    class="bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-800 transition w-full focus:outline-none">
                     Confirm Order
                 </button>
             </form>
