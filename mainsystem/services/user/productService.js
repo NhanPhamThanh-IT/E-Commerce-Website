@@ -9,7 +9,7 @@ class ProductService {
         return await Product.findById(id).lean();
     }
 
-    static async search(field, value, currentPage = 1, itemsPerPage = 10) {
+    static async search(field, value, currentPage = 1, itemsPerPage = 8) {
         const query = {};
         const skip = (currentPage - 1) * itemsPerPage;
         query[field] = { $regex: value, $options: 'i' };
@@ -21,7 +21,7 @@ class ProductService {
 
 
     // Get products by category with pagination
-    static async getByCategory(category, currentPage = 1, itemsPerPage = 10) {
+    static async getByCategory(category, currentPage = 1, itemsPerPage = 8) {
         const skip = (currentPage - 1) * itemsPerPage;
         const products = await Product.find({ category }).lean().skip(skip).limit(itemsPerPage);
         const totalItems = await Product.countDocuments({ category });
@@ -32,7 +32,7 @@ class ProductService {
 
 
     // Get products with pagination
-    static async getAllWithPagination(currentPage = 1, itemsPerPage = 10) {
+    static async getAllWithPagination(currentPage = 1, itemsPerPage = 8) {
         const skip = (currentPage - 1) * itemsPerPage;
         const products = await Product.find().lean().skip(skip).limit(itemsPerPage);
         const totalItems = await Product.countDocuments();

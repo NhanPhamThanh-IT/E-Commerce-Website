@@ -2,15 +2,22 @@
     <!-- Page Title -->
     <h1 class="text-4xl font-semibold text-center text-blue-600 mb-6">Order Summary</h1>
 
-    <!-- User Info Card -->
-    <div class="bg-gradient-to-r from-blue-50 to-indigo-100 rounded-lg shadow-xl p-6 mb-8 max-w-5xl mx-auto">
+<!-- User Info Card -->
+<div class="bg-gradient-to-r from-blue-50 to-indigo-100 rounded-lg shadow-xl p-6 mb-8 max-w-5xl mx-auto flex items-center">
+    <div class="space-y-3 flex-grow">
         <h2 class="text-2xl font-semibold text-center text-gray-800 mb-4">User Information</h2>
-        <div class="space-y-3">
-            <p class="text-gray-600 text-lg">Name: <span class="font-semibold text-gray-900">{{user.firstName}} {{user.lastName}}</span></p>
-            <p class="text-gray-600 text-lg">Email: <span class="font-semibold text-gray-900">{{user.email}}</span></p>
-            <p class="text-gray-600 text-lg">Remaining Balance: <span class="font-semibold text-green-500">${{balance}}</span></p>
-        </div>
+        <p class="text-gray-600 text-lg">Name: <span class="font-semibold text-gray-900">{{user.firstName}} {{user.lastName}}</span></p>
+        <p class="text-gray-600 text-lg">Email: <span class="font-semibold text-gray-900">{{user.email}}</span></p>
+        <p class="text-gray-600 text-lg">Remaining Balance: <span class="font-semibold text-green-500">${{balance}}</span></p>
     </div>
+    <div class="ml-auto">
+        <a href="/account">
+        <button id="my-account-button" class="bg-green-500 text-white py-3 px-6 rounded-full text-lg hover:bg-green-600 transition transform hover:scale-105 shadow-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50">
+            <i class="fa-solid fa-user"></i> My Account
+        </button>
+        </a>
+    </div>
+</div>
 
     <!-- Order Card -->
     <div class="bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg shadow-xl p-6 max-w-5xl mx-auto">
@@ -112,6 +119,7 @@ document.getElementById('pay-now-button').addEventListener('click', async functi
 
         if (response.ok) {
             alert('Order processed successfully!');
+            window.location.href = '/account';
         } else {
             alert(result.message);
         }
