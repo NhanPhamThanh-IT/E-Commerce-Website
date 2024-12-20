@@ -108,7 +108,7 @@ const OverviewSections = {
                 borderWidth: 1
             }]
         }, {
-            responsive: true,
+            responsive: false,
             plugins: {
                 tooltip: {
                     callbacks: {
@@ -153,7 +153,7 @@ const OverviewSections = {
                 borderWidth: 1
             }]
         }, {
-            responsive: true,
+            responsive: false,
             scales: {
                 x: { beginAtZero: true, title: { display: true, text: 'Categories' } },
                 y: { beginAtZero: true, title: { display: true, text: 'Counts' } }
