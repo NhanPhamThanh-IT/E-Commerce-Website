@@ -61,7 +61,7 @@ function renderPagination(totalPages, currentPage, url) {
             const baseUrl = url.split('?')[0];
             const queryParams = new URLSearchParams(url.split('?')[1]);
             queryParams.set('page', currentPage - 1);
-            fetchAndRenderOrders(`${baseUrl}?${queryParams.toString()}`);
+            fetchAndRenderUsers(`${baseUrl}?${queryParams.toString()}`);
         }
     });
     paginationContainer.appendChild(prevButton);
