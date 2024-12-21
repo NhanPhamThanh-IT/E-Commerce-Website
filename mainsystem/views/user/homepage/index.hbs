@@ -1,32 +1,25 @@
-<div id="first_banner_modal" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 hidden z-50"
-    aria-hidden="true">
-    <div class="p-6 rounded-2xl shadow-lg" id="modal_content">
-        <div class="mb-6 container flex items-center justify-center relative">
-            <img src="/system_images/user_homepage_banner.svg" alt="sale_banner" class="w-4/5 rounded-2xl">
-            <button id="close_modal" class="absolute top-1 right-25 p-2 text-red-500">
-                <i class="fas fa-times"></i>
-            </button>
+<div id="banner_modal" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+    <div class="p-6 rounded-2xl shadow-lg" id="banner_img">
+        <div class="container flex items-center justify-center">
+            <img src="/system_images/banner_2.svg" alt="sale_banner" class="w-7/8 rounded-2xl">
         </div>
     </div>
 </div>
 
 <script>
-    window.onload = function () {
-        document.getElementById('first_banner_modal').classList.remove('hidden');
-        document.getElementById('first_banner_modal').setAttribute('aria-hidden', 'false');
+    document.addEventListener("DOMContentLoaded", function () {
+        const img = document.getElementById('banner_img');
 
-        document.getElementById('close_modal').addEventListener('click', function () {
-            document.getElementById('first_banner_modal').classList.add('hidden');
-            document.getElementById('first_banner_modal').setAttribute('aria-hidden', 'true');
-        });
+        document.body.style.overflow = 'hidden';
 
-        document.getElementById('first_banner_modal').addEventListener('click', function (event) {
-            if (event.target === this) {
-                document.getElementById('first_banner_modal').classList.add('hidden');
-                document.getElementById('first_banner_modal').setAttribute('aria-hidden', 'true');
+        img.addEventListener('click', function (event) {
+            if (event.target === img) {
+                const modal = document.getElementById('banner_modal');
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
             }
         });
-    };
+    });
 </script>
 
 {{> header }}
