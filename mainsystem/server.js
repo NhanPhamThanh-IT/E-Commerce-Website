@@ -52,6 +52,7 @@ app.use('/admin/users', require('./routes/admin/user'));
 app.use('/admin/products', require('./routes/admin/product'));
 app.use('/admin/orders', require('./routes/admin/order'));
 app.use('/admin/profile', require('./routes/admin/profile'));
+app.use('/admin/helper', require('./routes/admin/helper'));
 app.use('/product', require('./routes/user/product'));
 
 app.use((req, res, next) => {
