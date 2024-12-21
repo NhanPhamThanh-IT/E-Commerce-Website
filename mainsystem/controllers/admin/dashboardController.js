@@ -6,7 +6,7 @@ exports.index = async (req, res) => {
     try {
         const personalInfo = req.user.toObject();
         const [usersCount, activedUsers, productsCount, ordersCount,  ] = await Promise.all([
-            UserService.getQuantity({ role: 'user' }),
+            UserService.getQuantity({ 'role': 'user' }),
             UserService.getQuantity({ role: 'user', isActive: true }),
             ProductService.getQuantity(),
             OrderService.getQuantity(),
@@ -30,7 +30,8 @@ exports.userOverview = async (req, res) => {
     try {
         const loginMethod = await UserService.getStatisticDistinctValue('loginMethod');
         const gender = await UserService.getStatisticDistinctValue('gender');
-        res.json({ loginMethod, gender });
+        const age = await UserService.getStatisticDistinctValue('age');
+        res.json({ loginMethod, gender, age });
     } catch (err) {
         console.error('Error fetching user overview data:', err);
         res.status(500).send('Internal Server Error');

@@ -1,5 +1,4 @@
-const User = require('../../models/userModel'); 
-
+const User = require('../../models/userModel');
 
 const paginate = async (model, query, currentPage = 1, itemsPerPage = 5) => {
     const skip = (currentPage - 1) * itemsPerPage;
@@ -9,6 +8,44 @@ const paginate = async (model, query, currentPage = 1, itemsPerPage = 5) => {
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     return { users, totalItems, totalPages, currentPage };
 };
+
+function classifyAges(age) {
+    const groups = {
+        "<10": 0,
+        "10-20": 0,
+        "20-30": 0,
+        "30-40": 0,
+        "40-50": 0,
+        "50-60": 0,
+        "60+": 0
+    };
+
+    age.forEach(({ value, count }) => {
+        if (value < 10) {
+            groups["<10"] += count;
+        } else if (value <= 20) {
+            groups["10-20"] += count;
+        } else if (value <= 30) {
+            groups["20-30"] += count;
+        } else if (value <= 40) {
+            groups["30-40"] += count;
+        } else if (value <= 50) {
+            groups["40-50"] += count;
+        } else if (value <= 60) {
+            groups["50-60"] += count;
+        } else {
+            groups["60+"] += count;
+        }
+    });
+
+    const array = Object.entries(groups).map(([key, value]) => ({
+        value: key,
+        count: value
+    }));
+
+    return array;
+}
+
 
 class UserService {
 
@@ -24,7 +61,7 @@ class UserService {
     }
 
     static async getAllWithPagination(currentPage = 1, itemsPerPage = 5) {
-        return await paginate(User, {role:'user'}, currentPage, itemsPerPage);
+        return await paginate(User, { role: 'user' }, currentPage, itemsPerPage);
     }
 
     static async deleteById(id) {
@@ -32,9 +69,9 @@ class UserService {
     }
 
     static async getQuantity(filters = {}) {
-        return await User.countDocuments(filters);
+        const count = await User.countDocuments(filters);
+        return count;
     }
-   
 
     static async searchUsers(field, query, currentPage = 1, itemsPerPage = 5) {
         const allowedFields = ['email', 'username'];
@@ -55,15 +92,17 @@ class UserService {
 
     static async getStatisticDistinctValue(field) {
         try {
-            const distinctValues = await User.distinct(field);
-            const countPromises = distinctValues.map(item => 
-                User.countDocuments({ [field]: item }).then(count => ({ value: item, count }))
+            const distinctValues = await User.distinct(field, { role: 'user' });
+            const countPromises = distinctValues.map(item =>
+                User.countDocuments({ [field]: item, role: 'user' })
+                    .then(count => ({ value: item, count }))
             );
             const counts = await Promise.all(countPromises);
-            return counts;
+            return field === 'age' ? classifyAges(counts) : counts;
         } catch (error) {
             throw new Error('Error getting distinct values: ' + error.message);
         }
     }
+    
 }
 module.exports = UserService;

@@ -1,3 +1,5 @@
+// Initiate the cycle of content sections
+
 const Utils = {
     toggleContentVisibility: (id, show, transitionDuration = 1000) => {
         const element = document.getElementById(id);
@@ -32,35 +34,6 @@ const Utils = {
     }
 };
 
-class ChartManager {
-    constructor() {
-        this.charts = {};
-    }
-
-    createChart(chartId, type, data, options) {
-        const chartElement = document.getElementById(chartId);
-        if (!chartElement) return;
-
-        const ctx = chartElement.getContext('2d');
-        if (this.charts[chartId]) this.charts[chartId].destroy();
-
-        this.charts[chartId] = new Chart(ctx, {
-            type,
-            data,
-            options
-        });
-    }
-
-    destroyChart(chartId) {
-        if (this.charts[chartId]) {
-            this.charts[chartId].destroy();
-            delete this.charts[chartId];
-        }
-    }
-}
-
-const chartManager = new ChartManager();
-
 class ContentManager {
     constructor(contentIds) {
         this.contentIds = contentIds;
@@ -81,6 +54,45 @@ class ContentManager {
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const contentManager = new ContentManager(['content1', 'content2', 'content3', 'content4', 'content5']);
+    contentManager.startCycle();
+});
+
+// Topic overview section
+
+class ChartManager {
+    constructor() {
+        this.charts = {};
+    }
+
+    createChart(chartId, type, data, options) {
+        const chartElement = document.getElementById(chartId);
+        if (!chartElement) return;
+
+        const ctx = chartElement.getContext('2d');
+        if (this.charts[chartId]) {
+            this.charts[chartId].destroy();
+            delete this.charts[chartId];
+        }
+
+        this.charts[chartId] = new Chart(ctx, {
+            type,
+            data,
+            options
+        });
+    }
+
+    destroyChart(chartId) {
+        if (this.charts[chartId]) {
+            this.charts[chartId].destroy();
+            delete this.charts[chartId];
+        }
+    }
+}
+
+const chartManager = new ChartManager();
+
 const OverviewSections = {
     createUserOverviewSection: (data) => {
         const userOverviewContainer = document.getElementById('userOverviewContainer');
@@ -89,30 +101,108 @@ const OverviewSections = {
         userOverviewContainer.innerHTML = `
             <div class="bg-white p-6 rounded-lg shadow-lg">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-4">Users Overview</h2>
-                <canvas id="userGenderPieChart" width="500" height="200"></canvas>
+                <div class="flex justify-center mb-4 space-x-6">
+                    <div class="w-1/3 flex justify-center">
+                        <canvas id="userGenderPieChart" height="250"></canvas>
+                    </div>
+                    <div class="w-1/3 flex justify-center">
+                        <canvas id="userLoginMethodPieChart" height="250"></canvas>
+                    </div>
+                    <div class="w-1/3 flex justify-center">
+                        <canvas id="userAgePieChart" height="250"></canvas>
+                    </div>
+                </div>
             </div>
         `;
 
-        chartManager.createChart('userGenderPieChart', 'pie', {
+        chartManager.createChart('userGenderPieChart', 'doughnut', {
             labels: data.gender.map(item => item.value),
             datasets: [{
                 data: data.gender.map(item => item.count),
                 backgroundColor: [
-                    'rgba(243, 210, 195, 0.7)',
-                    'rgba(93, 165, 255, 0.7)',
-                    'rgba(255, 123, 129, 0.7)',
-                    'rgba(255, 214, 92, 0.7)',
-                    'rgba(100, 185, 108, 0.7)'
+                    '#ecb176',
+                    '#d99a6c',
+                    '#fed8b1'
                 ],
                 borderColor: '#fff',
                 borderWidth: 1
             }]
         }, {
-            responsive: false,
+            responsive: true,
+            cutout: '50%',
             plugins: {
+                legend: {
+                    position: 'bottom',
+                },
                 tooltip: {
                     callbacks: {
-                        label: (tooltipItem) => `Value: ${data.gender[tooltipItem.dataIndex].count}`
+                        label: (tooltipItem) => {
+                            const value = tooltipItem.raw;
+                            return `${tooltipItem.label}: ${value}`;
+                        }
+                    }
+                }
+            }
+        });
+
+        chartManager.createChart('userLoginMethodPieChart', 'doughnut', {
+            labels: data.loginMethod.map(item => item.value),
+            datasets: [{
+                data: data.loginMethod.map(item => item.count),
+                backgroundColor: [
+                    '#fb6f92',
+                    '#ffb3c6'
+                ],
+                borderColor: '#fff',
+                borderWidth: 1
+            }]
+        }, {
+            responsive: true,
+            cutout: '50%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: (tooltipItem) => {
+                            const value = tooltipItem.raw;
+                            return `${tooltipItem.label}: ${value}`;
+                        }
+                    }
+                }
+            }
+        });
+
+        chartManager.createChart('userAgePieChart', 'doughnut', {
+            labels: data.age.map(item => item.value),
+            datasets: [{
+                data: data.age.map(item => item.count),
+                backgroundColor: [
+                    '#f94144',
+                    '#f3722c',
+                    '#f8961e',
+                    '#f9c74f',
+                    '#90be6d',
+                    '#43aa8b',
+                    '#577590'
+                ],
+                borderColor: '#fff',
+                borderWidth: 1
+            }]
+        }, {
+            responsive: true,
+            cutout: '50%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: (tooltipItem) => {
+                            const value = tooltipItem.raw;
+                            return `${tooltipItem.label}: ${value}`;
+                        }
                     }
                 }
             }
@@ -162,48 +252,32 @@ const OverviewSections = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    const contentManager = new ContentManager(['content1', 'content2', 'content3', 'content4', 'content5']);
-    contentManager.startCycle();
+const handleOverviewClick = async (buttonId, containerId, apiEndpoint, renderSection) => {
+    const button = document.getElementById(buttonId);
+    const container = document.getElementById(containerId);
+    if (!button || !container) return;
 
-    document.getElementById('userOverview').addEventListener('click', async () => {
-        const userOverviewContainer = document.getElementById('userOverviewContainer');
-        if (!userOverviewContainer) return;
+    button.disabled = true;
+    container.classList.toggle('hidden');
+    container.innerHTML = '<p>Loading...</p>';
 
-        userOverviewContainer.innerHTML = '';
-        userOverviewContainer.classList.toggle('hidden');
-        Utils.setLoading(userOverviewContainer, true);
+    try {
+        const response = await fetch(apiEndpoint);
+        if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
+        const data = await response.json();
+        renderSection(data);
+    } catch (error) {
+        console.error(`Error fetching data for ${buttonId}:`, error);
+        container.innerHTML = '<p>Error loading data. Please try again later.</p>';
+    } finally {
+        button.disabled = false;
+    }
+};
 
-        try {
-            const response = await fetch('/admin/api/user-overview');
-            if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
-            const data = await response.json();
-            OverviewSections.createUserOverviewSection(data);
-        } catch (error) {
-            console.error('Error fetching user overview data:', error);
-        } finally {
-            Utils.setLoading(userOverviewContainer, false);
-        }
-    });
+document.getElementById('userOverview').addEventListener('click', () => {
+    handleOverviewClick('userOverview', 'userOverviewContainer', '/admin/api/user-overview', OverviewSections.createUserOverviewSection);
+});
 
-    document.getElementById('productOverview').addEventListener('click', async () => {
-        const productOverviewContainer = document.getElementById('productOverviewContainer');
-        if (!productOverviewContainer) return;
-
-        productOverviewContainer.innerHTML = '';
-        productOverviewContainer.classList.toggle('hidden');
-        Utils.setLoading(productOverviewContainer, true);
-
-        try {
-            const response = await fetch('/admin/api/product-overview');
-            if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
-            const data = await response.json();
-            console.log(data)
-            OverviewSections.createProductOverviewSection(data);
-        } catch (error) {
-            console.error('Error fetching product overview data:', error);
-        } finally {
-            Utils.setLoading(productOverviewContainer, false);
-        }
-    });
+document.getElementById('productOverview').addEventListener('click', () => {
+    handleOverviewClick('productOverview', 'productOverviewContainer', '/admin/api/product-overview', OverviewSections.createProductOverviewSection);
 });
