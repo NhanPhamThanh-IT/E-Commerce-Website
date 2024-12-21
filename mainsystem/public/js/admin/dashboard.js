@@ -60,14 +60,24 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Topic overview section
-
-const handleOverviewClick = async (buttonId, containerId, apiEndpoint, renderSection) => {
+const handleOverviewClick = async (buttonId, containerId, listOtherContainersId, apiEndpoint, renderSection) => {
     const button = document.getElementById(buttonId);
     const container = document.getElementById(containerId);
     if (!button || !container) return;
 
+    const isVisible = !container.classList.contains('hidden');
+
+    if (isVisible) {
+        container.classList.add('hidden');
+        return;
+    }
+
     button.disabled = true;
-    container.classList.toggle('hidden');
+    listOtherContainersId.forEach(id => {
+        const otherContainer = document.getElementById(id);
+        if (otherContainer) otherContainer.classList.add('hidden');
+    });
+    container.classList.remove('hidden');
     container.innerHTML = '<p>Loading...</p>';
 
     try {
@@ -84,15 +94,15 @@ const handleOverviewClick = async (buttonId, containerId, apiEndpoint, renderSec
 };
 
 document.getElementById('userOverview').addEventListener('click', () => {
-    handleOverviewClick('userOverview', 'userOverviewContainer', '/admin/api/user-overview', OverviewSections.createUserOverviewSection);
+    handleOverviewClick('userOverview', 'userOverviewContainer', ['productOverviewContainer', 'orderOverviewContainer'] , '/admin/api/user-overview', OverviewSections.createUserOverviewSection);
 });
 
 document.getElementById('productOverview').addEventListener('click', () => {
-    handleOverviewClick('productOverview', 'productOverviewContainer', '/admin/api/product-overview', OverviewSections.createProductOverviewSection);
+    handleOverviewClick('productOverview', 'productOverviewContainer', ['userOverviewContainer', 'orderOverviewContainer'], '/admin/api/product-overview', OverviewSections.createProductOverviewSection);
 });
 
 document.getElementById('orderOverview').addEventListener('click', () => {
-    handleOverviewClick('orderOverview', 'orderOverviewContainer', '/admin/api/order-overview', OverviewSections.createOrderOverviewSection);
+    handleOverviewClick('orderOverview', 'orderOverviewContainer', ['userOverviewContainer', 'productOverviewContainer'], '/admin/api/order-overview', OverviewSections.createOrderOverviewSection);
 });
 
 class ChartManager {
@@ -134,16 +144,16 @@ const OverviewSections = {
 
         userOverviewContainer.innerHTML = `
             <div class="bg-white p-6 border-black border-opacity-30 border-[1px] rounded-xl shadow-lg">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Users Overview</h2>
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Users Overview</h2>
                 <div class="flex justify-center mb-4 space-x-6">
                     <div class="w-1/3 flex justify-center">
-                        <canvas id="userGenderPieChart" height="250"></canvas>
+                        <canvas id="userGenderPieChart" height="150"></canvas>
                     </div>
                     <div class="w-1/3 flex justify-center">
-                        <canvas id="userLoginMethodPieChart" height="250"></canvas>
+                        <canvas id="userLoginMethodPieChart" height="150"></canvas>
                     </div>
                     <div class="w-1/3 flex justify-center">
-                        <canvas id="userAgePieChart" height="250"></canvas>
+                        <canvas id="userAgePieChart" height="150"></canvas>
                     </div>
                 </div>
             </div>
@@ -249,7 +259,7 @@ const OverviewSections = {
 
         productOverviewContainer.innerHTML = `
             <div class="bg-white p-6 rounded-xl border-black border-opacity-30 border-[1px] shadow-lg">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Products Overview</h2>
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Products Overview</h2>
                 <div class="flex justify-between mb-4">
                     <p class="text-base text-gray-500">Total Categories</p>
                     <p id="total-categories" class="text-lg font-semibold text-gray-800">${data.categories.length}</p>
@@ -303,7 +313,7 @@ const OverviewSections = {
 
         orderOverviewContainer.innerHTML = `
             <div class="bg-white p-6 rounded-xl border-black border-opacity-30 border-[1px] shadow-lg">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Orders Overview</h2>
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Orders Overview</h2>
 
                 <div class="flex justify-between mb-6">
                     <div class="flex items-center space-x-2">
