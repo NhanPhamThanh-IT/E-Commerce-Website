@@ -1,26 +1,10 @@
 <div id="banner_modal" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
     <div class="p-6 rounded-2xl shadow-lg" id="banner_img">
-        <div class="container flex items-center justify-center">
-            <img src="/system_images/banner_2.svg" alt="sale_banner" class="w-7/8 rounded-2xl">
+        <div id="image_container" class="container flex items-center justify-center">
+            
         </div>
     </div>
 </div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const img = document.getElementById('banner_img');
-
-        document.body.style.overflow = 'hidden';
-
-        img.addEventListener('click', function (event) {
-            if (event.target === img) {
-                const modal = document.getElementById('banner_modal');
-                modal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }
-        });
-    });
-</script>
 
 {{> header }}
 
@@ -128,6 +112,8 @@
         </div>
     </div>
 </div>
+
+<script src="/js/user/homepage.js"></script>
 
 <script>
 
