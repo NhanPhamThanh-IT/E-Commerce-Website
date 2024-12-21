@@ -1,5 +1,37 @@
+<div id="first_banner_modal" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 hidden z-50"
+    aria-hidden="true">
+    <div class="p-6 rounded-2xl shadow-lg" id="modal_content">
+        <div class="mb-6 container flex items-center justify-center relative">
+            <img src="/system_images/user_homepage_banner.svg" alt="sale_banner" class="w-4/5 rounded-2xl">
+            <button id="close_modal" class="absolute top-1 right-25 p-2 text-red-500">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+        document.getElementById('first_banner_modal').classList.remove('hidden');
+        document.getElementById('first_banner_modal').setAttribute('aria-hidden', 'false');
+
+        document.getElementById('close_modal').addEventListener('click', function () {
+            document.getElementById('first_banner_modal').classList.add('hidden');
+            document.getElementById('first_banner_modal').setAttribute('aria-hidden', 'true');
+        });
+
+        document.getElementById('first_banner_modal').addEventListener('click', function (event) {
+            if (event.target === this) {
+                document.getElementById('first_banner_modal').classList.add('hidden');
+                document.getElementById('first_banner_modal').setAttribute('aria-hidden', 'true');
+            }
+        });
+    };
+</script>
+
 {{> header }}
-<main id="main-content" class="container mx-auto px-0">
+
+<main id="main-content" class="container mx-0 px-0">
     <div class="flex">
         <div class="w-1/5 bg-gray-100 shadow-md py-6 px-3 sticky top-[110px] h-full">
             <div class="mb-8">
@@ -24,19 +56,12 @@
                     Apply Filter <i class="fas fa-filter"></i>
                 </button>
             </div>
-
-            <div class="mt-4">
-                <img src="/system_images/2.gif">
-            </div>
         </div>
 
         <div class="w-4/5 p-6 bg-white flex-row">
-            
-            <div class="mb-6 container mx-auto">
-                <img src="/system_images/user_homepage_banner.png" alt="sale_banner" class="h-1/5 w-full">
-            </div>
 
-            <h2 class="flex space-x-4 bg-[#274354] border-2 border-white p-4 rounded-2xl text-3xl font-bold text-white mb-6 flex items-center gap-2 justify-center">
+            <h2
+                class="flex space-x-4 bg-[#274354] border-2 border-white p-4 rounded-2xl text-3xl font-bold text-white mb-6 flex items-center gap-2 justify-center">
                 <i class="fas fa-box-open"></i>
                 <span>List Of Products</span>
                 <i class="fas fa-box-open"></i>
@@ -61,9 +86,12 @@
                 </button>
             </div>
         </div>
-
     </div>
 </main>
+
+<div class="fixed bottom-4 left-6">
+    <img src="/system_images/user_aside.gif" alt="sale_banner" class="h-48">
+</div>
 
 <!-- Product Detail Modal -->
 <div id="product-modal" class="bg-black bg-opacity-50 fixed inset-0 flex items-center justify-center z-50 hidden">
@@ -85,7 +113,8 @@
                 <div class="flex justify-between items-center">
                     <button id="add-to-cart"
                         class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
-                        data-product-id="{{this.id}}" data-price="{{this.price}}" data-stock="{{this.stock_quantity}}" data-discount-price="{{calculateDiscountPrice this.price this.discount}}">
+                        data-product-id="{{this.id}}" data-price="{{this.price}}" data-stock="{{this.stock_quantity}}"
+                        data-discount-price="{{calculateDiscountPrice this.price this.discount}}">
                         Add to Cart <i class="fas fa-cart-plus"></i>
                     </button>
                     <div>
@@ -248,7 +277,7 @@
             return;
         }
         currentModalProductId = product._id;
-        const discount = product.discount || 0; 
+        const discount = product.discount || 0;
         const discountedPrice = (product.price - (product.price * discount / 100)).toFixed(2);
         // Set product details
         document.getElementById('product-title').innerText = product.title;
@@ -295,9 +324,9 @@
                                 <img src="${related.image}" alt="${related.title}" class="w-20 h-20 object-cover">
                                 <div>
                                     <h4 class="text-sm font-semibold">${related.title}</h4>
-                                    ${relatedDiscount > 0? `<p class="text-sm font-bold text-gray-900">$${relatedDiscountedPrice}</p>
+                                    ${relatedDiscount > 0 ? `<p class="text-sm font-bold text-gray-900">$${relatedDiscountedPrice}</p>
                                     <p class="text-sm line-through text-gray-500">$${related.price}</p>`
-                                    : `<p class="text-sm text-gray-900">$${related.price}</p>`}
+                                : `<p class="text-sm text-gray-900">$${related.price}</p>`}
                                 </div>
                             </div>
                         `;

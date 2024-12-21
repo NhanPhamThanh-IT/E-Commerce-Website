@@ -3,165 +3,156 @@
 
     {{> aside }}
 
-    <main class="flex flex-col items-center justify-center min-h-screen px-6">
+    <main class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
       <div
-        class="container mx-auto max-w-5xl p-6 bg-[#f3d2c3] shadow-lg rounded-lg transform transition-all duration-300 hover:shadow-xl  border-black border-4 translate-x-8">
-        <div class="flex flex-col md:flex-row items-center justify-between mb-0 space-y-8 md:space-y-0 md:space-x-16">
-          <!-- User Image -->
+        class="bg-[#f3d2c3] flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0 p-6 rounded-xl">
+        <!-- User Image -->
+        <div class="w-1/5 flex flex-col items-center justify-center">
+          <div class="w-40 h-40 overflow-hidden rounded-full border-4 border-gray-300">
+            <img src="{{user.image}}" alt="{{user.firstName}}" class="w-full bg-white h-full object-cover" />
+          </div>
+          <button onclick="window.history.back();"
+            class="mt-4 bg-gray-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-600">
+            Back
+          </button>
+        </div>
 
-          <div class="w-1/3 flex flex-col overflow-hidden">
-            <div class="rounded-full">
-              <img src="{{user.image}}" alt="{{user.firstName}}" class="w-full h-full bg-white object-cover rounded-full" />
+        <!-- User Information -->
+        <div class="w-4/5 space-y-8 p-6 bg-gray-50 rounded-xl shadow-md ">
+          <!-- Header Section -->
+          <div class="flex flex-col md:flex-row justify-between items-start">
+            <!-- User Info -->
+            <div>
+              <h1 class="text-3xl md:text-4xl font-bold text-gray-700">
+                {{user.lastName}} {{user.firstName}}
+              </h1>
+              <p class="text-lg md:text-xl text-gray-600 mt-2">
+                Email: {{user.email}}
+              </p>
             </div>
-            <div class="mt-4">
-              <button onclick="window.history.back();"
-                class="bg-gray-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-600">
-                Back
+
+            <!-- Action Buttons -->
+            <div class="flex space-x-3 mt-4 md:mt-0">
+              <button id="editUser" type="button"
+                class="bg-teal-500 text-white px-4 py-2 rounded-md shadow hover:bg-teal-400 transition">
+                <i class="fas fa-pencil-alt"></i>
+              </button>
+              <button id="deleteUser" type="button"
+                class="bg-red-600 text-white px-4 py-2 rounded-md shadow hover:bg-red-500 transition">
+                <i class="fas fa-trash-alt"></i>
               </button>
             </div>
           </div>
 
-
-
-
-
-          <!-- User Information -->
-          <div class="ml-4">
-            <div class="flex justify-between">
-              <div>
-                <h1 class="text-4xl font-bold text-[#64748b]">{{user.lastName}} {{user.firstName}}</h1>
-                <p class="text-xl text-gray-600 mb-6">Email: {{user.email}}</p>
-              </div>
-
-              <!-- Action Buttons -->
-              <div class="order-last flex justify-end space-x-2">
-                <form>
-                  <button id="editUser" type="button"
-                    class="bg-[#14b8a6] text-white px-2 py-2 rounded-lg shadow-md hover:bg-[#5eead4]">
-                    <i class="fas fa-pencil-alt"></i>
-                  </button>
-                </form>
-                <form>
-                  <button id="deleteUser" type="button"
-                    class="bg-red-600 text-white px-2 py-2 rounded-lg shadow-md hover:bg-red-700">
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
-                </form>
-              </div>
+          <!-- Additional Info Section -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Personal Information -->
+            <div class="p-6 bg-white rounded-lg shadow border border-gray-200">
+              <h2 class="text-xl font-semibold text-teal-600 mb-4">Personal Information</h2>
+              <ul class="space-y-3">
+                <li class="flex">
+                  <strong class="text-gray-700">Gender:</strong>
+                  <span class="text-gray-600">{{user.gender}}</span>
+                </li>
+                <li class="flex">
+                  <strong class="text-gray-700">Birthdate:</strong>
+                  <span class="text-gray-600">{{user.birthDate}}</span>
+                </li>
+              </ul>
             </div>
 
-
-
-            <!-- Additional Info -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-              <div class="mb-6 p-4 bg-gray-50 rounded-lg shadow-md border-black border-2">
-                <h2 class="text-2xl font-semibold text-[#0891b2] mb-4">Personal Information</h2>
-                <ul class="space-y-4 pl-0">
-                  <li class="flex items-center">
-                    <strong class="w-24">Gender:</strong>
-                    <span class="text-gray-700">{{user.gender}}</span>
-                  </li>
-                  <li class="flex items-center">
-                    <strong class="w-24">Birthdate:</strong>
-                    <span class="text-gray-700">{{user.birthDate}}</span>
-                  </li>
-                </ul>
-              </div>
-              <div class="mb-6 p-4 bg-gray-50 rounded-lg shadow-md border-black border-2">
-                <h2 class="text-2xl font-semibold text-[#0891b2] mb-4">Contact Information</h2>
-                <ul class="space-y-0 pl-0">
-                  <li class="flex items-center">
-                    <strong class="w-24">Phone:</strong>
-                    <span class="text-gray-700">{{user.phone}}</span>
-                  </li>
-                  <li class="flex items-center">
-                    <strong class="w-24">Address:</strong>
-                    <span class="text-gray-700 text-sm ml-3 mt-6">{{user.address}}</span>
-                  </li>
-                </ul>
-              </div>
+            <!-- Contact Information -->
+            <div class="p-6 bg-white rounded-lg shadow border border-gray-200">
+              <h2 class="text-xl font-semibold text-teal-600 mb-4">Contact Information</h2>
+              <ul class="space-y-3">
+                <li class="flex">
+                  <strong class="text-gray-700">Phone:</strong>
+                  <span class="text-gray-600">{{user.phone}}</span>
+                </li>
+                <li class="flex items-start">
+                  <strong class="text-gray-700">Address:</strong>
+                  <span class="text-gray-600 text-sm">{{user.address}}</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
     </main>
-
-    <!-- Edit User Modal -->
-    <div id="editModal"
-      class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 hidden z-50 transition-opacity duration-300 ease-in-out">
-      <div class="bg-white p-6 rounded-lg shadow-xl transform transition-transform duration-300 scale-95">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-2xl font-bold text-gray-800">Edit User Profile</h2>
-          <button type="button" id="closeEditModal" class="text-gray-500 hover:text-red-500 focus:outline-none">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-        </div>
-        <form id="edit-form" action="/admin/users/edit" data-user-id="{{user._id}}">
-          <div class="grid grid-cols-1 gap-4 mb-4">
-            <input type="hidden" name="old_email" value="{{user.email}}" />
-            <input type="text" name="firstName" placeholder="First Name" value="{{user.firstName}}"
-              class="w-full p-2 border border-gray-300 rounded" />
-            <input type="text" name="lastName" placeholder="Last Name" value="{{user.lastName}}"
-              class="w-full p-2 border border-gray-300 rounded" />
-            <input type="email" name="email" placeholder="Email" value="{{user.email}}"
-              class="w-full p-2 border border-gray-300 rounded" />
-            <input type="text" name="phone" placeholder="Phone" value="{{user.phone}}"
-              class="w-full p-2 border border-gray-300 rounded" />
-            <input type="text" name="address" placeholder="Address" value="{{user.address}}"
-              class="w-full p-2 border border-gray-300 rounded" />
-            <select name="gender" class="w-full p-2 border border-gray-300 rounded">
-              <option value="male" {{eq user.gender "male" }}selected>Male</option>
-              <option value="female" {{eq user.gender "female" }}selected>Female</option>
-            </select>
-            <input type="date" name="birthDate" value="{{user.birthDate}}"
-              class="w-full p-2 border border-gray-300 rounded" />
-          </div>
-          <div class="flex justify-end space-x-4">
-            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Save</button>
-            <button type="button" id="cancelEdit"
-              class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">Cancel</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Delete User Modal -->
-    <div id="deleteModal"
-      class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 hidden z-50 transition-opacity duration-300 ease-in-out">
-      <div class="bg-white p-8 rounded-lg shadow-xl transform transition-transform duration-300 ease-in-out scale-95">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-2xl font-bold text-gray-800 mb-0">Confirm Delete User</h2>
-          <button type="button" id="closeDeleteModal" class="text-red-500 hover:text-red-700 focus:outline-none">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-        </div>
-        <div class="flex flex-col space-y-2">
-          <p class="text-gray-600">Are you sure you want to delete user?
-            This action cannot be undone.</p>
-          <p class="text-red-500 font-medium">This will permanently remove all data associated with this user.</p>
-        </div>
-        <div class="flex justify-end space-x-4 mt-4">
-          <form id="delete-form" action="/admin/users/delete" method="POST" class="mb-0">
-            <input type="hidden" name="email" value="{{user.email}}" />
-            <button type="submit"
-              class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300">Delete
-              User</button>
-          </form>
-          <button type="button" id="cancelDelete"
-            class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition-colors duration-300">Cancel</button>
-        </div>
-      </div>
-    </div>
   </div>
   <div>
     {{> footer }}
+  </div>
+</div>
+
+<!-- Edit User Modal -->
+<div id="editModal"
+  class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 hidden z-50 transition-opacity duration-300 ease-in-out">
+  <div class="bg-white p-6 rounded-lg shadow-xl transform transition-transform duration-300 scale-95">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold text-gray-800">Edit User Profile</h2>
+      <button type="button" id="closeEditModal" class="text-gray-500 hover:text-red-500 focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <form id="edit-form" action="/admin/users/edit" data-user-id="{{user._id}}">
+      <div class="grid grid-cols-1 gap-4 mb-4">
+        <input type="hidden" name="old_email" value="{{user.email}}" />
+        <input type="text" name="firstName" placeholder="First Name" value="{{user.firstName}}"
+          class="w-full p-2 border border-gray-300 rounded" />
+        <input type="text" name="lastName" placeholder="Last Name" value="{{user.lastName}}"
+          class="w-full p-2 border border-gray-300 rounded" />
+        <input type="email" name="email" placeholder="Email" value="{{user.email}}"
+          class="w-full p-2 border border-gray-300 rounded" />
+        <input type="text" name="phone" placeholder="Phone" value="{{user.phone}}"
+          class="w-full p-2 border border-gray-300 rounded" />
+        <input type="text" name="address" placeholder="Address" value="{{user.address}}"
+          class="w-full p-2 border border-gray-300 rounded" />
+        <select name="gender" class="w-full p-2 border border-gray-300 rounded">
+          <option value="male" {{eq user.gender "male" }}selected>Male</option>
+          <option value="female" {{eq user.gender "female" }}selected>Female</option>
+        </select>
+        <input type="date" name="birthDate" value="{{user.birthDate}}"
+          class="w-full p-2 border border-gray-300 rounded" />
+      </div>
+      <div class="flex justify-end space-x-4">
+        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Save</button>
+        <button type="button" id="cancelEdit"
+          class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete User Modal -->
+<div id="deleteModal"
+  class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 hidden z-50 transition-opacity duration-300 ease-in-out">
+  <div class="bg-white p-8 rounded-lg shadow-xl transform transition-transform duration-300 ease-in-out scale-95">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold text-gray-800 mb-0">Confirm Delete User</h2>
+      <button type="button" id="closeDeleteModal" class="text-red-500 hover:text-red-700 focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="flex flex-col space-y-2">
+      <p class="text-gray-600">Are you sure you want to delete user?
+        This action cannot be undone.</p>
+      <p class="text-red-500 font-medium">This will permanently remove all data associated with this user.</p>
+    </div>
+    <div class="flex justify-end space-x-4 mt-4">
+      <form id="delete-form" action="/admin/users/delete" method="POST" class="mb-0">
+        <input type="hidden" name="email" value="{{user.email}}" />
+        <button type="submit"
+          class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300">Delete
+          User</button>
+      </form>
+      <button type="button" id="cancelDelete"
+        class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition-colors duration-300">Cancel</button>
+    </div>
   </div>
 </div>
 
