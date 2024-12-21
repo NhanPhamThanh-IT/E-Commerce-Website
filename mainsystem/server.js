@@ -43,13 +43,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passport')(passport);
 
+const Auth = require('./middlewares/Auth');
 app.use('/', require('./routes/user/dashboard'));
+app.use('/product', require('./routes/user/product'));
+app.use(Auth.isAdmin);
 app.use('/admin', require('./routes/admin/dashboard'));
 app.use('/admin/users', require('./routes/admin/user'));
 app.use('/admin/products', require('./routes/admin/product'));
 app.use('/admin/orders', require('./routes/admin/order'));
 app.use('/admin/profile', require('./routes/admin/profile'));
-app.use('/admin/helper', require('./routes/admin/helper'));
 app.use('/product', require('./routes/user/product'));
 
 app.use((req, res, next) => {

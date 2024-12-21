@@ -5,20 +5,17 @@ const OrderService = require('../../services/admin/orderService');
 exports.index = async (req, res) => {
     try {
         const personalInfo = req.user.toObject();
-        const [usersCount, activedUsers, productsCount, ordersCount,  ] = await Promise.all([
-            UserService.getQuantity({ role: 'user' }),
-            UserService.getQuantity({ role: 'user', isActive: true }),
+        const [usersCount, productsCount, ordersCount] = await Promise.all([
+            UserService.getQuantity({ 'role': 'user' }),
             ProductService.getQuantity(),
             OrderService.getQuantity(),
         ]);
         const data = {
             personalInfo,
             users: usersCount,
-            activedUsers,
             products: productsCount,
             orders: ordersCount,
         };
-
         res.render('admin/dashboard/index', data);
     } catch (err) {
         console.error('Error fetching data:', err);
@@ -30,7 +27,8 @@ exports.userOverview = async (req, res) => {
     try {
         const loginMethod = await UserService.getStatisticDistinctValue('loginMethod');
         const gender = await UserService.getStatisticDistinctValue('gender');
-        res.json({ loginMethod, gender });
+        const age = await UserService.getStatisticDistinctValue('age');
+        res.json({ loginMethod, gender, age });
     } catch (err) {
         console.error('Error fetching user overview data:', err);
         res.status(500).send('Internal Server Error');
@@ -40,9 +38,33 @@ exports.userOverview = async (req, res) => {
 exports.productOverview = async (req, res) => {
     try {
         const data = await ProductService.getStatisticDistinctValue('category');
-        res.json({categories: data});
+        res.json({ categories: data });
     } catch (err) {
         console.error('Error fetching product overview data:', err);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+exports.orderOverview = async (req, res) => {
+    try {
+        const revenue = await OrderService.getTotalAmount();
+        const totalOrdersInMonth = await OrderService.getTotalOrdersInMonth();
+        const totalRevenueInMonth = await OrderService.getTotalRevenueInMonth();
+        const totalOrdersInWeek = await OrderService.getTotalOrdersInWeek();
+        const totalRevenueInWeek = await OrderService.getTotalRevenueInWeek();
+        const totalOrdersInDay = await OrderService.getTotalOrdersInDay();
+        const totalRevenueInDay = await OrderService.getTotalRevenueInDay();
+        res.json({
+            revenue: revenue,
+            ordersOfMonth: totalOrdersInMonth,
+            revenueOfMonth: totalRevenueInMonth,
+            ordersOfWeek: totalOrdersInWeek,
+            revenueOfWeek: totalRevenueInWeek,
+            ordersOfDay: totalOrdersInDay,
+            revenueOfDay: totalRevenueInDay
+        });
+    } catch (err) {
+        console.error('Error fetching order overview data:', err);
         res.status(500).send('Internal Server Error');
     }
 }

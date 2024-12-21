@@ -1,8 +1,7 @@
 {{> header }}
-<main class="container mx-auto px-0">
-
+<main id="main-content" class="container mx-auto px-0">
     <div class="flex">
-        <div class="w-1/5 bg-gray-100 shadow-md py-6 px-3 sticky top-0 h-full">
+        <div class="w-1/5 bg-gray-100 shadow-md py-6 px-3 sticky top-[110px] h-full">
             <div class="mb-8">
                 <h2 class="text-sm font-semibold text-gray-800 mb-2 text-black">Filter by Price</h2>
                 <div class="flex space-x-4">
@@ -24,6 +23,10 @@
                     class="text-base w-full bg-green-400 text-white py-2 rounded-md font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 transition transform duration-300 hover:scale-105">
                     Apply Filter <i class="fas fa-filter"></i>
                 </button>
+            </div>
+
+            <div class="mt-4">
+                <img src="/system_images/2.gif">
             </div>
         </div>
 
@@ -105,6 +108,12 @@
 </div>
 
 <script>
+
+    const header = document.querySelector('header');
+    const main = document.getElementById('main-content');
+    const headerHeight = header.offsetHeight;
+    main.style.marginTop = `${headerHeight}px`;
+
     let currentModalProductId = null;
     // Fetch and render products
     async function fetchAndRenderProducts(url) {

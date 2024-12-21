@@ -28,14 +28,15 @@
                 <main class="flex-1 pt-4 overflow-y-auto">
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
+                        <div >
+                            <img src="/system_images/Statistics.gif" alt="Statistics" class="object-cover rounded-xl shadow-lg border-2 border-black">
+                        </div>
                         {{> admin/card icon='<i class="bi bi-person-fill fs-2"></i>'
-                        title="Users" content=activedUsers bg="blue-500" hover="blue-600" id="userOverview"}}
+                        title="Users" content=users bg="blue-500" hover="blue-600" id="userOverview"}}
                         {{> admin/card icon='<i class="bi bi-box-fill fs-2"></i>'
                         title="Products" content=products bg="green-500" hover="green-600" id="productOverview"}}
                         {{> admin/card icon='<i class="bi bi-basket-fill fs-2"></i>'
                         title="Orders" content=orders bg="yellow-500" hover="yellow-600" id="orderOverview"}}
-                        {{> admin/card icon='<i class="bi bi-person-fill fs-2"></i>'
-                        title="Actived Users" content=activedUsers }}
                     </div>
 
                      <!-- Users Overview -->
@@ -48,7 +49,7 @@
                     <div id="orderOverviewContainer" class="container mx-auto p-6 hidden"></div>
 
                     <!-- Performance overview -->
-                    <div class="bg-white shadow rounded-lg p-6 mt-6">
+                    <div class="bg-white shadow rounded-xl m-6 p-6">
                         <h2 class="text-lg font-bold mb-4">Performance Overview</h2>
                         <canvas id="dashboardChart" class="w-full h-64"></canvas>
                     </div>
