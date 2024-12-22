@@ -1,7 +1,7 @@
 <div id="banner_modal" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
     <div class="p-6 rounded-2xl shadow-lg" id="banner_img">
         <div id="image_container" class="container flex items-center justify-center">
-            
+
         </div>
     </div>
 </div>
@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <div class="w-4/5 p-6 bg-white flex-row">
+        <div class="w-4/5 p-6 bg-white">
 
             <h2
                 class="flex space-x-4 bg-[#274354] border-2 border-white p-4 rounded-2xl text-3xl font-bold text-white mb-6 flex items-center gap-2 justify-center">
@@ -68,8 +68,13 @@
 
 <div class="fixed bottom-4 left-6">
     <img src="/system_images/user_aside.gif" alt="sale_banner" class="h-48">
-</div>
-
+</div>'
+<a href="/cart" class=" no-underline hover:no-underline">
+    <div
+        class="fixed bottom-4 right-6 bg-white text-white rounded-full p-3 shadow-lg flex items-center justify-center border-[1px] border-gray-600 opacity-60 hover:opacity-100">
+        <img src="/system_images/shopping-cart.gif" class="h-12">
+    </div>
+</a>
 <!-- Product Detail Modal -->
 <div id="product-modal" class="bg-black bg-opacity-50 fixed inset-0 flex items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-6 relative animate-fade-in overflow-auto max-h-[90vh]">
@@ -123,6 +128,7 @@
     main.style.marginTop = `${headerHeight}px`;
 
     let currentModalProductId = null;
+    let currentCategory = null;
     // Fetch and render products
     async function fetchAndRenderProducts(url) {
         const productsContainer = document.getElementById('products-container');
@@ -388,13 +394,27 @@
     });
 
     // Apply category filter
-    document.getElementById('category-filter').addEventListener('change', function () {
-        const category = this.value;
+    document.querySelectorAll('#category-dropdown li').forEach(item => {
+        item.addEventListener('click', function () {
+            const category = this.getAttribute('data-value'); // Get the selected value
+            currentCategory = category;
+            // Fetch other filter values
+            const minPrice = document.getElementById('price-filter-min').value || 0;
+            const maxPrice = document.getElementById('price-filter-max').value || 1000000;
+            const minDiscount = document.getElementById('discount-filter').value || 0;
+
+            // Build the URL and trigger fetch
+            const url = `/product/price?category=${category}&min=${minPrice}&max=${maxPrice}&minDiscount=${minDiscount}&page=1&limit=8`;
+            fetchAndRenderProducts(url);
+        });
+    });
+    // Fetch all products
+    document.getElementById('category-trigger').addEventListener('click', function () {
         const minPrice = document.getElementById('price-filter-min').value || 0;
         const maxPrice = document.getElementById('price-filter-max').value || 1000000;
         const minDiscount = document.getElementById('discount-filter').value || 0;
+        const url = `/product/price?min=${minPrice}&max=${maxPrice}&minDiscount=${minDiscount}&page=1&limit=8`; // Adjust endpoint as needed
 
-        const url = `/product/price?category=${category}&min=${minPrice}&max=${maxPrice}&minDiscount=${minDiscount}&page=1&limit=8`;
         fetchAndRenderProducts(url);
     });
 
@@ -404,7 +424,7 @@
         const maxPrice = document.getElementById('price-filter-max').value || 1000000;
         const minDiscount = document.getElementById('discount-filter').value || 0;
 
-        const category = document.getElementById('category-filter').value || '';
+        const category = currentCategory || '';
         const url = `/product/price?category=${category}&min=${minPrice}&max=${maxPrice}&minDiscount=${minDiscount}&page=1`;
         fetchAndRenderProducts(url);
     });

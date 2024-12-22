@@ -1,13 +1,13 @@
-<header class="bg-white border-b shadow flex justify-between items-center px-3 py-3 fixed top-0 w-full z-10 border-b-2 border-gray-600">
+<header
+    class="bg-white border-b shadow flex justify-between items-center px-3 py-3 fixed top-0 w-full z-10 border-b-2 border-gray-600">
     <a class="navbar-brand">
         <img src="/system_images/Logo.png" width="100" height="50" alt="Logo">
     </a>
 
     <div class="flex justify-between items-center w-full">
         <div class="flex items-center justify-start space-x-8 ml-10 py-4">
-            <a href="/" class="hover:scale-150 no-underline hover:no-underline text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Home</a>
-            <a href="/cart"
-                class="hover:scale-150 no-underline hover:no-underline text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Cart</a>
+            <a href="/"
+                class="hover:scale-125 no-underline hover:no-underline text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Home</a>
             <div class="relative flex items-center">
                 <i class="fa fa-search absolute left-3 top-2.5 text-gray-400"></i>
                 <input id="search-input" type="text" placeholder="Search here"
@@ -15,27 +15,30 @@
             </div>
         </div>
 
-        <div class="flex items-center space-x-10 mx-2">
-            <p class="text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Category</p>
-            <div class="relative text-lg">
-                <label for="category-filter" class="sr-only">Category</label>
-                <select id="category-filter"
-                    class="block m-0 focus:outline-none text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">
-                    <option value="">All Categories</option>
+        <div class="relative group mx-2">
+            <p id="category-trigger"
+                class="hover:scale-125 text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200 cursor-pointer">
+                Category
+            </p>
+            <div id="category-dropdown"
+                class="absolute hidden group-hover:block bg-white rounded-md shadow-lg mt-2 w-40 z-10">
+                <ul class="text-gray-600">
                     {{#each categories}}
-                    <option value="{{this}}">{{this}}</option>
+                    <li data-value="{{this}}" class="hover:bg-gray-100 px-4 py-2 cursor-pointer">
+                        {{this}}
+                    </li>
                     {{/each}}
-                </select>
+                </ul>
             </div>
         </div>
 
         <div class="flex items-center space-x-10 mr-3">
             <a href="/profile"
-                class="hover:scale-150 no-underline hover:no-underline text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Profile</a>
+                class="hover:scale-125 no-underline hover:no-underline text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Profile</a>
             <a href="https://localhost:3113/account"
-                class="hover:scale-150 no-underline hover:no-underline text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Account</a>
+                class="hover:scale-125 no-underline hover:no-underline text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Account</a>
             <form action="/logout" method="post" class="mb-0">
-                <button class="text-lg bg-red-400 hover:bg-red-500 rounded-lg text-white p-2">Logout</button>
+                <button class="text-lg bg-red-500 hover:bg-red-600 rounded-lg text-white p-2">Logout</button>
             </form>
         </div>
     </div>
