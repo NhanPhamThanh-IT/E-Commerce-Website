@@ -1,10 +1,9 @@
 {{> header}}
 
-<section class="profile-section p-8 bg-gradient-to-r from-blue-50 via-white to-blue-50">
-    <div class="container mx-auto p-8 rounded-lg shadow-lg border border-gray-200 bg-white">
-        <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold text-gray-800">Profile</h2>
-            <p class="text-gray-600 text-sm">Manage and update your profile details</p>
+<section class="profile-section p-8 bg-gradient-to-r from-blue-50 via-white to-blue-50 flex items-center justify-center">
+    <div class="container mx-auto p-8 rounded-lg shadow-lg border border-gray-200 bg-[#737373] mt-40">
+       <div class="text-center mb-8 ">
+            <h2 class="text-4xl font-bold text-[#f3d2c3]">Profile</h2>
         </div>
 
         <form action="/save-profile" method="POST" class="space-y-6" enctype="application/x-www-form-urlencoded" id="profileForm">
@@ -12,12 +11,12 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Avatar Section -->
-                <div class="col-span-1 flex flex-col items-center bg-gray-100 p-6 rounded-lg shadow-md">
-                    <div class="w-32 h-32 rounded-full overflow-hidden shadow-md mb-4">
+                <div class="col-span-1 flex flex-col items-center p-6 rounded-lg my-4">
+                    <div class="w-32 h-32 rounded-full overflow-hidden shadow-md mb-4 bg-white">
                         <img id="avatar" referrerPolicy="no-referrer" src="{{#if user.avatar}}/user_images/{{user.avatar}}{{else if user.image}}{{user.image}}{{else}}/user_images/profile.png{{/if}}" 
                             alt="User Avatar" class="w-full h-full object-cover">
                     </div>
-                    <label for="avatarInput" class="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded transition hover:bg-blue-500">Upload Avatar</label>
+                    <label for="avatarInput" class="cursor-pointer bg-[#16a34a] text-white px-4 py-2 rounded transition hover:bg-blue-500">Upload Avatar</label>
                     <input type="file" name="avatar" id="avatarInput" accept="image/jpeg,image/png,image/jpg" class="hidden">
                 </div>
 
@@ -25,26 +24,26 @@
                 <div class="col-span-2 space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                            <label for="username" class="block text-sm font-medium text-[#f3d2c3]">Username</label>
                             <input type="text" id="username" name="username" value="{{user.username}}" 
-                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300">
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 ">
                         </div>
                         <div>
-                            <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                            <label for="firstName" class="block text-sm font-medium text-[#f3d2c3]">First Name</label>
                             <input type="text" id="firstName" name="firstName" value="{{user.firstName}}" 
-                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300" required>
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 " required>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                            <label for="lastName" class="block text-sm font-medium text-[#f3d2c3]">Last Name</label>
                             <input type="text" id="lastName" name="lastName" value="{{user.lastName}}" 
-                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300" required>
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 " required>
                         </div>
                         <div>
-                            <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
-                            <select id="gender" name="gender" class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300">
+                            <label for="gender" class="block text-sm font-medium text-[#f3d2c3]">Gender</label>
+                            <select id="gender" name="gender" class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 ">
                                 <option value="female" {{#if (eq user.gender 'female')}}selected{{/if}}>Female</option>
                                 <option value="male" {{#if (eq user.gender 'male')}}selected{{/if}}>Male</option>
                                 <option value="other" {{#if (eq user.gender 'other')}}selected{{/if}}>Other</option>
@@ -54,22 +53,22 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="birthDate" class="block text-sm font-medium text-gray-700">Birth Date</label>
+                            <label for="birthDate" class="block text-sm font-medium text-[#f3d2c3]">Birth Date</label>
                             <input type="date" id="birthDate" name="birthDate" value="{{formatDateForInput user.birthDate}}" 
-                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300" required>
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 " required>
                         </div>
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                            <label for="phone" class="block text-sm font-medium text-[#f3d2c3]">Phone</label>
                             <input type="text" id="phone" name="phone" value="{{user.phone}}" 
-                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300" required>
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 " required>
                             <p id="phoneError" class="text-red-500 text-sm mt-1 hidden">Invalid phone number.</p>
                         </div>
                     </div>
 
                     <div>
-                        <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                        <label for="address" class="block text-sm font-medium text-[#f3d2c3]">Address</label>
                         <textarea id="address" name="address" rows="3" 
-                            class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300">{{user.address}}</textarea>
+                            class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 ">{{user.address}}</textarea>
                     </div>
                 </div>
             </div>
