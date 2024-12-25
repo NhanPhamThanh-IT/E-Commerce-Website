@@ -14,8 +14,6 @@ exports.index = async (req, res, next) => {
             return res.status(404).send('User not found.');
         }
         
-        console.log(paymentHistory);
-
         res.render('subsystem/account/index', {
             user,
             balance: account.remainingBalance,
