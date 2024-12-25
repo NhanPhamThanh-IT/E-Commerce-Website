@@ -14,24 +14,6 @@ const Utils = {
             setTimeout(() => element.classList.add('hidden'), transitionDuration);
         }
     },
-
-    setLoading: (element, isLoading, options = {}) => {
-        const { spinnerId = 'loadingSpinner', spinnerSize = '8', spinnerColor = 'blue-500' } = options;
-        if (!element) return;
-
-        let loadingElement = document.getElementById(spinnerId);
-        if (!loadingElement) {
-            loadingElement = document.createElement('div');
-            loadingElement.id = spinnerId;
-            loadingElement.className = 'flex justify-center items-center py-4';
-            loadingElement.innerHTML = `
-                <div class="animate-spin rounded-full h-${spinnerSize} w-${spinnerSize} border-t-2 border-${spinnerColor}"></div>`;
-            element.appendChild(loadingElement);
-        }
-
-        loadingElement.style.display = isLoading ? 'flex' : 'none';
-        element.style.opacity = isLoading ? '0.5' : '1';
-    }
 };
 
 class ContentManager {
@@ -136,7 +118,12 @@ const handleOverviewClick = async (buttonId, containerId, listOtherContainersId,
         if (otherContainer) otherContainer.classList.add('hidden');
     });
     container.classList.remove('hidden');
-    container.innerHTML = '<p>Loading...</p>';
+    container.innerHTML = `
+        <div class="flex flex-col items-center justify-center h-full">
+            <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-opacity-75"></div>
+            <p class="mt-4 text-gray-600 text-sm">Loading...</p>
+        </div>
+    `;
 
     try {
         const response = await fetch(apiEndpoint);
