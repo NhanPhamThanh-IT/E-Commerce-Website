@@ -62,7 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const performanceOverviewContainer = document.getElementById('performanceOverviewContainer');
     
         if (performanceOverviewContainer) {
-            performanceOverviewContainer.innerHTML = '<p>Loading...</p>';
+            performanceOverviewContainer.innerHTML = `
+                <div class="flex flex-col items-center justify-center h-full">
+                    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-opacity-75"></div>
+                    <p class="mt-4 text-gray-600 text-sm">Loading...</p>
+                </div>
+            `;
             
             try {
                 const response = await fetch('/admin/api/performance-overview');
@@ -92,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     scales: {
                         x: {
                             beginAtZero: true,
-                            title: { display: true, text: 'Month-Year' }
+                            title: { display: true, text: 'Time' }
                         },
                         y: {
                             beginAtZero: true,
