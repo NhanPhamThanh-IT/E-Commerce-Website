@@ -1,4 +1,8 @@
-const list_banner = ["/system_images/banner_1.png"];
+const list_banner = [];
+for (let i = 1; i <= 6; i++) {
+    list_banner.push(`/system_images/banner_${i}.png`);
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     const imgContainer = document.getElementById('image_container');
     const modal = document.getElementById('banner_modal');
