@@ -57,6 +57,59 @@ class ContentManager {
 document.addEventListener('DOMContentLoaded', () => {
     const contentManager = new ContentManager(['content1', 'content2', 'content3', 'content4', 'content5']);
     contentManager.startCycle();
+
+    const displayPerformanceOverview = async () => {
+        const performanceOverviewContainer = document.getElementById('performanceOverviewContainer');
+    
+        if (performanceOverviewContainer) {
+            performanceOverviewContainer.innerHTML = '<p>Loading...</p>';
+            
+            try {
+                const response = await fetch('/admin/api/performance-overview');
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}: ${response.statusText}`);
+                }
+                const data = await response.json();
+                const labels = data.previousRevenue.map(item => `${item.month}/${item.year}`);
+                const revenueData = data.previousRevenue.map(item => item.totalAmount);
+                performanceOverviewContainer.innerHTML = `
+                    <div class="bg-white p-6 border-black border-opacity-30 border-[1px] rounded-xl shadow-lg">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Performance Overview</h2>
+                        <canvas id="performanceLineChart" height="300" width="900"></canvas>
+                    </div>
+                `;
+                chartManager.createChart('performanceLineChart', 'line', {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Revenue',
+                        data: revenueData,
+                        fill: false,
+                        borderColor: '#f9c74f',
+                        tension: 0.1
+                    }]
+                }, {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Month-Year' }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Total Revenue' }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching performance overview data:', error);
+                performanceOverviewContainer.innerHTML = '<p>Error loading data. Please try again later.</p>';
+            }
+        } else {
+            console.error('Performance overview container not found.');
+        }
+    };
+    
+    displayPerformanceOverview();    
 });
 
 // Topic overview section
@@ -94,7 +147,7 @@ const handleOverviewClick = async (buttonId, containerId, listOtherContainersId,
 };
 
 document.getElementById('userOverview').addEventListener('click', () => {
-    handleOverviewClick('userOverview', 'userOverviewContainer', ['productOverviewContainer', 'orderOverviewContainer'] , '/admin/api/user-overview', OverviewSections.createUserOverviewSection);
+    handleOverviewClick('userOverview', 'userOverviewContainer', ['productOverviewContainer', 'orderOverviewContainer'], '/admin/api/user-overview', OverviewSections.createUserOverviewSection);
 });
 
 document.getElementById('productOverview').addEventListener('click', () => {
@@ -373,8 +426,6 @@ const OverviewSections = {
                         <p id="total-orders-month" class="text-lg font-semibold text-gray-800">${data.ordersOfMonth}</p>
                     </div>
                 </div>
-
-                <canvas id="ordersChart" width="500" height="200"></canvas>
             </div>
         `;
     }

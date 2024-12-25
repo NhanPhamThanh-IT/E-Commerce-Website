@@ -23,6 +23,18 @@ exports.index = async (req, res) => {
     }
 };
 
+exports.performanceOverview = async (req, res) => {
+    try {
+        const [previousRevenue] = await Promise.all([
+            OrderService.getRevenuePreviousMonths()
+        ]);
+        res.json({ previousRevenue });
+    } catch (err) {
+        console.error('Error fetching performance overview data:', err);
+        res.status(500).send('Internal Server Error');
+    };
+};
+
 exports.userOverview = async (req, res) => {
     try {
         const loginMethod = await UserService.getStatisticDistinctValue('loginMethod');

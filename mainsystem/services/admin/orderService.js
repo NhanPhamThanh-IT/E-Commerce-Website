@@ -149,6 +149,21 @@ class OrderService {
         const totalAmount = orders.reduce((sum, order) => sum + order.total_amount, 0);
         return Math.round(totalAmount);
     }
+
+    static async getRevenuePreviousMonths() {
+        const now = new Date();
+        const months = [];
+        for (let i = 6; i >= 0; i--) {
+            const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+            const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            const orders = await Order.find({ date: { $gte: startOfMonth, $lte: endOfMonth } }).lean();
+            const totalAmount = orders.reduce((sum, order) => sum + order.total_amount, 0);
+            months.push({ month: date.getMonth() + 1, year: date.getFullYear(), totalAmount: Math.round(totalAmount) });
+        }
+        return months;
+    }
+
 }
 
 module.exports = OrderService;
