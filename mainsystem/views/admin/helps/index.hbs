@@ -1,18 +1,73 @@
 <div class="flex flex-col h-screen">
     <div class="flex">
         {{> aside }}
-        <main class="flex-1 overflow-y-auto h-full bg-slate-50">
-            {{> admin/navbar hidden_search="hidden" title="User Support" content="Let us help you with our
-            detailed"}}
-            <div class="flex-1 flex flex-col">
-                <div class="flex h-screen">
-                    <div class="w-1/2">
-                        <div class="w-full">
-                            Do you need help with our system? We have a detailed guide to help you navigate through our system.
+        <main class="flex-1 overflow-y-auto bg-slate-50">
+            {{> admin/navbar hidden_search="hidden" title="User Support" content="Let us help you with our detailed"}}
+            <div class="flex-1 flex flex-col py-2 px-4">
+                <div class="flex bg-gray-50">
+                    <div class="w-2/3 pl-0 pr-8">
+                        <div id="aside" class="flex w-full">
+                            <div class="rounded-tl-2xl border-black border-[2px] border-l-[2px] border-r-[1px] bg-black text-[#f3d2c3] w-full py-3 px-4 text-lg font-semibold cursor-pointer text-center"
+                                data-section="dashboard-help">Dashboard</div>
+                            <div class="border-black border-y-[2px] border-x-[1px] w-full py-3 px-4 text-lg font-semibold cursor-pointer text-center"
+                                data-section="users-help">Users</div>
+                            <div class="border-black border-y-[2px] border-x-[1px] w-full py-3 px-4 text-lg font-semibold cursor-pointer text-center"
+                                data-section="products-help">Products</div>
+                            <div class="border-black border-y-[2px] border-x-[1px] w-full py-3 px-4 text-lg font-semibold cursor-pointer text-center"
+                                data-section="orders-help">Orders</div>
+                            <div class="rounded-tr-2xl border-black border-y-[2px] border-r-[2px] border-l-[1px] w-full py-3 px-4 text-lg font-semibold cursor-pointer text-center"
+                                data-section="profile-help">Profile</div>
+                        </div>
+
+                        <div id="dashboard-help" class="border-white rounded-b-2xl bg-white shadow-lg p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Dashboard Help</h3>
+                            <p class="text-justify">This is a page for managing detailed user information, allowing the admin to view the
+                                personal details of any user in the system.
+                                With the search bar in the header, the admin can conveniently and quickly search for
+                                users by username or email.
+                                Additionally, the admin can delete a user from the system or view and edit their
+                                personal information in detail.</p>
+                        </div>
+                        <div id="users-help" class="bg-white rounded-b-2xl shadow-lg p-6 hidden">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Users Help</h3>
+                            <p class="text-justify">This is a page for managing detailed user information, allowing the admin to view the
+                                personal details of any user in the system.
+                                With the search bar in the header, the admin can conveniently and quickly search for
+                                users by username or email.
+                                Additionally, the admin can delete a user from the system or view and edit their
+                                personal information in detail.</p>
+                        </div>
+                        <div id="products-help" class="bg-white rounded-b-2xl shadow-lg p-6 hidden">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Products Help</h3>
+                            <p class="text-justify">This page helps admins manage detailed information about their products.
+                                With a convenient search bar in the header, admins can easily search for products by
+                                title, brand, or category.
+                                On this page, admins can also add new products to their system, edit, or delete existing
+                                ones.
+                                Additionally, they can view detailed customer reviews to improve their services
+                                accordingly.</p>
+                        </div>
+                        <div id="orders-help" class="bg-white rounded-b-2xl shadow-lg p-6 hidden">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Orders Help</h3>
+                            <p class="text-justify">This page allows admins to manage all orders that users have completed payment for.
+                                With the search bar in the header, admins can easily and conveniently search for orders
+                                by Username.
+                                On this page, admins can view the list of orders to prepare and deliver them to
+                                customers quickly and accurately.</p>
+                        </div>
+                        <div id="profile-help" class="bg-white rounded-b-2xl shadow-lg p-6 hidden">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Profile Help</h3>
+                            <p class="text-justify">This is a user-friendly page designed specifically for the admin to easily view and
+                                manage their personal information in a convenient and organized manner.
+                                Additionally, it offers a feature for updating the profile picture, allowing the admin
+                                to upload a new image directly from their device.</p>
                         </div>
                     </div>
-                    <div class="w-1/2 flex justify-end">
-                        <img src="/system_images/Help.gif" alt="Help assistance" class="h-64 object-cover">
+                    <div class="w-1/3 flex flex-col items-center bg-gray-100 justify-center h-80 py-4">
+                        <div class="p-4">
+                            <img src="/system_images/Help.gif" alt="Help assistance"
+                                class="rounded-lg shadow-lg h-72 object-cover">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -22,3 +77,18 @@
         {{> footer }}
     </div>
 </div>
+
+<script>
+    const asideItems = document.querySelectorAll('#aside div');
+    const helpSections = document.querySelectorAll('[id$="-help"]');
+
+    asideItems.forEach(item => {
+        item.addEventListener('click', () => {
+            helpSections.forEach(section => section.classList.add('hidden'));
+            asideItems.forEach(asideItem => asideItem.classList.remove('bg-black', 'text-[#f3d2c3]'));
+            item.classList.add('bg-black', 'text-[#f3d2c3]');
+            const sectionId = item.getAttribute('data-section');
+            document.getElementById(sectionId).classList.remove('hidden');
+        });
+    });
+</script>
