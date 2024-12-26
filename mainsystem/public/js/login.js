@@ -113,3 +113,46 @@ function stopSnowflakes() {
     if (snowContainer)
         snowContainer.remove();
 }
+
+function changeToSignUp() {
+    document.getElementById('loginSection').classList.add('hidden');
+    document.getElementById('registerSection').classList.remove('hidden');
+}
+
+function changeToLogin() {
+    document.getElementById('loginSection').classList.remove('hidden');
+    document.getElementById('registerSection').classList.add('hidden');
+}
+
+document.getElementById('signupForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const email = document.getElementById('signUpEmail').value;
+    const password = document.getElementById('signUpPassword').value;
+    const confirmedPassword = document.getElementById('signUpConfirmedPassword').value;
+    if (password !== confirmedPassword) {
+        alert('Passwords do not match');
+        return;
+    }
+    const formData = {
+        email: email,
+        password: password
+    };
+    try {
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        const data = await response.json();
+        if (response.ok) {
+            alert('Registration successful!');
+            window.location.href = '/login';
+        } else {
+            alert(`Error: ${data.desc || 'Registration failed'}`);
+        }
+    } catch (error) {
+        alert('Something went wrong. Please try again later.');
+    }
+});
