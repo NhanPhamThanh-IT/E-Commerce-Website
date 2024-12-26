@@ -1,7 +1,15 @@
 async function fetchAndRenderUsers(url) {
     const usersContainer = document.getElementById('users-container');
     const paginationContainer = document.getElementById('pagination-container');
-    usersContainer.innerHTML = '<tr><td colspan="4" class="text-center text-gray-600">Loading...</td></tr>';
+    usersContainer.innerHTML = `<tr>
+        <td colspan="4" class="text-center text-gray-600">
+            <div class="flex flex-col items-center justify-center h-full my-3">
+                <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-opacity-75"></div>
+                <p class="mt-4 text-gray-600 text-base font-semibold">Loading...</p>
+            </div>
+        </td>
+    </tr>
+    `;
     paginationContainer.innerHTML = '';
 
     try {
