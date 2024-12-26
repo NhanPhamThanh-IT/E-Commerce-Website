@@ -4,7 +4,8 @@
 
         <main class="flex-1 overflow-y-auto bg-gray-100 relative h-full">
             {{!-- Search Bar --}}
-            {{> admin/navbar action="/admin/users/search" title="Users List" content="Explore our curated list of users tailored just for you" 
+            {{> admin/navbar action="/admin/users/search" title="Users List" content="Explore our curated list of users
+            tailored just for you"
             options='<select name="field"
                 class="pl-3 pr-2 py-2 border border-gray-300 rounded-full bg-white text-gray-700 focus:outline-none hover:border-blue-400 transition">
                 <option value="username">User Name</option>
@@ -13,7 +14,6 @@
             '}}
 
             <div class="px-4">
-                <div class="px-4">
                 <div class="bg-black rounded-xl shadow-md p-6">
                     <table class="table-auto bg-white w-full text-left rounded-xl">
                         <thead class="bg-black text-white rounded-t-xl">
@@ -31,7 +31,7 @@
                             </tr>
                         </thead>
                         <tr>
-                        <td colspan="4" class="border-t border-black"></td>
+                            <td colspan="4" class="border-t border-black"></td>
                         </tr>
                         <tbody id="users-container" class="divide-y divide-black rounded-b-xl">
                             {{!-- Orders will be rendered at here --}}
@@ -42,12 +42,11 @@
             </div>
 
         </main>
-   </div>
+    </div>
     <div>
         {{> footer }}
     </div>
 </div>
-
 
 <div id="deleteModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
     <div class="bg-white rounded-lg shadow-lg w-96 p-6">
