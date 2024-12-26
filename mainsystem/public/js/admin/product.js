@@ -1,7 +1,12 @@
 async function fetchAndRenderProducts(url) {
     const productsContainer = document.getElementById('products-container');
     const paginationContainer = document.getElementById('pagination-container');
-    productsContainer.innerHTML = '<p class="text-center text-gray-600">Loading...</p>';
+    productsContainer.innerHTML = `
+    <div class="flex flex-col items-center justify-center my-3">
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-opacity-75"></div>
+        <p class="mt-4 text-gray-600 text-base font-semibold">Loading...</p>
+    </div>
+    `;
     paginationContainer.innerHTML = '';
 
     try {
@@ -10,6 +15,7 @@ async function fetchAndRenderProducts(url) {
 
         if (response.ok && data.products && data.products.length > 0) {
             productsContainer.innerHTML = '';
+            productsContainer.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6'
             data.products.forEach(product => {
                 const productCard = document.createElement('div');
                 productCard.className = 'relative bg-white rounded-xl shadow-md px-4 pt-4 pb-3 border-2 border-slate-500 hover:scale-105 transition-transform cursor-pointer';
