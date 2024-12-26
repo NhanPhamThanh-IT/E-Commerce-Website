@@ -1,13 +1,13 @@
 <div class="bg-white w-screen h-screen flex overflow-hidden">
-    <div
+    <div id="loginSection"
         class="auth-container w-1/2 max-w-sm mx-auto p-8 rounded-[30px] shadow-2xl bg-slate-950 my-4 border-2 border-[#6b61ff] bg-opacity-80">
         <h2 class="text-2xl font-semibold text-center text-[#6b61ff] mb-6">Log in to your account</h2>
         <form id="loginForm" class="space-y-6 mb-4">
             <div class="form-group">
                 <label for="email" class="block text-lg font-bold text-gray-300">Email</label>
                 <input type="email"
-                    class="form-input w-full p-3 border-2 border-[#6b61ff] rounded-md focus:outline-none"
-                    id="email" name="email" placeholder="Enter your email" required>
+                    class="form-input w-full p-3 border-2 border-[#6b61ff] rounded-md focus:outline-none" id="email"
+                    name="email" placeholder="Enter your email" required>
             </div>
             <div class="form-group">
                 <label for="password" class="block text-lg font-bold text-gray-300">Password</label>
@@ -41,17 +41,47 @@
             </div>
         </form>
         <div class="toggle-link text-center mt-6">
-            <p class="text-sm text-gray-300 mb-0">Don't have an account? <a href="/register"
-                    class="text-[#6b61ff] no-underline hover:no-underline">Sign up</a></p>
+            <p class="text-sm text-gray-300 mb-0">Don't have an account? <span onclick="changeToSignUp()"
+                    class="text-[#6b61ff] no-underline hover:no-underline">Sign up</span></p>
         </div>
     </div>
-<div class="w-2/3 md:block">
-    <div class="flex items-center justify-center h-screen">
-        <img src="/system_images/login_2.gif" alt="logo" class="h-2/3 w-2/3 object-cover">
+    <div class="w-2/3 md:block">
+        <div class="flex items-center justify-center h-screen">
+            <img src="/system_images/login_2.gif" alt="logo" class="h-2/3 w-2/3 object-cover">
+        </div>
     </div>
-</div>
-
-
+    <div id="registerSection" class="auth-container w-1/2 max-w-sm mx-auto p-8 rounded-[30px] shadow-2xl bg-slate-950 my-4 border-2
+    border-[#6b61ff] bg-opacity-80 hidden">
+        <h2 class="text-2xl font-semibold text-center text-[#6b61ff] mb-6">Create a new account</h2>
+        <form id="signupForm" class="space-y-6 mb-4">
+            <div class="form-group">
+                <label for="signUpEmail" class="block text-lg font-bold text-gray-300">Email</label>
+                <input type="email"
+                    class="form-input w-full p-3 border-2 border-[#6b61ff] rounded-md focus:outline-none"
+                    id="signUpEmail" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="signUpPassword" class="block text-lg font-bold text-gray-300">Password</label>
+                <input type="password"
+                    class="form-input w-full p-3 border-2 border-[#6b61ff] rounded-md focus:outline-none"
+                    id="signUpPassword" name="password" placeholder="Create a password" required>
+            </div>
+            <div class="form-group">
+                <label for="signUpConfirmedPassword" class="block text-lg font-bold text-gray-300">Confirmed
+                    Password</label>
+                <input type="password"
+                    class="form-input w-full p-3 border-2 border-[#6b61ff] rounded-md focus:outline-none"
+                    id="signUpConfirmedPassword" name="password" placeholder="Type password again" required>
+            </div>
+            <div class="font-bold bg-green-500 text-white rounded-md hover:bg-green-700 transition duration-200 mt-8">
+                <button type="submit" class="btn w-full py-3 text-white">Sign Up</button>
+            </div>
+        </form>
+        <div class="toggle-link text-center mt-6">
+            <p class="text-sm text-gray-300 mb-0">Already have an account? <span onclick="changeToLogin()"
+                    class="text-[#6b61ff] no-underline hover:no-underline">Log in</span></p>
+        </div>
+    </div>
 </div>
 
 <div id="alertBox"
@@ -65,120 +95,49 @@
     </div>
 </div>
 
+<script src="/js/login.js"></script>
+
 <script>
-    const togglePassword = document.getElementById('togglePassword');
-    const passwordField = document.getElementById('password');
-    const eyeIcon = document.getElementById('eyeIcon');
+    function changeToSignUp() {
+        document.getElementById('loginSection').classList.add('hidden');
+        document.getElementById('registerSection').classList.remove('hidden');
+    }
 
-    togglePassword.addEventListener('click', function () {
-        if (passwordField.type === 'password') {
-            passwordField.type = 'text';
-            eyeIcon.classList.remove('fa-eye');
-            eyeIcon.classList.add('fa-eye-slash');
-        } else {
-            passwordField.type = 'password';
-            eyeIcon.classList.remove('fa-eye-slash');
-            eyeIcon.classList.add('fa-eye');
-        }
-    });
+    function changeToLogin() {
+        document.getElementById('loginSection').classList.remove('hidden');
+        document.getElementById('registerSection').classList.add('hidden');
+    }
 
-    document.getElementById('loginForm').addEventListener('submit', async function (e) {
+    document.getElementById('signupForm').addEventListener('submit', async function (e) {
         e.preventDefault();
-
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
+        const email = document.getElementById('signUpEmail').value;
+        const password = document.getElementById('signUpPassword').value;
+        const confirmedPassword = document.getElementById('signUpConfirmedPassword').value;
+        if (password !== confirmedPassword) {
+            alert('Passwords do not match');
+            return;
+        }
         const formData = {
             email: email,
             password: password
         };
-        console.log('Form data:', formData);
-
         try {
-            const response = await fetch('/login', {
+            const response = await fetch('/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData)
             });
-            console.log('Response:', response);
-
+            const data = await response.json();
             if (response.ok) {
-                showAlert('Login successful!', 'success');
-                setTimeout(function () {
-                    window.location.href = '/homepage';
-                }, 600);
+                alert('Registration successful!');
+                window.location.href = '/login';
             } else {
-                const errorData = await response.json();
-                showAlert(`Error: ${errorData.desc || errorData.message || 'Login failed'}`, 'error');
+                alert(`Error: ${data.desc || 'Registration failed'}`);
             }
         } catch (error) {
-            showAlert('Something went wrong. Please try again later.', 'error');
+            alert('Something went wrong. Please try again later.');
         }
     });
-
-    function showAlert(message, type) {
-        const alertBox = document.getElementById('alertBox');
-        const alertMessage = document.getElementById('alertMessage');
-        const alertCloseBtn = document.getElementById('alertCloseBtn');
-        alertMessage.textContent = message;
-        alertBox.classList.remove('hidden');
-        if (type === 'success') {
-            alertMessage.classList.add('text-green-600');
-            alertCloseBtn.classList.add('bg-green-500');
-        } else if (type === 'error') {
-            alertMessage.classList.add('text-red-600');
-            alertCloseBtn.classList.add('bg-red-500');
-        }
-        alertCloseBtn.onclick = function () {
-            alertBox.classList.add('hidden');
-            stopSnowflakes();
-        };
-        createSnowflakes();
-    }
-
-    function createSnowflakes() {
-        const snowflakes = [];
-        const numberOfSnowflakes = 50;
-        const snowContainer = document.createElement('div');
-        snowContainer.style.position = 'absolute';
-        snowContainer.style.top = '0';
-        snowContainer.style.left = '0';
-        snowContainer.style.right = '0';
-        snowContainer.style.bottom = '0';
-        snowContainer.style.pointerEvents = 'none';
-        document.body.appendChild(snowContainer);
-        for (let i = 0; i < numberOfSnowflakes; i++) {
-            const snowflake = document.createElement('div');
-            snowflake.classList.add('snowflake');
-            snowflake.innerHTML = '<i class="fas fa-snowflake" style="color: #ADD8E6; font-size: 2rem;"></i>';
-            snowflake.style.position = 'absolute';
-            snowflake.style.left = `${Math.random() * 100}vw`;
-            snowflake.style.top = `${Math.random() * 100}vh`;
-            snowflake.style.fontSize = `${Math.random() * 2 + 1}rem`;
-            snowflake.style.opacity = Math.random();
-            snowContainer.appendChild(snowflake);
-            snowflakes.push(snowflake);
-        }
-        function moveSnowflakes() {
-            snowflakes.forEach((snowflake) => {
-                let y = parseFloat(snowflake.style.top);
-                let speed = Math.random() * 0.5 + 0.5;
-                snowflake.style.top = `${y + speed}px`;
-                if (y > window.innerHeight) {
-                    snowflake.style.top = '0';
-                    snowflake.style.left = `${Math.random() * 100}vw`;
-                }
-            });
-            requestAnimationFrame(moveSnowflakes);
-        }
-        moveSnowflakes();
-    }
-
-    function stopSnowflakes() {
-        const snowContainer = document.querySelector('div[style*="position: absolute"]');
-        if (snowContainer)
-            snowContainer.remove();
-    }
 </script>

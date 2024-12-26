@@ -13,8 +13,6 @@ const createUserService = async (userData) => {
         const saltRounds = 10;
         const hashPassword  = await bcrypt.hash(userData.password, saltRounds);
         let result = await User.create({
-            firstName: userData.firstName,
-            lastName: userData.lastName,
             email: userData.email,
             password: hashPassword,
         })

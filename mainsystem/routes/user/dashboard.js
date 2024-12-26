@@ -23,10 +23,6 @@ router.get('/login', (req, res) => {
     res.render('login/index');
 });
 
-router.get('/register', (req, res) => {
-    res.render('register/index');
-});
-
 router.post('/register', userController.createUser);
 
 router.post('/login', userController.handleLogin);
