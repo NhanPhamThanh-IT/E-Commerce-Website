@@ -154,11 +154,11 @@ async function openViewModal(orderId) {
         if (orderData.list_of_items && orderData.list_of_items.length > 0) {
             orderData.list_of_items.forEach(item => {
                 const listItem = document.createElement('li');
-                listItem.className = 'flex flex-col w-full flex-wrap';
+                listItem.className = 'grid grid-cols-[2fr,7fr,1fr] space-x-2 items-center';
                 listItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}" class="w-16 h-16 object-cover rounded-lg" />
                     <p class="text-justify">${item.title}</p>
-                    <p class="flex justify-end text-green-500">Quantity:  <span class="text-green-500 font-semibold"> ${item.quantity}
-                    </span></p>
+                    <p class="flex justify-end"><span class="font-semibold text-gray-400">x${item.quantity}</span></p>
                 `;
                 itemsList.appendChild(listItem);
             });
