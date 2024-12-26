@@ -2,7 +2,7 @@
     <div id="loginSection"
         class="auth-container w-1/3 max-w-sm mx-auto p-8 rounded-[30px] shadow-2xl bg-slate-950 my-4 border-2 border-[#6b61ff] bg-opacity-80">
         <h2 class="text-2xl font-semibold text-center text-[#6b61ff] mb-6 truncate">Log in to your account</h2>
-        <form id="loginForm" class="space-y-3 mb-4">
+        <form id="loginForm" class="space-y-6 mb-4">
             <div class="form-group">
                 <label for="email" class="block text-lg font-bold text-gray-300">Email</label>
                 <input type="email"
@@ -42,7 +42,7 @@
         </form>
         <div class="toggle-link text-center mt-6">
             <p class="text-sm text-gray-300 mb-0 truncate">Don't have an account? <span onclick="changeToSignUp()"
-                    class="text-[#6b61ff] no-underline hover:no-underline">Sign up</span></p>
+                    class="text-[#6b61ff] no-underline hover:no-underline font-semibold">Sign up</span></p>
         </div>
     </div>
     <div id="imageSection" class="w-2/3 md:block">
@@ -52,22 +52,22 @@
     </div>
     <div id="registerSection" class="auth-container w-1/3 max-w-sm mx-auto p-8 rounded-[30px] shadow-2xl bg-slate-950 my-4 border-2
     border-[#6b61ff] bg-opacity-80 hidden">
-        <h2 class="text-2xl font-semibold text-center text-[#6b61ff] mb-6">Create a new account</h2>
+        <h2 class="text-2xl font-semibold text-center text-[#6b61ff] mb-6 truncate">Create a new account</h2>
         <form id="signupForm" class="space-y-6 mb-4">
             <div class="form-group">
-                <label for="signUpEmail" class="block text-lg font-bold text-gray-300">Email</label>
+                <label for="signUpEmail" class="block text-lg font-bold text-gray-300 truncate">Email</label>
                 <input type="email"
                     class="form-input w-full p-3 border-2 border-[#6b61ff] rounded-md focus:outline-none"
                     id="signUpEmail" name="email" placeholder="Enter your email" required>
             </div>
             <div class="form-group">
-                <label for="signUpPassword" class="block text-lg font-bold text-gray-300">Password</label>
+                <label for="signUpPassword" class="block text-lg font-bold text-gray-300 truncate">Password</label>
                 <input type="password"
                     class="form-input w-full p-3 border-2 border-[#6b61ff] rounded-md focus:outline-none"
                     id="signUpPassword" name="password" placeholder="Create a password" required>
             </div>
             <div class="form-group">
-                <label for="signUpConfirmedPassword" class="block text-lg font-bold text-gray-300">Confirmed
+                <label for="signUpConfirmedPassword" class="block text-lg font-bold text-gray-300 truncate">Confirmed
                     Password</label>
                 <input type="password"
                     class="form-input w-full p-3 border-2 border-[#6b61ff] rounded-md focus:outline-none"
@@ -78,8 +78,8 @@
             </div>
         </form>
         <div class="toggle-link text-center mt-6">
-            <p class="text-sm text-gray-300 mb-0">Already have an account? <span onclick="changeToLogin()"
-                    class="text-[#6b61ff] no-underline hover:no-underline">Log in</span></p>
+            <p class="text-sm text-gray-300 mb-0 truncate">Already have an account? <span onclick="changeToLogin()"
+                    class="text-[#6b61ff] no-underline hover:no-underline font-semibold">Log in</span></p>
         </div>
     </div>
 </div>

@@ -1,88 +1,91 @@
 {{> header}}
 
-<section class="profile-section p-8 bg-gradient-to-r from-blue-50 via-white to-blue-50 flex items-center justify-center">
-    <div class="container mx-auto p-8 rounded-lg shadow-lg border border-gray-200 bg-[#737373] mt-40">
-       <div class="text-center mb-8 ">
-            <h2 class="text-4xl font-bold text-[#f3d2c3]">Profile</h2>
+<section
+    class="profile-section px-8 pb-8 pt-40 bg-gradient-to-r from-gray-50 via-white to-gray-50 flex items-center justify-center">
+    <div class="container mx-auto p-8 rounded-xl shadow-lg border border-gray-200 bg-white">
+        <div class="text-center mb-8">
+            <h2 class="text-4xl font-semibold text-gray-800">Edit Profile</h2>
         </div>
-
-        <form action="/save-profile" method="POST" class="space-y-6" enctype="application/x-www-form-urlencoded" id="profileForm">
+        <form action="/save-profile" method="POST" class="space-y-8" enctype="application/x-www-form-urlencoded"
+            id="profileForm">
             <input type="hidden" name="_method" value="PUT">
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Avatar Section -->
-                <div class="col-span-1 flex flex-col items-center p-6 rounded-lg my-4">
-                    <div class="w-32 h-32 rounded-full overflow-hidden shadow-md mb-4 bg-white">
-                        <img id="avatar" referrerPolicy="no-referrer" src="{{#if user.avatar}}/user_images/{{user.avatar}}{{else if user.image}}{{user.image}}{{else}}/user_images/profile.png{{/if}}" 
-                            alt="User Avatar" class="w-full h-full object-cover">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                <div class="col-span-1 flex flex-col items-center p-6 rounded-xl bg-white shadow-md border-black border-2">
+                    <div>
+                        <div class="w-36 h-36 rounded-full overflow-hidden shadow-md mb-4 bg-gray-200">
+                            <img id="avatar" referrerPolicy="no-referrer"
+                                src="{{#if user.avatar}}/user_images/{{user.avatar}}{{else if user.image}}{{user.image}}{{else}}/user_images/profile.png{{/if}}"
+                                alt="User Avatar" class="w-full h-full object-cover">
+                        </div>
+                        <label for="avatarInput"
+                            class="cursor-pointer bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-600 text-white px-4 py-2 rounded-lg transition hover:bg-indigo-800">
+                            Upload Avatar
+                        </label>
+                        <input type="file" name="avatar" id="avatarInput" accept="image/jpeg,image/png,image/jpg"
+                            class="hidden">
                     </div>
-                    <label for="avatarInput" class="cursor-pointer bg-[#16a34a] text-white px-4 py-2 rounded transition hover:bg-blue-500">Upload Avatar</label>
-                    <input type="file" name="avatar" id="avatarInput" accept="image/jpeg,image/png,image/jpg" class="hidden">
+                    <button type="submit"
+                        class="bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-600 text-white px-6 py-3 rounded-lg transition hover:bg-indigo-800">
+                        Save Changes
+                    </button>
                 </div>
-
-                <!-- Profile Details -->
                 <div class="col-span-2 space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="username" class="block text-sm font-medium text-[#f3d2c3]">Username</label>
-                            <input type="text" id="username" name="username" value="{{user.username}}" 
-                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 ">
+                            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                            <input type="text" id="username" name="username" value="{{user.username}}"
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 bg-white">
                         </div>
                         <div>
-                            <label for="firstName" class="block text-sm font-medium text-[#f3d2c3]">First Name</label>
-                            <input type="text" id="firstName" name="firstName" value="{{user.firstName}}" 
-                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 " required>
+                            <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                            <input type="text" id="firstName" name="firstName" value="{{user.firstName}}"
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 bg-white"
+                                required>
                         </div>
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="lastName" class="block text-sm font-medium text-[#f3d2c3]">Last Name</label>
-                            <input type="text" id="lastName" name="lastName" value="{{user.lastName}}" 
-                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 " required>
+                            <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" value="{{user.lastName}}"
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 bg-white"
+                                required>
                         </div>
                         <div>
-                            <label for="gender" class="block text-sm font-medium text-[#f3d2c3]">Gender</label>
-                            <select id="gender" name="gender" class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 ">
-                                <option value="female" {{#if (eq user.gender 'female')}}selected{{/if}}>Female</option>
-                                <option value="male" {{#if (eq user.gender 'male')}}selected{{/if}}>Male</option>
-                                <option value="other" {{#if (eq user.gender 'other')}}selected{{/if}}>Other</option>
+                            <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
+                            <select id="gender" name="gender"
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 bg-white">
+                                <option value="female" {{#if (eq user.gender 'female' )}}selected{{/if}}>Female</option>
+                                <option value="male" {{#if (eq user.gender 'male' )}}selected{{/if}}>Male</option>
+                                <option value="other" {{#if (eq user.gender 'other' )}}selected{{/if}}>Other</option>
                             </select>
                         </div>
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="birthDate" class="block text-sm font-medium text-[#f3d2c3]">Birth Date</label>
-                            <input type="date" id="birthDate" name="birthDate" value="{{formatDateForInput user.birthDate}}" 
-                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 " required>
+                            <label for="birthDate" class="block text-sm font-medium text-gray-700">Birth Date</label>
+                            <input type="date" id="birthDate" name="birthDate"
+                                value="{{formatDateForInput user.birthDate}}"
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 bg-white"
+                                required>
                         </div>
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-[#f3d2c3]">Phone</label>
-                            <input type="text" id="phone" name="phone" value="{{user.phone}}" 
-                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 " required>
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                            <input type="text" id="phone" name="phone" value="{{user.phone}}"
+                                class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 bg-white"
+                                required>
                             <p id="phoneError" class="text-red-500 text-sm mt-1 hidden">Invalid phone number.</p>
                         </div>
                     </div>
-
                     <div>
-                        <label for="address" class="block text-sm font-medium text-[#f3d2c3]">Address</label>
-                        <textarea id="address" name="address" rows="3" 
-                            class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 ">{{user.address}}</textarea>
+                        <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                        <textarea id="address" name="address" rows="3"
+                            class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 bg-white">{{user.address}}</textarea>
                     </div>
                 </div>
-            </div>
-
-            <!-- Save Changes -->
-            <div class="text-right">
-                <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg transition hover:bg-blue-500">
-                    Save Changes
-                </button>
             </div>
         </form>
     </div>
 </section>
-
 
 <script>
     const uploadButton = document.getElementById('avatarInput');
