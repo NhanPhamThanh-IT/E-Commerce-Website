@@ -8,7 +8,7 @@
 
 {{> header }}
 
-<main id="main-content" class="container m-0 w-full flex flex-wrap lg:flex-nowrap justify-between">
+<main id="main-content" class="absolute top-[110px] left-0 right-0 bottom-0 w-full flex flex-wrap lg:flex-nowrap justify-between">
     <!-- Sidebar Section -->
     <aside class="w-1/5 mb-6 lg:mb-0">
         <div class="bg-gray-100 shadow-md py-4 px-3 sticky top-[110px]">
@@ -45,7 +45,7 @@
             </h2>
         </header>
 
-        <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div id="products-container" class="">
             <!-- Product items -->
         </div>
 
@@ -82,7 +82,7 @@
             <!-- Product Details -->
             <div class="w-full">
                 <h2 id="product-title" class="text-2xl font-semibold mb-4 truncate"></h2>
-                <img id="product-image" src="" alt="" class="w-full h-64 object-cover mb-4 rounded">
+                <img id="product-image" src="" alt="" class="w-full h-64 object-contain mb-4 rounded">
                 <p id="product-description" class="text-gray-600 mb-4"></p>
                 <p id="product-price" class="text-gray-800 font-bold mb-4"></p>
                 <p id="product-stock" class="text-sm text-gray-600 mb-4">
@@ -117,14 +117,9 @@
 <script src="/js/user/homepage.js"></script>
 
 <script>
-
+    
     const header = document.getElementById('mainheader');
     const main = document.getElementById('main-content');
-    const headerHeight = header.offsetHeight;
-    main.style.marginTop = `${headerHeight}px`;
-    main.style.marginLeft = '0px';
-    main.style.marginRight = '0px';
-    main.style.marginBottom = '0px';
 
     let currentModalProductId = null;
     let currentCategory = null;
@@ -141,6 +136,7 @@
             const data = await response.json();
 
             if (response.ok && data.products && data.products.length) {
+                productsContainer.className = 'grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6'
                 const currentPage = parseInt(data.currentPage, 10); // Parse currentPage as an integer
                 const totalPages = data.totalPages;
 
@@ -152,7 +148,7 @@
                     productsContainer.innerHTML += `
                         <div class="w-full rounded-xl shadow-lg bg-white overflow-hidden transform transition-all hover:scale-105 hover:shadow-xl">
                             <div class="relative">
-                                <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover rounded-t-lg">
+                                <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-contain rounded-t-lg">
                                 ${discount > 0
                             ? `<div class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold py-1 px-2 rounded-md">
                                         ${discount}% OFF
@@ -227,7 +223,8 @@
                 // Add event listeners to products
                 addProductEventListeners();
             } else {
-                productsContainer.innerHTML = '<p class="text-center text-gray-600">No products found.</p>';
+                productsContainer.className = 'flex justify-center items-center';
+                productsContainer.innerHTML = '<img src="/system_images/productNotFound.gif" alt="loading" class="object-cover mx-auto">';
             }
         } catch (error) {
             console.error('Error fetching products:', error);
