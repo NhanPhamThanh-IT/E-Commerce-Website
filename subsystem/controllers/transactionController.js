@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const Order = require('../../mainsystem/models/orderModel');
-const PayAccount = require('../../mainsystem/models/payAccountModel');
-const User = require('../../mainsystem/models/userModel');
+const Order = require('../models/orderModel');
+const PayAccount = require('../models/payAccountModel');
+const User = require('../models/userModel');
 const MyError = require('../cerror');
 exports.index = async (req, res, next) => {
     try {

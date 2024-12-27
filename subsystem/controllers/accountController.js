@@ -1,5 +1,5 @@
-const PayAccount = require('../../mainsystem/models/payAccountModel');
-const User = require('../../mainsystem/models/userModel');
+const PayAccount = require('../models/payAccountModel');
+const User = require('../models/userModel');
 const paymentHistoryService = require('../service/paymentHistoryService')
 
 exports.index = async (req, res, next) => {

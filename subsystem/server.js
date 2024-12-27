@@ -5,11 +5,11 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const session = require('express-session');
-const connection = require('../mainsystem/config/database');
 const MyError = require('./cerror');
 const cors = require('cors');
 const configViewEngine = require('./config/viewEngine');
-require('../mainsystem/config/passport')(passport);
+const connection = require('./config/database');
+require('./config/passport')(passport);
 
 const app = express();
 const PORT = process.env.PORT || 3113;
@@ -34,6 +34,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
+    const cookies = req.cookies;
+    console.log('Cookies:', cookies);
     passport.authenticate('jwt', { session: false }, (err, user, info) => {
         if (err) {
             console.error('Error:', err);
@@ -47,7 +49,7 @@ app.use((req, res, next) => {
         next();
     })(req, res, next);
 });
-const PayAccount = require('../mainsystem/models/payAccountModel');
+const PayAccount = require('./models/payAccountModel');
 const createAccountIfNotExist = async (req, res, next) => {
     try {
         let account = await PayAccount.findOne({ id: req.user._id });
