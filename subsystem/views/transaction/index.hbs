@@ -1,27 +1,28 @@
+<div class="bg-orange-500 h-full">
 <div class="container mx-auto">
     <!-- Page Title -->
-    <h1 class="text-4xl font-semibold text-center text-orange-600 mb-6">Order Summary</h1>
+    <h1 class="text-6xl font-semibold text-center text-white mb-6">Order Summary</h1>
 
     <!-- Grid Layout -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 ">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 my-8 ">
         <!-- Left Column -->
-        <div class="space-y-6">
+        <div class="space-y-6 my-16">
             <!-- User Info Card -->
-            <div class="bg-orange-500 rounded-lg shadow-xl p-6 border border-black border-2">
-                <h2 class="text-2xl font-semibold text-black text-center mb-6">User Information</h2>
+            <div class="bg-white rounded-2xl p-6 shadow-lg">
+                <h2 class="text-2xl font-semibold text-orange-600 text-center mb-6">User Information</h2>
                 <div class="flex items-center">
                     <div class="space-y-3 flex-grow">
-                        <p class="font-bold text-black text-lg">Name: <span class="text-gray-600">{{user.firstName}}
+                        <p class="font-bold text-emerald-700 text-lg">Name: <span class="text-gray-600">{{user.firstName}}
                                 {{user.lastName}}</span></p>
-                        <p class="font-bold text-black text-lg">Email: <span class="text-gray-600">{{user.email}}</span>
+                        <p class="font-bold text-emerald-700 text-lg">Email: <span class="text-gray-600">{{user.email}}</span>
                         </p>
-                        <p class="font-bold text-black text-lg">Account Balance: <span
+                        <p class="font-bold text-emerald-700 text-lg">Account Balance: <span
                                 class="text-green-500">${{last}}</span></p>
                     </div>
                     <div class="ml-auto">
                         <a href="/account">
                             <button id="my-account-button"
-                                class="bg-gray-500 text-white py-3 px-6 rounded-full text-lg hover:bg-[#f3d2c3] transition transform hover:scale-105 shadow-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50">
+                                class="bg-gray-500 text-white py-3 px-6 rounded-full text-lg hover:bg-orange-600 transition transform hover:scale-105 shadow-md focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50">
                                 <i class="fa-solid fa-user"></i> My Account
                             </button>
                         </a>
@@ -30,15 +31,15 @@
             </div>
 
             <!-- Order ID Card -->
-            <div class="bg-orange-500 text-white p-4 rounded-lg shadow-lg border border-black">
-
-                <div class="flex items-center justify-between">
-                    <p class="text-2xl font-bold text-black">Order ID</p>
+            <div class="bg-white text-white p-4 rounded-2xl shadow-lg ">
+                <h2 class="text-2xl font-semibold text-orange-600 text-center mb-6">Order Information</h2>
+                <div class="flex items-center justify-between my-2">
+                    <p class="text-xl font-bold text-emerald-700">Order ID</p>
                     <p class="text-black text-xl">{{order._id}}</p>
                 </div>
 
-                <div class="flex items-center justify-between">
-                    <p class="text-2xl font-bold text-black">Status</p>
+                <div class="flex items-center justify-between my-2">
+                    <p class="text-xl font-bold text-emerald-700">Status</p>
                     <p>
                         {{#if (eq order.status "pending")}}
                         <span
@@ -52,16 +53,16 @@
                     </p>
 
                 </div>
-                <div class="flex items-center justify-between">
-                    <p class="text-2xl font-bold text-black">Date</p>
+                <div class="flex items-center justify-between my-2">
+                    <p class="text-xl font-bold text-emerald-700">Date</p>
                     <p class="text-black text-xl">{{formatDate order.date}}</p>
                 </div>
-                <div class="flex items-center justify-between space-x-16">
-                    <p class="text-2xl font-bold text-black ">Address</p>
+                <div class="flex items-center justify-between space-x-16 my-2">
+                    <p class="text-xl font-bold text-emerald-700 ">Address</p>
                     <p class="text-black text-xl text-justify">{{order.address}}</p>
                 </div>
-                <div class="flex items-center justify-between">
-                    <p class="text-2xl font-bold text-black">Phone Number</p>
+                <div class="flex items-center justify-between my-2">
+                    <p class="text-xl font-bold text-emerald-700">Phone Number</p>
                     <p class="text-black text-xl">{{order.phone_number}}</p>
                 </div>
 
@@ -70,16 +71,17 @@
         </div>
 
         <!-- Right Column -->
-        <div class="bg-orange-500 rounded-lg shadow-xl p-4 border border-black border-2">
-            <div class="text-xl font-bold pb-2 mb-4 text-gray-800">List of Items</div>
+        <div class="bg-white rounded-2xl shadow-xl p-4 ">
+            <div class="text-2xl font-bold pb-2 mb-4 text-orange-600">List of Items</div>
+            <div class="max-h-64 overflow-y-auto">
             <ul class="space-y-2">
                 {{#each order.list_of_items}}
-                <li class="flex w-full items-center px-2 py-2 bg-white rounded-lg shadow-sm">
+                <li class="flex w-full items-center px-2 py-2 bg-white rounded-lg shadow-sm border-orange-600 border-2">
                     <div class="flex items-center justify-begin w-1/4">
                         <img src="{{image}}" alt="{{title}}" class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div class="flex items-center justify-center w-1/2 md:truncate">
-                        <h3 class="font-semibold text-gray-800 text-justify">{{title}}</h3>
+                        <h3 class="font-semibold text-gray-800 truncate">{{title}}</h3>
                     </div>
                     <div class="flex justify-between w-1/4 my-2">
                         <div class=" flex items-center justify-center w-auto">
@@ -93,8 +95,8 @@
                 </li>
                 {{/each}}
             </ul>
-
-            <hr class="my-4 border-t border-gray-300">
+            </div>
+            <hr class="my-4 ">
 
             <div class="flex justify-between text-gray-700 mb-3">
                 <p class="font-semibold">Subtotal</p>
@@ -121,6 +123,7 @@
             {{/if}}
         </div>
     </div>
+</div>
 </div>
 
 
