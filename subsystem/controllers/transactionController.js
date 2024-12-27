@@ -13,6 +13,8 @@ exports.index = async (req, res, next) => {
         
         const order = await Order.findById(id).lean();
 
+        
+
         if (!order) {
             return res.status(404).send('Order not found.');
         }
@@ -29,7 +31,10 @@ exports.index = async (req, res, next) => {
         if (!userAccount) {
             return res.status(404).send('User not found.');
         }
-        res.render('transaction/index', { order, balance: userAccount.remainingBalance, user });
+        const balance= userAccount.remainingBalance;
+        const last=parseFloat(balance).toFixed(2);
+
+        res.render('transaction/index', { order, last, user });
     } catch (error) {
         console.error('Error fetching order:', error);
         res.status(500).send('Internal server error.');

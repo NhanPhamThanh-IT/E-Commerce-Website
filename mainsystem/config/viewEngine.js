@@ -45,8 +45,8 @@ const configViewEngine = (app) => {
         const discountedPrice = (price - (price * discount / 100)).toFixed(2);
         return discountedPrice;
     });
-    hbs.create({}).handlebars.registerHelper('calculateSubtotal', (totalAmount, shippingFee) => {
-        return (totalAmount - shippingFee).toFixed(2);
+    hbs.create({}).handlebars.registerHelper('calculateSubtotal', (totalAmount) => {
+        return (totalAmount).toFixed(2);
     });
 
     app.set('view engine', 'hbs');
