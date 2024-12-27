@@ -4,53 +4,58 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Account Overview Card -->
-        <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-            <div class="flex flex-col space-y-4">
-                <h2 class="text-xl font-bold text-gray-800">Account Information</h2>
-                <div class="flex flex-col space-y-4">
-                    <div class="grid lg:grid-cols-2 md:grid-cols-1 gap-6">
-                        <div class="flex flex-col">
-                            <p class="text-gray-500 text-lg font-medium">Full Name</p>
-                            <p
-                                class="font-semibold text-gray-900 rounded-lg border-2 border-gray-300 bg-gray-100 px-4 py-2 shadow-sm transition-colors hover:bg-gray-200">
-                                {{user.firstName}} {{user.lastName}}
-                            </p>
-                        </div>
-                        <div class="flex flex-col">
-                            <p class="text-gray-500 text-lg font-medium">Email Address</p>
-                            <p
-                                class="font-semibold text-gray-900 rounded-lg border-2 border-gray-300 bg-gray-100 px-4 py-2 shadow-sm transition-colors hover:bg-gray-200">
-                                {{user.email}}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex flex-col">
-                        <p class="text-gray-500 text-lg font-medium">Total Balance</p>
+        <div class="bg-white rounded-lg shadow-xl p-8 border border-gray-300">
+            <div class="flex flex-col space-y-6">
+                <h2 class="text-2xl font-bold text-gray-800">Account Information</h2>
+                <div class="grid lg:grid-cols-2 md:grid-cols-1 gap-8">
+                    <!-- Full Name Section -->
+                    <div class="flex flex-col space-y-2">
+                        <p class="text-gray-600 text-lg font-medium">Full Name</p>
                         <p
-                            class="font-semibold text-gray-900 rounded-lg border-2 border-gray-300 bg-gray-100 px-4 py-2 shadow-sm transition-colors hover:bg-gray-200">
-                            ${{balance}}
+                            class="font-semibold text-gray-900 rounded-lg border-2 border-gray-300 bg-gray-50 px-6 py-3 shadow-md transition-colors duration-300 hover:bg-gray-100">
+                            {{user.firstName}} {{user.lastName}}
+                        </p>
+                    </div>
+                    <!-- Email Address Section -->
+                    <div class="flex flex-col space-y-2">
+                        <p class="text-gray-600 text-lg font-medium">Email Address</p>
+                        <p
+                            class="font-semibold text-gray-900 rounded-lg border-2 border-gray-300 bg-gray-50 px-6 py-3 shadow-md transition-colors duration-300 hover:bg-gray-100">
+                            {{user.email}}
                         </p>
                     </div>
                 </div>
+
+                <!-- Balance Section -->
+                <div class="flex flex-col space-y-2">
+                    <p class="text-gray-600 text-lg font-medium">Total Balance</p>
+                    <p
+                        class="font-semibold text-gray-900 rounded-lg border-2 border-gray-300 bg-gray-50 px-6 py-3 shadow-md transition-colors duration-300 hover:bg-gray-100">
+                        ${{balance}}
+                    </p>
+                </div>
             </div>
-            <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row justify-between items-center mt-8 gap-6">
                 <a href="/user"
-                    class="inline-flex items-center bg-red-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-600 transition">
+                    class="inline-flex items-center bg-red-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-red-700 transition duration-200">
                     <i class="fa-solid fa-house mr-2"></i> Return
                 </a>
                 <button onclick="toggleAddFundsModal()"
-                    class="inline-flex items-center bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-600 transition">
+                    class="inline-flex items-center bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-700 transition duration-200">
                     <i class="fa-solid fa-circle-dollar-to-slot mr-2"></i> Deposit
                 </button>
             </div>
         </div>
 
         <!-- Payment History -->
-        <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">Payment History</h2>
+        <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-300">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Payment History</h2>
+
             <div class="overflow-x-auto">
                 {{#if paymentHistory.length}}
-                <table class="w-full bg-white border border-gray-300 rounded-lg">
+                <table class="min-w-full bg-white border border-gray-300 rounded-lg">
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="px-6 py-3 text-sm font-medium text-gray-600 text-center">Order ID</th>
@@ -60,17 +65,18 @@
                     </thead>
                     <tbody>
                         {{#each paymentHistory}}
-                        <tr class="border-b hover:bg-gray-50">
+                        <tr class="border-b hover:bg-gray-50 transition duration-200">
                             <td class="px-6 py-4 text-sm text-gray-800 text-center">{{this.order_id}}</td>
                             <td class="px-6 py-4 text-sm text-gray-800 text-center">{{formatDate this.date}}</td>
                             <td class="px-6 py-4 text-sm font-semibold text-gray-800 text-center">
-                                ${{this.total_payment}}</td>
+                                ${{this.total_payment}}
+                            </td>
                         </tr>
                         {{/each}}
                     </tbody>
                 </table>
                 {{else}}
-                <p class="text-gray-600 text-center mt-4">No payment history available.</p>
+                <p class="text-gray-600 text-center mt-6">No payment history available.</p>
                 {{/if}}
             </div>
         </div>

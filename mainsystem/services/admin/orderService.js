@@ -41,41 +41,19 @@ class OrderService {
         return await Order.countDocuments(filters);
     }
 
-    /*
-    static async searchOrders(field, query, currentPage = 1, itemsPerPage = 5) {
-        const allowedFields = ['user_id', 'date', 'total_amount'];
-
-        if (!allowedFields.includes(field)) {
-            throw new Error(`Invalid field. Allowed fields are: ${allowedFields.join(', ')}`);
-        }
-        const filter = {
-            [field]: { $regex: query, $options: 'i' }
-        };
-        return await paginate(Order, filter, currentPage, itemsPerPage);
-    }*/
-
     static async searchOrders(field, query, currentPage = 1, itemsPerPage = 5) {
         const allowedFields = ['user_id', 'date', 'total_amount', 'user_name'];
-
         if (!allowedFields.includes(field)) {
             throw new Error(`Invalid field. Allowed fields are: ${allowedFields.join(', ')}`);
         }
-
         if (field === 'user_name') {
-
-            // Tìm tất cả users có lastName khớp query
             const users = await User.find({ lastName: { $regex: query, $options: 'i' } }).lean();
             if (users.length === 0) {
-                // Không tìm thấy user, trả về rỗng
                 return { orders: [], totalItems: 0, totalPages: 0, currentPage };
             }
-
             const userIds = users.map(user => new mongoose.Types.ObjectId(user._id)); // Chuyển _id sang ObjectId
-
-            // Tìm order liên quan đến danh sách user_id
             return await paginate(Order, { user_id: { $in: userIds } }, currentPage, itemsPerPage);
         } else {
-            // Tìm kiếm với các trường khác trong Order
             const filter = {
                 [field]: { $regex: query, $options: 'i' }
             };

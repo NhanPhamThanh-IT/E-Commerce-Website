@@ -1,15 +1,13 @@
-const mongoose = require('mongoose');
 const PayAccount = require('../../mainsystem/models/payAccountModel');
 const User = require('../../mainsystem/models/userModel');
-const PaymentHistory = require('../../mainsystem/models/paymentHistoryModel');
-const MyError = require('../cerror');
+const paymentHistoryService = require('../service/paymentHistoryService')
 
 exports.index = async (req, res, next) => {
     try {
         const account = req.account;
         const user = await User.findById(req.user._id).lean();
-        const paymentHistory = await PaymentHistory.find({ user_id: account.id }).lean();
-        
+        const paymentHistory = await paymentHistoryService.getById(account.id);
+
         if (!user) {
             return res.status(404).send('User not found.');
         }
