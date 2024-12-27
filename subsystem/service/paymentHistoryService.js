@@ -1,4 +1,4 @@
-const PaymentHistory = require('../../mainsystem/models/paymentHistoryModel');
+const PaymentHistory = require('../models/paymentHistoryModel');
 
 class paymentHistoryService {
     static async getById(id) {

@@ -1,4 +1,4 @@
-const PaymentHistory = require('../../mainsystem/models/paymentHistoryModel');
+const PaymentHistory = require('../models/paymentHistoryModel');
 const Order = require('../../mainsystem/models/orderModel')
 
 exports.index = async (req, res) => {
