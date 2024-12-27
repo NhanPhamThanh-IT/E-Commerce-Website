@@ -1,90 +1,100 @@
 <div class="container mx-auto my-8 px-4">
     <!-- Page Title -->
-    <h1 class="text-4xl font-semibold text-center text-gray-800 mb-8">Account Profile</h1>
+    <h1 class="text-4xl font-bold text-center text-gray-800 mb-10">Account Profile</h1>
 
-    <!-- Total Balance Card -->
-    <div class="bg-white rounded-lg shadow-md p-6 mb-8 max-w-5xl mx-auto border border-gray-200">
-        <div class="flex justify-between items-center">
-            <h2 class="text-2xl font-semibold text-left text-gray-600">Total Balance</h2>
-            <a href="https://localhost:3000/user" class="no-underline hover:no-underline">
-            <button
-                class="py-2 px-7 bg-red-500 font-bold text-white py-2 px-6 rounded-lg hover:bg-red-600 flex items-center">
-                <i class="fa-solid fa-house mr-3"></i>
-                Return
-            </button>
-            </a>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Account Overview Card -->
+        <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+            <div class="flex flex-col space-y-4">
+                <h2 class="text-xl font-bold text-gray-800">Account Information</h2>
+                <div class="flex flex-col space-y-4">
+                    <div class="grid lg:grid-cols-2 md:grid-cols-1 gap-6">
+                        <div class="flex flex-col">
+                            <p class="text-gray-500 text-lg font-medium">Full Name</p>
+                            <p
+                                class="font-semibold text-gray-900 rounded-lg border-2 border-gray-300 bg-gray-100 px-4 py-2 shadow-sm transition-colors hover:bg-gray-200">
+                                {{user.firstName}} {{user.lastName}}
+                            </p>
+                        </div>
+                        <div class="flex flex-col">
+                            <p class="text-gray-500 text-lg font-medium">Email Address</p>
+                            <p
+                                class="font-semibold text-gray-900 rounded-lg border-2 border-gray-300 bg-gray-100 px-4 py-2 shadow-sm transition-colors hover:bg-gray-200">
+                                {{user.email}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="text-gray-500 text-lg font-medium">Total Balance</p>
+                        <p
+                            class="font-semibold text-gray-900 rounded-lg border-2 border-gray-300 bg-gray-100 px-4 py-2 shadow-sm transition-colors hover:bg-gray-200">
+                            ${{balance}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
+                <a href="/user"
+                    class="inline-flex items-center bg-red-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-600 transition">
+                    <i class="fa-solid fa-house mr-2"></i> Return
+                </a>
+                <button onclick="toggleAddFundsModal()"
+                    class="inline-flex items-center bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-600 transition">
+                    <i class="fa-solid fa-circle-dollar-to-slot mr-2"></i> Deposit
+                </button>
+            </div>
         </div>
-        <div class="flex justify-between items-center mt-4">
-            <p class="text-3xl font-bold text-gray-800">${{balance}}</p>
-            <button
-                onclick="toggleAddFundsModal()"
-                class="py-2 px-[25px] bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-600 focus:outline-none flex items-center">
-                <i class="fa-solid fa-circle-dollar-to-slot mr-3"></i>
-                Deposit
-            </button>
+
+        <!-- Payment History -->
+        <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Payment History</h2>
+            <div class="overflow-x-auto">
+                {{#if paymentHistory.length}}
+                <table class="w-full bg-white border border-gray-300 rounded-lg">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-600 text-center">Order ID</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-600 text-center">Date</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-600 text-center">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each paymentHistory}}
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-6 py-4 text-sm text-gray-800 text-center">{{this.order_id}}</td>
+                            <td class="px-6 py-4 text-sm text-gray-800 text-center">{{formatDate this.date}}</td>
+                            <td class="px-6 py-4 text-sm font-semibold text-gray-800 text-center">
+                                ${{this.total_payment}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                {{else}}
+                <p class="text-gray-600 text-center mt-4">No payment history available.</p>
+                {{/if}}
+            </div>
         </div>
     </div>
 
-    <!-- User Info Card with Payment History -->
-    <div class="bg-white rounded-lg shadow-md p-6 mb-8 max-w-5xl mx-auto border border-gray-200">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-2xl font-semibold text-left text-gray-800">Account Information</h2>
-        </div>
-        <div class="space-y-3 mb-6">
-            <p class="text-gray-600 text-lg">Name: <span class="font-semibold text-gray-900">{{user.firstName}} {{user.lastName}}</span></p>
-            <p class="text-gray-600 text-lg">Email: <span class="font-semibold text-gray-900">{{user.email}}</span></p>
-        </div>
-        <h2 class="text-xl font-semibold text-left text-gray-800 mb-4">Payment History</h2>
-        <div class="overflow-x-auto">
-            {{#if paymentHistory.length}}
-            <table class="min-w-full bg-white border border-gray-300 rounded-lg">
-                <thead class="bg-gray-100 border-b">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 text-center">Order ID</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 text-center">User ID</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 text-center">Date</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 text-center">Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each paymentHistory}}
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-4 text-sm text-gray-800 text-center">{{this.order_id}}</td>
-                        <td class="px-6 py-4 text-sm text-gray-800 text-center">{{this.user_id}}</td>
-                        <td class="px-6 py-4 text-sm text-gray-800 text-center">{{formatDate this.date}}</td>
-                        <td class="px-6 py-4 text-sm text-gray-800 text-center font-semibold">${{this.total_payment}}</td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-            {{else}}
-            <p class="text-gray-600 text-center mt-4">No payment history available.</p>
-            {{/if}}
-        </div>
-    </div>
-
-    <!-- Add Money Modal -->
+    <!-- Add Funds Modal -->
     <div id="add-funds-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg shadow-lg px-6 py-3 w-full max-w-lg border border-gray-200">
-            <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Add Funds</h2>
-            <form id="add-money-form" class="space-y-6">
-                <div class="flex flex-col">
-                    <label for="amount" class="text-lg font-medium text-gray-700 mb-2">Enter Amount</label>
+        <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md border border-gray-200">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Add Funds</h2>
+            <form id="add-money-form" class="space-y-4">
+                <div>
+                    <label for="amount" class="block text-lg font-medium text-gray-700">Enter Amount</label>
                     <input type="number" id="amount" name="amount"
-                        class="border border-gray-300 rounded-lg px-4 py-3 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 hover:shadow-md"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-3 mt-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                         placeholder="Enter amount to add" required />
                 </div>
-                <div class="flex justify-end space-x-4">
-                    <button type="button"
-                        class="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-200 flex items-center space-x-2"
-                        onclick="toggleAddFundsModal()">
-                        <i class="fa-solid fa-times font-semibold"></i>
-                        <span class="font-semibold">Cancel</span>
+                <div class="flex justify-between">
+                    <button type="button" onclick="toggleAddFundsModal()"
+                        class="bg-red-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-600 transition">
+                        Cancel
                     </button>
                     <button type="submit"
-                        class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 flex items-center space-x-2">
-                        <i class="fa-solid fa-circle-dollar-to-slot text-white font-semibold"></i>
-                        <span class="font-semibold">Accept</span>
+                        class="bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-600 transition">
+                        Accept
                     </button>
                 </div>
             </form>
