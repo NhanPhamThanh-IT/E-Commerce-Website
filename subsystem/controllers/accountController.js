@@ -1,20 +1,19 @@
-const PayAccount = require('../models/payAccountModel');
 const User = require('../models/userModel');
+const userService = require('../service/userService');
 const paymentHistoryService = require('../service/paymentHistoryService')
+const payAccountService = require('../service/payAccountService');
 
 exports.index = async (req, res, next) => {
     try {
         const account = req.account;
-        const user = await User.findById(req.user._id).lean();
+        const user = await userService.getById(req.user._id);
         const paymentHistory = await paymentHistoryService.getById(account.id);
-
         if (!user) {
             return res.status(404).send('User not found.');
         }
-        
         res.render('account/index', {
             user,
-            balance: account.remainingBalance,
+            balance: account.remainingBalance.toFixed(2),
             paymentHistory
         });
     } catch (error) {
@@ -26,20 +25,15 @@ exports.index = async (req, res, next) => {
 exports.addMoney = async (req, res, next) => {
     try {
         const { amount } = req.body;
-
         if (!amount || amount <= 0) {
             return res.status(400).send('Invalid amount.');
         }
-
-        const userAccount = await PayAccount.findOne({ id: req.user._id });
-
+        const userAccount = await PayAccountService.findById(req.user._id);
         if (!userAccount) {
             return res.status(404).send('Pay account not found.');
         }
-
         userAccount.remainingBalance += amount;
         await userAccount.save();
-
         res.status(200).json({ message: `Successfully added $${amount} to your balance.` });
     } catch (error) {
         console.error('Error adding money:', error);

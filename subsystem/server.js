@@ -35,7 +35,6 @@ app.use(passport.session());
 
 app.use((req, res, next) => {
     const cookies = req.cookies;
-    console.log('Cookies:', cookies);
     passport.authenticate('jwt', { session: false }, (err, user, info) => {
         if (err) {
             console.error('Error:', err);

@@ -4,7 +4,10 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="bg-white rounded-lg shadow-xl p-8 border border-gray-300">
             <div class="flex flex-col space-y-6">
-                <h2 class="text-2xl font-bold text-gray-800 border-b-[1px] border-b pb-2">Account Information</h2>
+                <div class="flex justify-between items-center border-b-[1px] border-b pb-2 mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Account Information</h2>
+                    <i class="fa-solid fa-user fa-2x"></i>
+                </div>
                 <div class="grid lg:grid-cols-2 md:grid-cols-1 gap-8">
                     <div class="flex flex-col space-y-2">
                         <p class="text-gray-600 text-base font-medium">First Name</p>
@@ -45,7 +48,7 @@
                             ${{balance}}
                         </p>
                         <button onclick="toggleAddFundsModal()"
-                            class="inline-flex items-center bg-[#66d9d4] text-gray-800 font-semibold py-3 px-8 hover:bg-[#4fa3a0] transition duration-200 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#4fa3a0]">
+                            class="inline-flex items-center bg-[#ffbf69] text-white font-semibold py-3 px-8 hover:bg-[#fb5607] transition duration-200 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#4fa3a0]">
                             💸 Deposit
                         </button>
                     </div>
@@ -62,15 +65,18 @@
         </div>
 
         <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-300">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-[1px] border-b pb-2">Payment History</h2>
+            <div class="flex justify-between items-center border-b-[1px] border-b pb-2 mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Payment History</h2>
+                <i class="fa-solid fa-file-invoice-dollar fa-2x"></i>
+            </div>
             <div class="overflow-x-auto">
                 {{#if paymentHistory.length}}
-                <table class="min-w-full bg-white border border-gray-300 rounded-lg">
-                    <thead class="bg-gray-100">
+                <table class="min-w-full bg-white border border-gray-300">
+                    <thead class="bg-black text-white text-base font-medium">
                         <tr>
-                            <th class="px-6 py-3 text-sm font-medium text-gray-600 text-center">Order ID</th>
-                            <th class="px-6 py-3 text-sm font-medium text-gray-600 text-center">Date</th>
-                            <th class="px-6 py-3 text-sm font-medium text-gray-600 text-center">Amount</th>
+                            <th class="px-6 py-3 text-center">Order ID</th>
+                            <th class="px-6 py-3 text-center">Date</th>
+                            <th class="px-6 py-3 text-center">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
