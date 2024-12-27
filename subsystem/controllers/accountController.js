@@ -12,7 +12,7 @@ exports.index = async (req, res, next) => {
             return res.status(404).send('User not found.');
         }
         
-        res.render('subsystem/account/index', {
+        res.render('account/index', {
             user,
             balance: account.remainingBalance,
             paymentHistory

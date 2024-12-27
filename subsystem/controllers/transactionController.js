@@ -29,7 +29,7 @@ exports.index = async (req, res, next) => {
         if (!userAccount) {
             return res.status(404).send('User not found.');
         }
-        res.render('subsystem/transaction/index', { order, balance: userAccount.remainingBalance, user });
+        res.render('transaction/index', { order, balance: userAccount.remainingBalance, user });
     } catch (error) {
         console.error('Error fetching order:', error);
         res.status(500).send('Internal server error.');

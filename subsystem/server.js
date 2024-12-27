@@ -6,9 +6,9 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const session = require('express-session');
 const connection = require('../mainsystem/config/database');
-const configViewEngine = require('../mainsystem/config/viewEngine');
 const MyError = require('./cerror');
 const cors = require('cors');
+const configViewEngine = require('./config/viewEngine');
 require('../mainsystem/config/passport')(passport);
 
 const app = express();
