@@ -8,7 +8,8 @@
 
 {{> header }}
 
-<main id="main-content" class="absolute top-[110px] left-0 right-0 bottom-0 w-full flex flex-wrap lg:flex-nowrap justify-between">
+<main id="main-content"
+    class="absolute top-[110px] left-0 right-0 bottom-0 w-full flex flex-wrap lg:flex-nowrap justify-between">
     <!-- Sidebar Section -->
     <aside class="w-1/5 mb-6 lg:mb-0">
         <div class="bg-gray-100 shadow-md py-4 px-3 sticky top-[110px]">
@@ -73,11 +74,8 @@
 </a>
 <!-- Product Detail Modal -->
 <div id="product-modal" class="bg-black bg-opacity-50 fixed inset-0 flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-6 relative animate-fade-in overflow-auto max-h-[90vh]">
-        <button id="close-modal"
-            class="absolute top-4 right-4 text-gray-700 text-2xl hover:text-red-500 transition-colors">
-            &times;
-        </button>
+    <div id="modal-content"
+        class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-6 relative animate-fade-in overflow-auto max-h-[90vh]">
         <div class="flex flex-col gap-6">
             <!-- Product Details -->
             <div class="w-full">
@@ -85,22 +83,36 @@
                 <img id="product-image" src="" alt="" class="w-full h-64 object-contain mb-4 rounded">
                 <p id="product-description" class="text-gray-600 mb-4"></p>
                 <p id="product-price" class="text-gray-800 font-bold mb-4"></p>
-                <p id="product-stock" class="text-sm text-gray-600 mb-4">
-                    <strong>Stock Quantity:</strong> <span class="text-gray-900" id="stock-quantity"></span>
-                </p>
-                <div class="flex justify-between items-center">
+                <div id="product-stock" class="text-sm text-gray-600 mb-4 flex items-center justify-between">
+                    <span class="flex items-center justify-between space-x-2">
+                        <div class="font-bold text-gray-700">Stock Quantity:</div>
+                        <span class="text-gray-900" id="stock-quantity"></span>
+                    </span>
+                    <div class="flex items-center space-x-2">
+                        <label for="quantity-input" class="font-bold text-gray-700">Quantity</label>
+                        <div class="flex items-center border border-gray-300 rounded-lg shadow-sm">
+                            <button type="button" id="decrement-btn"
+                                class="h-10 w-10 flex justify-center items-center bg-gray-100 text-gray-700 hover:bg-gray-200 focus:outline-none">
+                                &minus;
+                            </button>
+                            <input type="number" id="quantity-input" value="1" min="1"
+                                class="h-10 w-10 text-center border-0 bg-white focus:ring-0 focus:outline-none sm:text-sm [-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden" />
+                            <button type="button" id="increment-btn"
+                                class="h-10 w-10 flex justify-center items-center bg-gray-100 text-gray-700 hover:bg-gray-200 focus:outline-none">
+                                &plus;
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="flex justify-end items-center">
                     <button id="add-to-cart"
                         class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
                         data-product-id="{{this.id}}" data-price="{{this.price}}" data-stock="{{this.stock_quantity}}"
                         data-discount-price="{{calculateDiscountPrice this.price this.discount}}">
                         Add to Cart <i class="fas fa-cart-plus"></i>
                     </button>
-                    <div>
-                        <label for="quantity-input" class="block text-sm font-medium text-gray-700">Quantity</label>
-                        <input type="number" id="quantity-input"
-                            class="mt-1 block w-20 pl-3 pr-10 py-2 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            min="1" value="1" />
-                    </div>
                 </div>
             </div>
             <!-- Related Products -->
@@ -117,7 +129,36 @@
 <script src="/js/user/homepage.js"></script>
 
 <script>
-    
+    document.addEventListener('DOMContentLoaded', () => {
+        const quantityInput = document.getElementById('quantity-input');
+        const incrementBtn = document.getElementById('increment-btn');
+        const decrementBtn = document.getElementById('decrement-btn');
+
+        // Increment button click event
+        incrementBtn.addEventListener('click', () => {
+            const currentValue = parseInt(quantityInput.value, 10) || 1;
+            quantityInput.value = currentValue + 1;
+        });
+
+        // Decrement button click event
+        decrementBtn.addEventListener('click', () => {
+            const currentValue = parseInt(quantityInput.value, 10) || 1;
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+            }
+        });
+    });
+
+    const modal = document.getElementById('product-modal');
+    const modalContent = document.getElementById('modal-content');
+
+    // Close modal when clicking outside the modal content
+    modal.addEventListener('click', (event) => {
+        if (!modalContent.contains(event.target)) {
+            modal.classList.add('hidden');
+        }
+    });
+
     const header = document.getElementById('mainheader');
     const main = document.getElementById('main-content');
 
@@ -300,14 +341,19 @@
                         const relatedDiscountedPrice = (related.price - (related.price * relatedDiscount / 100)).toFixed(2);
                         relatedProductsContainer.innerHTML += `
                             <div 
-                                class="flex items-center justify-start space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
+                                class="relative flex items-center justify-start space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
                                 data-product-id="${related._id}">
                                 <img src="${related.image}" alt="${related.title}" class="w-20 h-20 object-cover">
+                                ${relatedDiscount > 0
+                                ? `<div class="absolute top-2 left-2 bg-red-500 text-white text-[7.5px] font-bold py-1 px-2 rounded-md">
+                                        ${relatedDiscount}% OFF
+                                    </div>`
+                                : ''}
                                 <div>
-                                    <h4 class="text-sm font-semibold">${related.title}</h4>
-                                    ${relatedDiscount > 0 ? `<p class="text-sm font-bold text-gray-900">$${relatedDiscountedPrice}</p>
+                                    <h4 class="text-sm text-gray-950 font-bold">${related.title}</h4>
+                                    ${relatedDiscount > 0 ? `<p class="text-sm font-semibold text-red-500">$${relatedDiscountedPrice}</p>
                                     <p class="text-sm line-through text-gray-500">$${related.price}</p>`
-                                : `<p class="text-sm text-gray-900">$${related.price}</p>`}
+                                : `<p class="text-sm text-gray-700">$${related.price}</p>`}
                                 </div>
                             </div>
                         `;
@@ -383,11 +429,6 @@
         document.cookie = `cart=${encodeURIComponent(JSON.stringify(cart))}; path=/`;
     }
 
-    // Close modal when clicking the close button
-    document.getElementById('close-modal').addEventListener('click', () => {
-        document.getElementById('product-modal').classList.add('hidden');
-        isModalVisible = false;
-    });
 
     // Apply category filter
     document.querySelectorAll('#category-dropdown li').forEach(item => {
