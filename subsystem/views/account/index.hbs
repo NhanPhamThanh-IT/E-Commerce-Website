@@ -1,25 +1,39 @@
-<div class="container mx-auto my-8 px-4">
-    <!-- Page Title -->
-    <h1 class="text-4xl font-bold text-center text-gray-800 mb-10">Account Profile</h1>
+<img src="/system_images/paymentAccount.gif" alt="PaymentAccountBanner" class="h-72 w-full">
 
+<div class="container mx-auto my-8 px-4">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Account Overview Card -->
         <div class="bg-white rounded-lg shadow-xl p-8 border border-gray-300">
             <div class="flex flex-col space-y-6">
-                <h2 class="text-2xl font-bold text-gray-800 border-b-[1px] border-b">Account Information</h2>
+                <h2 class="text-2xl font-bold text-gray-800 border-b-[1px] border-b pb-2">Account Information</h2>
                 <div class="grid lg:grid-cols-2 md:grid-cols-1 gap-8">
                     <div class="flex flex-col space-y-2">
-                        <p class="text-gray-600 text-base font-medium">Full Name</p>
+                        <p class="text-gray-600 text-base font-medium">First Name</p>
                         <p
                             class="font-semibold text-gray-900 rounded-lg border-2 border-gray-300 bg-gray-50 px-6 py-3 shadow-md transition-colors duration-300 hover:bg-gray-100">
-                            {{user.firstName}} {{user.lastName}}
+                            {{user.firstName}}
                         </p>
                     </div>
+                    <div class="flex flex-col space-y-2">
+                        <p class="text-gray-600 text-base font-medium">Last Name</p>
+                        <p
+                            class="font-semibold text-gray-900 rounded-lg border-2 border-gray-300 bg-gray-50 px-6 py-3 shadow-md transition-colors duration-300 hover:bg-gray-100">
+                            {{user.lastName}}
+                        </p>
+                    </div>
+                </div>
+                <div class="grid lg:grid-cols-2 md:grid-cols-1 gap-8">
                     <div class="flex flex-col space-y-2">
                         <p class="text-gray-600 text-base font-medium">Email Address</p>
                         <p
                             class="font-semibold text-gray-900 rounded-lg border-2 border-gray-300 bg-gray-50 px-6 py-3 shadow-md transition-colors duration-300 hover:bg-gray-100">
                             {{user.email}}
+                        </p>
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <p class="text-gray-600 text-base font-medium">Phone</p>
+                        <p
+                            class="font-semibold text-gray-900 rounded-lg border-2 border-gray-300 bg-gray-50 px-6 py-3 shadow-md transition-colors duration-300 hover:bg-gray-100">
+                            {{user.phone}}
                         </p>
                     </div>
                 </div>
@@ -47,9 +61,8 @@
             </div>
         </div>
 
-        <!-- Payment History -->
         <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-300">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-[1px] border-b">Payment History</h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-[1px] border-b pb-2">Payment History</h2>
             <div class="overflow-x-auto">
                 {{#if paymentHistory.length}}
                 <table class="min-w-full bg-white border border-gray-300 rounded-lg">
@@ -79,7 +92,6 @@
         </div>
     </div>
 
-    <!-- Add Funds Modal -->
     <div id="add-funds-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
         <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md border border-gray-200">
             <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Add Funds</h2>
