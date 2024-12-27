@@ -15,7 +15,7 @@
                     class="flex flex-col items-center justify-center rounded-2xl shadow-lg space-y-6">
                     <div class="relative w-72 h-72">
                         <div class="rounded-full overflow-hidden border-4 border-black bg-white">
-                            <img referrerPolicy="no-referrer"
+                            <img id="avatar" referrerPolicy="no-referrer"
                                 src="{{#if user.avatar}}/user_images/{{user.avatar}}{{else if user.image}}{{user.image}}{{else}}/user_images/profile.png{{/if}}"
                                 alt="User Avatar" class="w-full h-full object-cover">
                         </div>
