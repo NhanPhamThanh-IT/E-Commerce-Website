@@ -149,7 +149,10 @@
 
         // Clear the current cart rows
         cartContainer.innerHTML = '';
-
+        if (itemsToRender.length === 0) {
+            cartContainer.innerHTML = '<img src="/system_images/emptyCart.gif" class="object-cover mx-auto w-1/2 h-1/2"><p class="text-center text-gray-600">Your cart is empty.</p>';
+            return;
+        }
         for (const item of itemsToRender) {
             const product = await fetchProductDetails(item.id);
             if (product) {
@@ -323,7 +326,7 @@
         }
 
         if (totalItems === 0) {
-            document.getElementById('cart-container').innerHTML = '<p class="text-center text-gray-600">Your cart is empty.</p>';
+            document.getElementById('cart-container').innerHTML = '<img src="/system_images/emptyCart.gif" class="object-cover mx-auto w-1/2 h-1/2"><p class="text-center text-gray-600">Your cart is empty.</p>';
             document.getElementById('pagination').style.display = 'none';
         } else {
             updateVisibleItems();

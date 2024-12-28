@@ -78,7 +78,7 @@
         class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-6 relative animate-fade-in overflow-auto max-h-[90vh]">
         <div class="flex flex-col gap-6">
             <!-- Product Details -->
-            <div class="w-full">
+            <div class="w-full px-4 text-justify">
                 <h2 id="product-title" class="text-2xl font-semibold mb-4 truncate"></h2>
                 <img id="product-image" src="" alt="" class="w-full h-64 object-contain mb-4 rounded">
                 <p id="product-description" class="text-gray-600 mb-4"></p>
@@ -308,8 +308,16 @@
         const priceContainer = document.getElementById('product-price');
         if (discount > 0) {
             priceContainer.innerHTML = `
-                <p class="text-lg font-bold text-gray-900">$${discountedPrice}</p>
-                <p class="text-sm line-through text-gray-500">$${product.price}</p>
+<div class="flex items-center gap-2">
+<p class="flex items-center text-xl font-bold text-blue-500 transition-transform transform hover:scale-105 hover:text-blue-600 hover:shadow-none">
+    <i class="fas fa-tag mr-1 transition-transform hover:scale-110"></i> <!-- Add a tag icon -->
+    $${discountedPrice}
+</p>
+
+    <p class="text-sm line-through text-gray-400 opacity-70">$${product.price}</p> <!-- Original Price -->
+</div>
+
+
             `;
         } else {
             priceContainer.innerHTML = `<p class="text-lg font-bold text-gray-900">$${product.price}</p>`;
@@ -345,15 +353,19 @@
                                 data-product-id="${related._id}">
                                 <img src="${related.image}" alt="${related.title}" class="w-20 h-20 object-cover">
                                 ${relatedDiscount > 0
-                                ? `<div class="absolute top-2 left-2 bg-red-500 text-white text-[7.5px] font-bold py-1 px-2 rounded-md">
-                                        ${relatedDiscount}% OFF
-                                    </div>`
+                                ? `<div class="absolute top-1 left-1 flex items-center justify-center w-8 h-8 bg-red-500 text-white text-[8px] font-bold rounded-full shadow-md">
+                                                ${relatedDiscount}%
+                                        </div>`
                                 : ''}
                                 <div>
-                                    <h4 class="text-sm text-gray-950 font-bold">${related.title}</h4>
-                                    ${relatedDiscount > 0 ? `<p class="text-sm font-semibold text-red-500">$${relatedDiscountedPrice}</p>
-                                    <p class="text-sm line-through text-gray-500">$${related.price}</p>`
-                                : `<p class="text-sm text-gray-700">$${related.price}</p>`}
+<h4 class="text-base text-gray-950 font-semibold">${related.title}</h4>
+${relatedDiscount > 0 ? `
+    <p class="text-lg font-extrabold text-gray-800 mt-1">$${relatedDiscountedPrice}</p> <!-- Discounted Price -->
+    <p class="text-sm line-through text-gray-400">$${related.price}</p> <!-- Original Price -->
+` : `
+    <p class="text-sm text-gray-700">$${related.price}</p>
+`}
+
                                 </div>
                             </div>
                         `;
