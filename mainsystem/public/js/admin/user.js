@@ -121,10 +121,7 @@ document.getElementById('search-form').addEventListener('submit', function (even
     const field = document.querySelector('select[name="field"]').value;
     const query = document.querySelector('input[name="query"]').value.trim();
 
-    if (!field || !query) {
-        alert('Please select a field and enter a value to search.');
-        return;
-    }
+   
 
     const action = this.getAttribute('action');
 
@@ -133,6 +130,10 @@ document.getElementById('search-form').addEventListener('submit', function (even
     const url = `${action}?field=${field}&query=${encodeURIComponent(query)}&page=${page}`;
     
     fetchAndRenderUsers(url);
+
+    if (!field || !query) {
+        fetchAndRenderUsers('/admin/users/api?page=1');
+    }
 });
 
 ////////////////////////////////////////////
