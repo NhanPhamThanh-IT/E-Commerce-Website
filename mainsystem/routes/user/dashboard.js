@@ -10,7 +10,12 @@ const orderController = require('../../controllers/user/orderController');
 const userModel = require('../../models/userModel');
 
 router.get('/guest', dashboardController.index);
-
+router.get('/cart', async (req, res) => {
+    if (req.cookies?.token) {
+        return res.redirect('/user/cart');
+    }
+    res.render('user/cart/index', { user: null });
+});
 router.get('/', (req, res) => {
     if (req.cookies?.token) {
         return res.redirect('/homepage');
@@ -63,12 +68,18 @@ router.use(Auth.jwtAuth)
 router.use(Auth.isAuthenticated);
 
 router.get('/user', Auth.isUser, dashboardController.index);
-router.get('/cart', Auth.isUser, async (req, res) => {
-    const user = await userModel.findById(req.user._id).lean();
+router.get('/user/cart', Auth.isUser, async (req, res) => {
+    let user = await userModel.findById(req.user._id).lean();
     if (!user) {
         return res.status(404).json({ error: 'User not found' });
     }
-    res.render('user/cart/index', { user: user });
+    // user = {
+    //     address: user.address,
+    //     phone: user.phone,
+    //     cart: user.cart,
+    // }
+    // user =  JSON.stringify(user)
+    res.render('user/cart/index', { user:user });
 });
 
 router.post('/checkout', orderController.checkout);

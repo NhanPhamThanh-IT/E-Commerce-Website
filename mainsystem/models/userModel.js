@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
     loginMethod: { type: String, enum: ['email', 'google', 'facebook'], required: true, default: 'email' },
     image: { type: String, default: "" },
     avatar: { type: String, default: "" },  
+    cart: {type: Array, default: []},
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);
