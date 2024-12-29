@@ -482,3 +482,80 @@ function closeEditProductModal() {
     modal.classList.add('hidden');
     modal.classList.remove('flex');
 }
+
+// Open manage categories modal
+async function openManageCategoriesModal() {
+    try {
+        const response = await fetch('/admin/products/categories', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to fetch categories: ${response.statusText}`);
+        }
+        const categories = await response.json();
+        const categoriesContainer = document.getElementById('manageCategoriesModal');
+        categoriesContainer.classList.remove('hidden');
+        categoriesContainer.className = "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-all duration-300 ease-in-out";
+        categoriesContainer.innerHTML = '';
+
+        const modalContent = document.createElement('div');
+        modalContent.className = 'bg-white w-full md:w-4/5 lg:w-2/3 xl:w-1/2 rounded-xl shadow-lg overflow-hidden';
+
+        const categoriesList = document.createElement('div');
+        categoriesList.className = 'p-4 overflow-y-auto';
+
+        const gridContainer = document.createElement('div');
+        gridContainer.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4';
+
+        categories.forEach(category => {
+            const categoryCard = document.createElement('div');
+            categoryCard.className = 'bg-white border border-gray-300 rounded-lg shadow-md hover:shadow-xl transform transition-all duration-300 p-4 flex flex-col items-center justify-between space-y-2';
+            categoryCard.innerHTML = `
+                <div class="flex flex-col items-center space-y-2">
+                    <h3 class="font-semibold text-lg text-gray-700 text-center">${category.name}</h3>
+                    <button onclick="handleDeleteCategory('${category._id}')"
+                        class="bg-red-500 text-white font-semibold py-1 px-4 rounded-lg hover:bg-red-600 transform transition-all duration-200 ease-in-out">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </div>
+            `;
+            gridContainer.appendChild(categoryCard);
+        });
+
+        categoriesList.appendChild(gridContainer);
+
+        const categoryStats = document.createElement('div');
+        categoryStats.className = 'w-full md:w-1/3 p-4 bg-gray-50 border-t-2 md:border-l-2 md:border-t-0 border-gray-200 flex flex-col justify-between space-y-4';
+
+        const statsContent = `
+            <h4 class="text-xl font-semibold mb-4">Category Statistics</h4>
+            <p class="text-sm text-gray-700">View category statistics such as total products, active products, etc.</p>
+            <div id="categoryStats"></div>
+        `;
+        categoryStats.innerHTML = statsContent;
+
+        const closeButton = document.createElement('button');
+        closeButton.className = 'bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transform transition-all duration-200 ease-in-out';
+        closeButton.textContent = 'Close';
+        closeButton.onclick = () => categoriesContainer.classList.add('hidden');
+        categoryStats.appendChild(closeButton);
+
+        const addCategoryButton = document.createElement('button');
+        addCategoryButton.className = 'bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transform transition-all duration-200 ease-in-out';
+        addCategoryButton.textContent = 'Add Category';
+        addCategoryButton.onclick = () => openAddCategoryModal();
+        categoryStats.appendChild(addCategoryButton);
+
+        modalContent.appendChild(categoriesList);
+        modalContent.appendChild(categoryStats);
+        categoriesContainer.appendChild(modalContent);
+
+    } catch (error) {
+        console.error('Error opening manage categories modal:', error);
+        alert('Failed to open manage categories modal. Please try again.');
+    }
+};
+
