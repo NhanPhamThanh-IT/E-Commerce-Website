@@ -36,19 +36,20 @@
                     Confirm Order
                 </button>
             </form>
-        {{else}}
-               <!-- Login Info Section -->
-<div id="address-form" class="w-full md:w-1/2 bg-white p-6 rounded-lg shadow-lg transition-all hover:shadow-2xl flex flex-col justify-center items-center">
-    <div class="text-center">
-        <img src="/system_images/loginNow.gif" class=" mb-4">
-        <h3 class="text-xl font-semibold text-gray-900 mb-4">Please Login To Order</h3>
-        <p class="text-gray-600 text-sm">
-            If you don’t have an account, you can
-            register in just a few steps!
-        </p>
-    </div>
-</div>
-        {{/if}}
+            {{else}}
+            <!-- Login Info Section -->
+            <div id="address-form"
+                class="w-full md:w-1/2 bg-white p-6 rounded-lg shadow-lg transition-all hover:shadow-2xl flex justify-center items-center">
+                <div class="text-center">
+                    <img src="/system_images/loginNow.gif" class="mb-4 mx-auto">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Please Login To Order</h3>
+                    <p class="text-gray-600 text-sm">
+                        If you don't have an account, you can
+                        register in just a few steps!
+                    </p>
+                </div>
+            </div>
+            {{/if}}
         </div>
     </div>
 </main>
@@ -163,9 +164,9 @@
         if (itemsToRender.length === 0) {
             cartContainer.innerHTML = `
             <div class="flex flex-col justify-center items-center">
-    <img src="/system_images/emptyCart.gif" class="object-contain w-1/2 h-1/2">
-    <p class="text-center text-gray-600 mt-4">Your cart is empty.</p>
-</div>
+                <img src="/system_images/emptyCart.gif" class="object-cover w-1/2 h-1/2">
+                <p class="text-center text-gray-600 mt-4">Your cart is empty.</p>
+            </div>
 `;
             return;
         }
@@ -192,9 +193,9 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <input type="number" class="w-16 text-center border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value="${item.quantity}" min="1" data-product-id="${item.id}">
-                        <button class="text-red-500 hover:text-red-700" data-product-id="${item.id}">Remove</button>
+                        <input id="quantity-input" type="number" class="w-16 text-center border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            value="${item.quantity}" min="1" data-product-id="${item.id}" data-stock="${product.stock_quantity}">
+                        <button id="remove-from-cart" class="text-red-500 hover:text-red-700" data-product-id="${item.id}" data-stock="${product.stock_quantity}">Remove</button>
                         <p class="product-total text-gray-800 font-bold">$${productTotal.toFixed(2)}</p>
                     </div>
                 </div>
@@ -284,9 +285,16 @@
     function attachCartEventListeners() {
         document.querySelectorAll('[data-product-id]').forEach(element => {
             const productId = element.getAttribute('data-product-id');
+            const stockQuantity = element.getAttribute('data-stock');
+            console.log(stockQuantity);
             if (element.tagName === 'INPUT') {
                 element.addEventListener('change', (e) => {
                     const newQuantity = parseInt(e.target.value, 10);
+                    if (newQuantity > stockQuantity) {
+                        alert('Not enough stock available.');
+                        e.target.value = stockQuantity;
+                        return;
+                    }
                     if (newQuantity > 0) {
                         updateCartQuantity(productId, newQuantity);
                     } else {
@@ -342,8 +350,12 @@
         }
 
         if (totalItems === 0) {
-            document.getElementById('cart-container').innerHTML = '<img src="/system_images/emptyCart.gif" class="object-cover mx-auto w-1/2 h-1/2"><p class="text-center text-gray-600">Your cart is empty.</p>';
             document.getElementById('pagination').style.display = 'none';
+            document.getElementById('cart-container').innerHTML = `
+                <div class="flex flex-col justify-center items-center">
+                    <img src="/system_images/emptyCart.gif" class="object-cover w-1/2 h-1/2">
+                    <p class="text-center text-gray-600 mt-4">Your cart is empty.</p>
+                </div>`;
         } else {
             updateVisibleItems();
         }

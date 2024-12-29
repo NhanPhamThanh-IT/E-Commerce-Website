@@ -410,7 +410,8 @@ ${relatedDiscount > 0 ? `
         const stockQuantity = document.getElementById('add-to-cart').getAttribute('data-stock');
         if (!isNaN(quantity) && quantity > 0) {
             if (quantity > stockQuantity) {
-                alert('Quantity exceeds stock quantity.');
+                alert('Not enough stock available.');
+                return;
             }
             else {
                 addToCart(productId, quantity, discountedPrice);
@@ -424,8 +425,12 @@ ${relatedDiscount > 0 ? `
     function addToCart(productId, quantity, price) {
         let cart = getCartFromCookie();
         const existingItem = cart.find(item => item.id === productId);
-
+        const stockQuantity = document.getElementById('add-to-cart').getAttribute('data-stock');
         if (existingItem) {
+            if (existingItem.quantity + quantity > stockQuantity) {
+                alert('Not enough stock available. You already have ' + existingItem.quantity + ' of this item in your cart.');
+                return;
+            }
             existingItem.quantity += quantity;
         } else {
             cart.push({ id: productId, quantity, price });
