@@ -483,10 +483,6 @@ function closeEditProductModal() {
     modal.classList.remove('flex');
 }
 
-
-
-
-
 // Open manage categories modal
 async function openManageCategoriesModal() {
     try {
@@ -500,75 +496,61 @@ async function openManageCategoriesModal() {
             throw new Error(`Failed to fetch categories: ${response.statusText}`);
         }
         const categories = await response.json();
-        ///////////////////////////////////////////////////
         const categoriesContainer = document.getElementById('manageCategoriesModal');
         categoriesContainer.classList.remove('hidden');
         categoriesContainer.className = "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-all duration-300 ease-in-out";
         categoriesContainer.innerHTML = '';
-
-        // Modal content với flex layout
         const modalContent = document.createElement('div');
-        modalContent.className = 'bg-white w-full md:w-4/5 lg:w-2/3 xl:w-1/2 rounded-xl shadow-lg overflow-hidden flex flex-row'; // Flex row
-
-        // Phần danh sách categories (3/4)
+        modalContent.className = 'bg-white w-full md:w-4/5 lg:w-2/3 xl:w-1/2 rounded-xl shadow-lg overflow-hidden flex flex-row';
         const categoriesSection = document.createElement('div');
-        categoriesSection.className = 'basis-3/4 p-4 overflow-y-auto'; 
+        categoriesSection.className = 'basis-3/4 p-4 overflow-y-auto';
         const gridContainer = document.createElement('div');
         gridContainer.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4';
 
         categories.forEach(category => {
-            const categoryWrapper = document.createElement('div'); 
-            categoryWrapper.className = 'flex items-center space-x-2'; 
-        
-            const categoryCard = document.createElement('span'); 
+            const categoryWrapper = document.createElement('div');
+            categoryWrapper.className = 'flex items-center space-x-2';
+
+            const categoryCard = document.createElement('span');
             categoryCard.className = 'rounded-2xl bg-blue-100 text-blue-600 px-2 py-4 text-xs w-32 h-16 font-small flex items-center justify-center';
             categoryCard.textContent = category.name;
-        
+
             // const deleteButton = document.createElement('button'); 
             // deleteButton.className = 'bg-red-500 text-white text-xs font-medium px-2 py-1 rounded hover:bg-red-600';
             // deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>'; 
             // deleteButton.onclick = () => handleDeleteCategory(category._id); 
-        
-            categoryWrapper.appendChild(categoryCard); 
-            //categoryWrapper.appendChild(deleteButton); 
-            gridContainer.appendChild(categoryWrapper); 
+
+            categoryWrapper.appendChild(categoryCard);
+            gridContainer.appendChild(categoryWrapper);
         });
-        
+
         categoriesSection.appendChild(gridContainer);
-        
-        // Phần statistics (1/4)
+
         const statsSection = document.createElement('div');
         statsSection.className = 'basis-1/4 p-4 bg-gray-50 border-t-2 md:border-l-2 md:border-t-0 border-gray-200 flex flex-col justify-between space-y-4';
         statsSection.innerHTML = `
-    <h4 class="text-xl font-semibold mb-2 ">Category Statistics</h4>
-    <p class="text-sm text-gray-700">View category statistics such as total products, active products, etc.</p>
-    <div id="statsSection"></div>
-`;
+            <h4 class="text-xl font-semibold mb-2 ">Category Statistics</h4>
+            <p class="text-sm text-gray-700">View category statistics such as total products, active products, etc.</p>
+            <div id="statsSection"></div>
+        `;
 
-        // Phần chứa các nút
-const buttonContainer = document.createElement('div');
-buttonContainer.className = 'flex justify-between items-center space-x-4'; // Dùng flex để đặt nút trên 1 dòng và thêm khoảng cách
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'flex justify-between items-center space-x-4'; // Dùng flex để đặt nút trên 1 dòng và thêm khoảng cách
 
-// Nút đóng modal
-const closeButton = document.createElement('button');
-closeButton.className = 'bg-gray-500 text-white  py-2 px-4 rounded-lg hover:bg-gray-600 transform transition-all duration-200 ease-in-out';
-closeButton.textContent = 'Close';
-closeButton.onclick = () => categoriesContainer.classList.add('hidden');
-buttonContainer.appendChild(closeButton);
+        const closeButton = document.createElement('button');
+        closeButton.className = 'bg-gray-500 text-white  py-2 px-4 rounded-lg hover:bg-gray-600 transform transition-all duration-200 ease-in-out';
+        closeButton.textContent = 'Close';
+        closeButton.onclick = () => categoriesContainer.classList.add('hidden');
+        buttonContainer.appendChild(closeButton);
 
-// Nút thêm category
-const addCategoryButton = document.createElement('button');
-addCategoryButton.className = 'w-40 bg-blue-500 text-white  py-2 px-4  rounded-lg hover:bg-blue-600 transform transition-all duration-200 ease-in-out';
-addCategoryButton.textContent = 'Add Category';
-addCategoryButton.onclick = () => openAddCategoryModal();
-buttonContainer.appendChild(addCategoryButton);
+        const addCategoryButton = document.createElement('button');
+        addCategoryButton.className = 'w-40 bg-blue-500 text-white  py-2 px-4  rounded-lg hover:bg-blue-600 transform transition-all duration-200 ease-in-out';
+        addCategoryButton.textContent = 'Add Category';
+        addCategoryButton.onclick = () => openAddCategoryModal();
+        buttonContainer.appendChild(addCategoryButton);
 
+        statsSection.appendChild(buttonContainer);
 
-// Thêm buttonContainer vào statsSection
-statsSection.appendChild(buttonContainer);
-
-
-        // Gắn các phần tử vào modalContent
         modalContent.appendChild(categoriesSection);
         modalContent.appendChild(statsSection);
         categoriesContainer.appendChild(modalContent);
@@ -580,3 +562,91 @@ statsSection.appendChild(buttonContainer);
     }
 };
 
+function closeManageCategoriesModal() {
+    const modal = document.getElementById('manageCategoriesModal');
+    modal.classList.add('hidden');
+}
+
+function openAddCategoryModal() {
+    const addCategoryModal = document.getElementById('addCategoryModal');
+    const manageCategoriesModal = document.getElementById('manageCategoriesModal');
+    addCategoryModal.classList.remove('hidden');
+    manageCategoriesModal.classList.add('hidden');
+
+    // Đảm bảo modal không bị ghi đè lớp CSS
+    addCategoryModal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-all duration-300 ease-in-out';
+
+    // Xóa nội dung cũ trước khi thêm mới
+    addCategoryModal.innerHTML = '';
+
+    const modalContent = document.createElement('div');
+    modalContent.className = 'bg-white w-full md:w-4/5 lg:w-2/3 xl:w-1/2 rounded-xl shadow-lg overflow-hidden flex flex-col';
+
+    // Thêm nút đóng modal
+    const closeButton = document.createElement('button');
+    closeButton.className = 'self-end m-2 text-gray-500 hover:text-red-500';
+    closeButton.innerHTML = '&times;';
+    closeButton.onclick = closeAddCategoryModal;
+
+    const form = document.createElement('form');
+    form.id = 'addCategoryForm';
+    form.className = 'w-full p-4';
+    form.innerHTML = `
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Add New Category</h2>
+        <div class="mb-4">
+            <label for="categoryName" class="block text-sm font-medium text-gray-700">Category Name</label>
+            <input type="text" name="categoryName" id="categoryName" placeholder="Enter category name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" required>
+        </div>
+        <div class="flex justify-end">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-200 ease-in-out">Add Category</button>
+        </div>
+    `;
+
+    modalContent.appendChild(closeButton);
+    modalContent.appendChild(form);
+    addCategoryModal.appendChild(modalContent);
+}
+
+function closeAddCategoryModal() {
+    const addCategoryModal = document.getElementById('addCategoryModal');
+    addCategoryModal.classList.add('hidden');
+    addCategoryModal.innerHTML = ''; // Reset nội dung modal
+}
+
+document.addEventListener('submit', async function (e) {
+    if (e.target && e.target.id === 'addCategoryForm') {
+        e.preventDefault();
+        const categoryName = document.getElementById('categoryName').value.trim();
+
+        if (!categoryName) {
+            alert('Please enter a category name.');
+            return;
+        }
+
+        try {
+            const response = await fetch('/admin/products/category/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ categoryName }),
+            });
+
+            if (response.ok) {
+                alert('Category added successfully');
+                closeAddCategoryModal();
+            } else {
+                const errorData = await response.json();
+                alert(errorData.message || 'Failed to add category. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error adding category:', error);
+            alert('An error occurred. Please try again.');
+        }
+    }
+});
+
+function closeAddCategoryModal() {
+    const modal = document.getElementById('addCategoryModal');
+    modal.classList.add('hidden');
+};

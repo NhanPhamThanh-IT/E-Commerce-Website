@@ -116,3 +116,21 @@ exports.getCategories = async (req, res, next) => {
         next(error);
     }
 }
+
+exports.addCategory = async (req, res, next) => {
+    try {
+        console.log('req.body:', req.body);
+        const { categoryName } = req.body;
+        if (!categoryName) {
+            return res.status(400).json({ message: 'Category name is required.' });
+        }
+        const newCategory = await CategoryService.addCategory(categoryName);
+        if (!newCategory) {
+            return res.status(500).json({ message: 'An error occurred while adding the category.' });
+        }
+        return res.status(201).json(newCategory);
+    } catch (error) {
+        console.error('Error adding category:', error);
+        next(error);
+    }
+};

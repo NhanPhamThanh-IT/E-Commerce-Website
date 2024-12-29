@@ -1,4 +1,5 @@
 const Product = require('../../models/productModel');
+const Category = require('../../models/categoryModel');
 
 const paginate = async (model, query = {}, currentPage = 1, itemsPerPage = 6) => {
     const skip = (currentPage - 1) * itemsPerPage;
@@ -59,8 +60,8 @@ class ProductService {
 
     static async getStatisticDistinctValue(field) {
         try {
-            const distinctValues = await Product.distinct(field);
-            const countPromises = distinctValues.map(item => 
+            const distinctValues = field === 'category' ? await Category.distinct('name') : await Product.distinct(field);
+            const countPromises = distinctValues.map(item =>
                 Product.countDocuments({ [field]: item }).then(count => ({ value: item, count }))
             );
             const counts = await Promise.all(countPromises);
@@ -69,7 +70,7 @@ class ProductService {
             throw new Error('Error getting distinct values: ' + error.message);
         }
     }
-    
+
 }
 
 module.exports = ProductService;
