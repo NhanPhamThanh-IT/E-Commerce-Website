@@ -4,7 +4,7 @@ require('dotenv').config();
 const Auth = require('../../middlewares/Auth');
 
 const productController = require('../../controllers/user/productController');
-router.use(Auth.isUser);
+
 router.get('/price', productController.getProductsByPrice);
 
 router.get('/search/:id', productController.searhProduct);

@@ -28,7 +28,7 @@ exports.addMoney = async (req, res, next) => {
         if (!amount || amount <= 0) {
             return res.status(400).send('Invalid amount.');
         }
-        const userAccount = await PayAccountService.findById(req.user._id);
+        const userAccount = await payAccountService.findById(req.user._id);
         if (!userAccount) {
             return res.status(404).send('Pay account not found.');
         }

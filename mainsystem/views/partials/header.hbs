@@ -33,14 +33,20 @@
         </div>
 
         <div class="flex items-center space-x-10 mr-3">
+            {{#if user}}
             <a href="/profile"
                 class="hover:scale-125 no-underline hover:no-underline text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Profile</a>
             <a href="https://localhost:3113/account"
                 class="hover:scale-125 no-underline hover:no-underline text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Account</a>
             <form action="/logout" method="post" class="mb-0">
-                <button class="text-lg bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 rounded-full text-white px-6 py-2 font-semibold shadow-md hover:shadow-lg transition-all duration-200 ease-in-out">
+                <button
+                    class="text-lg bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 rounded-full text-white px-6 py-2 font-semibold shadow-md hover:shadow-lg transition-all duration-200 ease-in-out">
                     Logout
                 </button>
+                {{else}}
+                <a href="/login"
+                    class="hover:scale-125 no-underline hover:no-underline text-lg font-semibold text-gray-600 hover:text-gray-800 transition duration-200">Login</a>
+                {{/if}}
             </form>
         </div>
     </div>

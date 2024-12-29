@@ -9,11 +9,13 @@ const userController = require('../../controllers/user/userController');
 const orderController = require('../../controllers/user/orderController');
 const userModel = require('../../models/userModel');
 
+router.get('/guest', dashboardController.index);
+
 router.get('/', (req, res) => {
     if (req.cookies?.token) {
         return res.redirect('/homepage');
     }
-    res.render('login/index');
+    res.redirect('/guest');
 });
 
 router.get('/login', (req, res) => {

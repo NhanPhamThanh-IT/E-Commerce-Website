@@ -1,11 +1,9 @@
 {{> header }}
-<main class="container mx-auto px-6 py-12">
-    <h2 class="text-4xl font-extrabold text-center mb-12 text-gray-900">Your Cart</h2>
-
+<main class="container mx-auto px-6 py-12 mt-[130px]">
     <div class="flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-12">
         <!-- Cart Section -->
         <div class="w-full md:w-1/2 bg-white p-6 rounded-lg shadow-lg transition-all hover:shadow-2xl">
-            <div id="cart-summary" class="mt-6 border-b pb-6">
+            <div id="cart-summary" class="border-b pb-4">
                 <p id="cart-total" class="text-2xl font-semibold text-gray-900">Total: $0.00</p>
             </div>
             <div id="cart-container" class="space-y-6 mt-6">
@@ -17,8 +15,8 @@
         </div>
 
         <!-- Address Form Section -->
-        <div class="w-full md:w-1/2 bg-white p-6 rounded-lg shadow-lg transition-all hover:shadow-2xl">
-            <h3 class="text-3xl font-semibold text-gray-900 mb-8">Enter Your Information</h3>
+        <div class="w-full md:w-1/2 bg-white px-6 py-2 rounded-lg shadow-lg transition-all hover:shadow-2xl">
+            <h3 class="text-2xl font-semibold text-gray-900 my-4">Enter Your Information</h3>
             <form id="address-form" class="space-y-6">
                 <div>
                     <label for="phone" class="block text-lg font-medium text-gray-700">Phone Number</label>
@@ -35,13 +33,14 @@
                 </div>
 
                 <button type="submit"
-                    class="bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-800 transition w-full focus:outline-none">
+                    class="flex justify-center w-full bg-green-600 text-white py-3 rounded-xl shadow-md hover:bg-green-700 transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-400 focus:ring-opacity-50">
                     Confirm Order
                 </button>
             </form>
         </div>
     </div>
 </main>
+{{> user/dashboard/footer }}
 <script>
     document.getElementById('address-form').addEventListener('submit', async function (event) {
         event.preventDefault();
@@ -150,7 +149,12 @@
         // Clear the current cart rows
         cartContainer.innerHTML = '';
         if (itemsToRender.length === 0) {
-            cartContainer.innerHTML = '<img src="/system_images/emptyCart.gif" class="object-cover mx-auto w-1/2 h-1/2"><p class="text-center text-gray-600">Your cart is empty.</p>';
+            cartContainer.innerHTML = `
+            <div class="flex flex-col justify-center items-center">
+    <img src="/system_images/emptyCart.gif" class="object-contain w-1/2 h-1/2">
+    <p class="text-center text-gray-600 mt-4">Your cart is empty.</p>
+</div>
+`;
             return;
         }
         for (const item of itemsToRender) {

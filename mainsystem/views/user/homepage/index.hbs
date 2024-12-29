@@ -31,8 +31,8 @@
 
             <div class="mt-4">
                 <button id="apply-price-filter"
-                    class="w-full bg-green-400 text-white py-2 rounded-md font-medium hover:bg-green-600 transition duration-300">
-                    Apply Filter
+                    class="w-full bg-green-400 text-white py-2 rounded-md font-medium hover:bg-green-600 transition duration-300 flex items-center justify-center">
+                    <i class="fas fa-filter"></i> <!-- Icon only -->
                 </button>
             </div>
         </div>
@@ -62,7 +62,7 @@
         </footer>
     </section>
 </main>
-
+{{> user/dashboard/footer }}
 <div class="fixed bottom-4 left-6">
     <img src="/system_images/user_aside.gif" alt="sale_banner" class="h-48">
 </div>'
@@ -148,6 +148,7 @@
             }
         });
     });
+    let isFetching = false;
 
     const modal = document.getElementById('product-modal');
     const modalContent = document.getElementById('modal-content');
@@ -166,6 +167,9 @@
     let currentCategory = null;
     // Fetch and render products
     async function fetchAndRenderProducts(url) {
+        if (isFetching) return; // Exit if already fetching
+
+        isFetching = true; // Set fetching state
         const productsContainer = document.getElementById('products-container');
         const paginationContainer = document.getElementById('pagination-container');
 
@@ -270,6 +274,9 @@
         } catch (error) {
             console.error('Error fetching products:', error);
             productsContainer.innerHTML = '<p class="text-center text-red-500">Failed to load products. Please try again.</p>';
+        }
+        finally {
+            isFetching = false; // Reset fetching state
         }
     }
 

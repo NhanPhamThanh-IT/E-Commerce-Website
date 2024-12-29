@@ -6,7 +6,7 @@ exports.getProductsByPrice = async (req, res, next) => {
         const minPrice = parseInt(min) || 0;
         const maxPrice = parseInt(max) || 1000000;
         const pageNumber = parseInt(page) || 1;
-        const limitNumber = parseInt(limit) || 8;
+        const limitNumber = parseInt(limit) || 10;
         const categoryFilter = category || '';
         const minDiscountValue = parseInt(minDiscount) || 0;
         const products = await productService.getByPriceAndCategory(minPrice, maxPrice, categoryFilter, minDiscountValue, pageNumber, limitNumber);
@@ -24,7 +24,7 @@ exports.searhProduct = async (req, res, next) => {
         const value = id[1] || '';
         const { page, limit } = req.query;
         const pageNumber = parseInt(page) || 1;
-        const limitNumber = parseInt(limit) || 8;
+        const limitNumber = parseInt(limit) || 10;
         const products = await productService.search(searchBy, value, pageNumber, limitNumber);
         res.status(200).json(products);
     } catch (error) {
