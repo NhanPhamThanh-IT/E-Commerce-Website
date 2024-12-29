@@ -1,4 +1,5 @@
 const ProductService = require('../../services/admin/productService');
+const CategoryService = require('../../services/admin/categoryService');
 
 exports.index = async (req, res, next) => {
     try {
@@ -102,6 +103,16 @@ exports.addProduct = async (req, res, next) => {
         return res.status(201).json(newProduct);
     } catch (error) {
         console.error('Error adding product:', error);
+        next(error);
+    }
+}
+
+exports.getCategories = async (req, res, next) => {
+    try {
+        const categories = await CategoryService.getAll();
+        return res.status(200).json(categories);
+    } catch (error) {
+        console.error('Error getting categories:', error);
         next(error);
     }
 }
