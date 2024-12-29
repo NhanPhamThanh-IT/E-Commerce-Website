@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchAndRenderOrders('/admin/orders/api?page=1');
 });
 
+
 document.getElementById('search-form').addEventListener('submit', function (event) {
     event.preventDefault();
 
@@ -121,8 +122,8 @@ document.getElementById('search-form').addEventListener('submit', function (even
     const query = document.querySelector('input[name="query"]').value.trim();
 
     if (!field || !query) {
-        alert('Please select a field and enter a value to search.');
-        return;
+        
+        fetchAndRenderOrders('/admin/orders/api?page=1');
     }
 
     const action = this.getAttribute('action');

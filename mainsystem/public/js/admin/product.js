@@ -289,9 +289,18 @@ function closeReviewModal() {
 }
 
 // Open add modal
-
-function openAddProductModal() {
-    const modal = document.getElementById('addProductModal');
+async function openAddProductModal() {
+    try {
+        const form = document.getElementById('addProductForm');
+        form.reset();
+        const list_categories = await fetch('/admin/products/categories');
+        console.log(list_categories);
+    }
+    catch (error) {
+        console.error('Error opening add product modal:', error);
+        alert('Failed to open add product modal. Please try again.');
+    }
+    const modal = document.getElementById('addProductModal')
     modal.classList.remove('hidden');
 }
 
