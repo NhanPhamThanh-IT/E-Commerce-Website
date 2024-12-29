@@ -17,14 +17,16 @@
             <div class="px-4">
                 <div class="bg-black rounded-xl shadow-md p-6 mb-4 flex items-center justify-between">
                     <h2 class="text-lg font-semibold text-[#f3d2c3]">Product Management</h2>
-                    <button type="button" onclick="openAddProductModal()"
-                        class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                        + Add New Product
-                    </button>
-                    <button type="button" onclick="openAddProductModal()"
-                        class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                        View Categories
-                    </button>
+                    <div class="flex space-x-4">
+                        <button type="button" onclick="openAddProductModal()"
+                            class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            + Add New Product
+                        </button>
+                        <button type="button" onclick="openManageCategoriesModal()"
+                            class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            Manage Categories
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -143,9 +145,11 @@
                             class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300" required>
                     </div>
                     <div>
-                        <label for="category" class="block text-sm font-medium text-gray-600">Category</label>
-                        <input type="text" id="category" name="category"
+                        <label for="categoryDropdown" class="block text-sm font-medium text-gray-600">Category</label>
+                        <select id="categoryDropdown" name="category"
                             class="w-full p-2 border rounded-lg text-gray-800 focus:ring focus:ring-blue-300" required>
+                            <option value="" disabled selected>Select a category</option>
+                        </select>
                     </div>
                     <div>
                         <label for="price" class="block text-sm font-medium text-gray-600">Price (USD)</label>
@@ -285,6 +289,10 @@
             </form>
         </div>
     </div>
+</div>
+
+<!-- Manage Categories Modal -->
+<div id="manageCategoriesModal" class="hidden">
 </div>
 
 <script src="/js/admin/product.js"></script>
