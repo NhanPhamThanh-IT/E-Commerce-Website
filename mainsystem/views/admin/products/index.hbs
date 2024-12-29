@@ -15,16 +15,20 @@
             }}
 
             <div class="px-4">
-                <div class="bg-black rounded-xl shadow-md p-6 mb-4 flex items-center justify-between">
-                    <h2 class="text-lg font-semibold text-[#f3d2c3]">Product Management</h2>
-                    <div class="flex space-x-4">
+                <div
+                    class="bg-[#f3d2c3] text-black rounded-xl shadow-md p-6 mb-4 items-center grid md:grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div class="flex items-center space-x-4">
+                        <h2 class="text-lg font-semibold">Add Product</h2>
                         <button type="button" onclick="openAddProductModal()"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                            + Add New Product
+                            class="bg-black text-[#f3d2c3] px-4 py-2 rounded-lg shadow hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            <i class="fas fa-plus-square"></i>
                         </button>
+                    </div>
+                    <div class="flex items-center space-x-4 justify-end">
+                        <h2 class="text-lg font-semibold">Manage Category</h2>
                         <button type="button" onclick="openManageCategoriesModal()"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                            Manage Categories
+                            class="bg-black text-[#f3d2c3] px-4 py-2 rounded-lg shadow hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            <i class="fas fa-list-alt"></i>
                         </button>
                     </div>
                 </div>

@@ -567,86 +567,74 @@ function closeManageCategoriesModal() {
     modal.classList.add('hidden');
 }
 
-function openAddCategoryModal() {
+async function openAddCategoryModal() {
     const addCategoryModal = document.getElementById('addCategoryModal');
     const manageCategoriesModal = document.getElementById('manageCategoriesModal');
     addCategoryModal.classList.remove('hidden');
     manageCategoriesModal.classList.add('hidden');
-
-    // Đảm bảo modal không bị ghi đè lớp CSS
     addCategoryModal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-all duration-300 ease-in-out';
-
-    // Xóa nội dung cũ trước khi thêm mới
     addCategoryModal.innerHTML = '';
-
     const modalContent = document.createElement('div');
     modalContent.className = 'bg-white w-full md:w-4/5 lg:w-2/3 xl:w-1/2 rounded-xl shadow-lg overflow-hidden flex flex-col';
-
-    // Thêm nút đóng modal
-    const closeButton = document.createElement('button');
-    closeButton.className = 'self-end m-2 text-gray-500 hover:text-red-500';
-    closeButton.innerHTML = '&times;';
-    closeButton.onclick = closeAddCategoryModal;
-
-    const form = document.createElement('form');
-    form.id = 'addCategoryForm';
-    form.className = 'w-full p-4';
-    form.innerHTML = `
-        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Add New Category</h2>
-        <div class="mb-4">
-            <label for="categoryName" class="block text-sm font-medium text-gray-700">Category Name</label>
-            <input type="text" name="categoryName" id="categoryName" placeholder="Enter category name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" required>
-        </div>
-        <div class="flex justify-end">
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-200 ease-in-out">Add Category</button>
-        </div>
+    modalContent.innerHTML = `
+        <form id="addCategoryForm" class="w-full p-4 mb-0">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-3">Add New Category</h2>
+            <input type="text" name="categoryName" id="categoryName" placeholder="Enter category name" class="mb-4 w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" required>
+            <div class="flex justify-end space-x-2">
+                <button type="button" class="bg-gray-300 text-black px-4 py-2 rounded-lg hover:bg-gray-400 transition-all duration-200 ease-in-out" onclick="closeAddCategoryModal()">Close</button>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-200 ease-in-out">Add Category</button>
+            </div>
+        </form>
     `;
-
-    modalContent.appendChild(closeButton);
-    modalContent.appendChild(form);
     addCategoryModal.appendChild(modalContent);
 }
 
-function closeAddCategoryModal() {
-    const addCategoryModal = document.getElementById('addCategoryModal');
-    addCategoryModal.classList.add('hidden');
-    addCategoryModal.innerHTML = ''; // Reset nội dung modal
-}
-
 document.addEventListener('submit', async function (e) {
-    if (e.target && e.target.id === 'addCategoryForm') {
+    if (e.target?.id === 'addCategoryForm') {
         e.preventDefault();
         const categoryName = document.getElementById('categoryName').value.trim();
 
-        if (!categoryName) {
-            alert('Please enter a category name.');
-            return;
-        }
-
+        if (!categoryName) return alert('Please enter a category name.');
+        
         try {
-            const response = await fetch('/admin/products/category/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ categoryName }),
-            });
-
-            if (response.ok) {
-                alert('Category added successfully');
-                closeAddCategoryModal();
-            } else {
-                const errorData = await response.json();
-                alert(errorData.message || 'Failed to add category. Please try again.');
+            if (await isCategoryExists(categoryName)) {
+                return alert('Category already exists. Please enter a different category name.');
             }
+
+            const response = await addCategory(categoryName);
+            response.ok ? alert('Category added successfully') : alert(response.message || 'Failed to add category.');
+
+            closeAddCategoryModal();
         } catch (error) {
-            console.error('Error adding category:', error);
+            console.error('Error:', error);
             alert('An error occurred. Please try again.');
         }
     }
 });
 
+async function isCategoryExists(categoryName) {
+    const response = await fetch('/admin/products/categories');
+    if (!response.ok) throw new Error(`Failed to fetch categories: ${response.statusText}`);
+    const categories = await response.json();
+    return categories.some(category => category.name === categoryName);
+}
+
+async function addCategory(categoryName) {
+    const response = await fetch('/admin/products/category/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ categoryName }),
+    });
+    return response.ok ? response : response.json();
+}
+
 function closeAddCategoryModal() {
     const modal = document.getElementById('addCategoryModal');
     modal.classList.add('hidden');
 };
+
+function closeAddCategoryModal() {
+    const addCategoryModal = document.getElementById('addCategoryModal');
+    addCategoryModal.classList.add('hidden');
+    addCategoryModal.innerHTML = '';
+}
