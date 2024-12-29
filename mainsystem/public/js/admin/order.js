@@ -1,3 +1,26 @@
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleString('en-GB', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    }).replace(/,/g, '');
+
+    const formattedTime = date.toLocaleString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+    });
+
+    return `${formattedTime} - ${formattedDate}`;
+}
+
+
+function formatTotalAmount(amount) {
+    return amount.toFixed(2);
+}
+
 async function fetchAndRenderOrders(url) {
     const ordersContainer = document.getElementById('orders-container');
     const paginationContainer = document.getElementById('pagination-container');
@@ -23,8 +46,8 @@ async function fetchAndRenderOrders(url) {
                 const orderRow = document.createElement('tr');
                 orderRow.innerHTML = `
                     <td class="px-4 py-3 text-center">${order.user_name}</td>
-                    <td class="px-4 py-3 text-center">${order.date}</td>
-                    <td class="px-4 py-3 text-center">${order.total_amount}</td>
+                    <td class="px-4 py-3 text-center">${formatDate(order.date)}</td>
+                    <td class="px-4 py-3 text-center">${formatTotalAmount(order.total_amount)}</td>
                     <td class="px-4 py-3">
                         <div class="flex justify-center items-center space-x-2">
                             <form class="my-0 mb-0">
@@ -85,7 +108,7 @@ function renderPagination(totalPages, currentPage, url) {
         }
         pageDropdown.appendChild(option);
     }
-    
+
     pageDropdown.addEventListener('change', (e) => {
         const selectedPage = parseInt(e.target.value);
         const baseUrl = url.split('?')[0];
@@ -122,7 +145,7 @@ document.getElementById('search-form').addEventListener('submit', function (even
     const query = document.querySelector('input[name="query"]').value.trim();
 
     if (!field || !query) {
-        
+
         fetchAndRenderOrders('/admin/orders/api?page=1');
     }
 
@@ -148,8 +171,8 @@ async function openViewModal(orderId) {
             throw new Error('Failed to fetch order details');
         const orderData = await response.json();
         document.getElementById('view-user-id').textContent = orderData.user_id || 'N/A';
-        document.getElementById('view-date').textContent = orderData.date || 'N/A';
-        document.getElementById('view-total-amount').textContent = `$${orderData.total_amount || 0}`;
+        document.getElementById('view-date').textContent = formatDate(orderData.date) || 'N/A';
+        document.getElementById('view-total-amount').textContent = `$${formatTotalAmount(orderData.total_amount) || 0}`;
         const itemsList = document.getElementById('view-items');
         itemsList.innerHTML = '';
         if (orderData.list_of_items && orderData.list_of_items.length > 0) {
