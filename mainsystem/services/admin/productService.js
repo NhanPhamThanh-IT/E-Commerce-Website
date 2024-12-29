@@ -70,7 +70,6 @@ class ProductService {
             throw new Error('Error getting distinct values: ' + error.message);
         }
     }
-
 }
 
 module.exports = ProductService;

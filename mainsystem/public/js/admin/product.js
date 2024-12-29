@@ -496,29 +496,29 @@ async function openManageCategoriesModal() {
             throw new Error(`Failed to fetch categories: ${response.statusText}`);
         }
         const categories = await response.json();
+        const categoriesStat = categories.length;
+
         const categoriesContainer = document.getElementById('manageCategoriesModal');
         categoriesContainer.classList.remove('hidden');
         categoriesContainer.className = "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-all duration-300 ease-in-out";
         categoriesContainer.innerHTML = '';
+
         const modalContent = document.createElement('div');
-        modalContent.className = 'bg-white w-full md:w-4/5 lg:w-2/3 xl:w-1/2 rounded-xl shadow-lg overflow-hidden flex flex-row';
+        modalContent.className = 'bg-white w-full md:w-2/3 lg:w-4/5 rounded-xl shadow-lg overflow-hidden flex';
+
         const categoriesSection = document.createElement('div');
-        categoriesSection.className = 'basis-3/4 p-4 overflow-y-auto';
+        categoriesSection.className = 'w-full p-4 overflow-y-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4';
+
         const gridContainer = document.createElement('div');
-        gridContainer.className = 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4';
+        gridContainer.className = 'flex justify-between';
 
         categories.forEach(category => {
             const categoryWrapper = document.createElement('div');
-            categoryWrapper.className = 'flex items-center space-x-2';
+            categoryWrapper.className = 'flex items-center justify-center';
 
             const categoryCard = document.createElement('span');
-            categoryCard.className = 'rounded-2xl bg-blue-100 text-blue-600 px-2 py-4 text-xs w-32 h-16 font-small flex items-center justify-center';
+            categoryCard.className = 'rounded-2xl bg-blue-100 text-blue-600 px-4 py-3 text-sm font-medium flex items-center justify-center transition-transform transform hover:scale-105 hover:bg-blue-200 shadow-md';
             categoryCard.textContent = category.name;
-
-            // const deleteButton = document.createElement('button'); 
-            // deleteButton.className = 'bg-red-500 text-white text-xs font-medium px-2 py-1 rounded hover:bg-red-600';
-            // deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>'; 
-            // deleteButton.onclick = () => handleDeleteCategory(category._id); 
 
             categoryWrapper.appendChild(categoryCard);
             gridContainer.appendChild(categoryWrapper);
@@ -529,22 +529,24 @@ async function openManageCategoriesModal() {
         const statsSection = document.createElement('div');
         statsSection.className = 'basis-1/4 p-4 bg-gray-50 border-t-2 md:border-l-2 md:border-t-0 border-gray-200 flex flex-col justify-between space-y-4';
         statsSection.innerHTML = `
-            <h4 class="text-xl font-semibold mb-2 ">Category Statistics</h4>
-            <p class="text-sm text-gray-700">View category statistics such as total products, active products, etc.</p>
-            <div id="statsSection"></div>
-        `;
+    <h4 class="text-xl font-semibold mb-2 ">Category Statistics</h4>
+    <div class="flex justify-between items-center">
+        <p class="text-sm text-gray-700">Number of categories</p>
+        <p>${categoriesStat}</p>
+    </div>
+`;
 
         const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'flex justify-between items-center space-x-4'; // Dùng flex để đặt nút trên 1 dòng và thêm khoảng cách
+        buttonContainer.className = 'flex justify-between items-center space-x-4';
 
         const closeButton = document.createElement('button');
-        closeButton.className = 'bg-gray-500 text-white  py-2 px-4 rounded-lg hover:bg-gray-600 transform transition-all duration-200 ease-in-out';
+        closeButton.className = 'bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transform transition-all duration-200 ease-in-out';
         closeButton.textContent = 'Close';
         closeButton.onclick = () => categoriesContainer.classList.add('hidden');
         buttonContainer.appendChild(closeButton);
 
         const addCategoryButton = document.createElement('button');
-        addCategoryButton.className = 'w-40 bg-blue-500 text-white  py-2 px-4  rounded-lg hover:bg-blue-600 transform transition-all duration-200 ease-in-out';
+        addCategoryButton.className = 'w-40 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transform transition-all duration-200 ease-in-out';
         addCategoryButton.textContent = 'Add Category';
         addCategoryButton.onclick = () => openAddCategoryModal();
         buttonContainer.appendChild(addCategoryButton);
@@ -553,8 +555,8 @@ async function openManageCategoriesModal() {
 
         modalContent.appendChild(categoriesSection);
         modalContent.appendChild(statsSection);
-        categoriesContainer.appendChild(modalContent);
 
+        categoriesContainer.appendChild(modalContent);
 
     } catch (error) {
         console.error('Error opening manage categories modal:', error);
@@ -595,7 +597,7 @@ document.addEventListener('submit', async function (e) {
         const categoryName = document.getElementById('categoryName').value.trim();
 
         if (!categoryName) return alert('Please enter a category name.');
-        
+
         try {
             if (await isCategoryExists(categoryName)) {
                 return alert('Category already exists. Please enter a different category name.');
