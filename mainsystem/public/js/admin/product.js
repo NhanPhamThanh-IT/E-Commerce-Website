@@ -293,14 +293,32 @@ async function openAddProductModal() {
     try {
         const form = document.getElementById('addProductForm');
         form.reset();
-        const list_categories = await fetch('/admin/products/categories');
-        console.log(list_categories);
-    }
-    catch (error) {
+        const response = await fetch('/admin/products/categories', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to fetch categories: ${response.statusText}`);
+        }
+        const list_categories = await response.json();
+        const categoryDropdown = document.getElementById('categoryDropdown');
+        if (categoryDropdown) {
+            categoryDropdown.innerHTML = '';
+            list_categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.name;
+                option.textContent = category.name;
+                categoryDropdown.appendChild(option);
+            });
+        }
+    } catch (error) {
         console.error('Error opening add product modal:', error);
         alert('Failed to open add product modal. Please try again.');
     }
-    const modal = document.getElementById('addProductModal')
+
+    const modal = document.getElementById('addProductModal');
     modal.classList.remove('hidden');
 }
 
