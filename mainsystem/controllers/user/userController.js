@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const userService = require('../../services/user/userService');
 const MyError = require('../../cerror');
-
+const User = require("../../models/userModel");
 require('dotenv').config();
 const createUser = async (req, res, next) => {
     const schema = Joi.object({
@@ -38,9 +38,25 @@ const handleLogin = async (req, res, next) => {
 
     try {
         const result = await userService.handleLoginService(value);
-
         if (!result) {
             return next(new MyError(400, 'Login failed'));
+        }
+        const user = await User.findOne({email: req.body.email})
+        if (user){
+            if (req.cookies.cart === "[]"){
+                res.cookie('cart', JSON.stringify(user.cart));
+            }
+            else{
+                let cart = req.cookies.cart;
+                const parsedData = JSON.parse(cart);
+                const normalizedData = parsedData.map(item => ({
+                    id: item.id,
+                    quantity: item.quantity,
+                    price: parseFloat(item.price) // Convert price from string to number
+                }));
+                user.cart = normalizedData;
+                await user.save();
+            }
         }
         res.cookie('token', result.access_token, {
             httpOnly: true,
@@ -60,7 +76,20 @@ const handleLogin = async (req, res, next) => {
     }
 };
 
-const handleLogout = (req, res, next) => {
+const handleLogout = async (req, res, next) => {
+    const user = await User.findById(req.user._id);
+    if (user){
+        let cart = req.cookies.cart;
+        const parsedData = JSON.parse(cart);
+        const normalizedData = parsedData.map(item => ({
+            id: item.id,
+            quantity: item.quantity,
+            price: parseFloat(item.price) // Convert price from string to number
+        }));
+        user.cart = normalizedData;
+        await user.save();
+    }
+    res.cookie('cart', '[]');
     res.clearCookie('connect.sid');
     req.logout(function (err) {
         if (err) { return next(err); }
