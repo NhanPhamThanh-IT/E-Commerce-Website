@@ -11,7 +11,8 @@
 
         <main class="flex-1 overflow-y-auto bg-gray-100">
 
-            {{> admin/navbar hidden_search="hidden" title="Profile Details" content="Manage your personal information and settings" }}
+            {{> admin/navbar hidden_search="hidden" title="Profile Details" content="Manage your personal information
+            and settings" }}
 
             <div class="bg-[#f3d2c3] text-black rounded-xl shadow-2xl mx-4 mb-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 rounded-xl">
@@ -99,53 +100,64 @@
 
 <div id="editProfileModal"
     class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 hidden">
-    <div class="bg-[#f3d2c3] p-6 rounded-lg w-1/3">
-        <h2 class="text-xl font-bold mb-4 text-black">Edit Profile</h2>
+    <div class="bg-[#f3d2c3] p-4 rounded-xl w-1/3">
+        <div class="flex justify-between items-center mb-4 ">
+            <h2 class="text-xl font-bold text-black">Edit Profile</h2>
+            <button id="closeModalButton" class="bg-red-500 hover:bg-red-700 text-white font-bold p-2 rounded">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
         <form action="/admin/profile/edit" method="POST" class="mb-0">
-            <div class="mb-4">
-                <label for="lastName" class="block text-sm font-semibold text-black">Last Name</label>
-                <input type="text" id="lastname" name="lastName" class="w-full px-3 py-2 border border-gray-300 rounded"
-                    value="{{adminInfo.lastName}}" required>
-            </div>
-            <div class="mb-4">
-                <label for="firstName" class="block text-sm font-semibold text-black">First Name</label>
-                <input type="text" id="firstname" name="firstName"
-                    class="w-full px-3 py-2 border border-gray-300 rounded" value="{{adminInfo.firstName}}" required>
-            </div>
-            <div class="mb-4">
-                <label for="phone" class="block text-sm font-semibold text-black">Phone</label>
-                <input type="text" id="phone" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded"
-                    value="{{adminInfo.phone}}" required>
-            </div>
-            <div class="mb-4">
-                <label for="address" class="block text-sm font-semibold text-black">Address</label>
-                <input type="text" id="address" name="address" class="w-full px-3 py-2 border border-gray-300 rounded"
-                    value="{{adminInfo.address}}" required>
-            </div>
+            <div class="flex">
+                <!-- Avatar and Upload Section (1/4 width) -->
+                <div class="w-1/3 mb-4 pr-4 flex flex-col items-start space-y-4">
+                    <div class="w-32 h-32 rounded-full overflow-hidden shadow-md mt-4">
+                        <img id="avatar" referrerPolicy="no-referrer"
+                            src="{{#if adminInfo.avatar}}/user_images/{{adminInfo.avatar}}{{else if adminInfo.image}}{{adminInfo.image}}{{else}}/user_images/profile.png{{/if}}"
+                            alt="Admin Avatar" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <label for="avatarInput"
+                            class="cursor-pointer bg-violet-600 text-white px-4 py-2 rounded transition hover:bg-violet-300 text-center">
+                            Upload Avatar</label>
+                        <input type="file" name="avatar" id="avatarInput" accept="image/jpeg,image/png,image/jpg"
+                            class="hidden">
+                    </div>
+                    <button type="submit" class="bg-blue-500 hover:bg-green-500 text-white font-bold py-2 px-4 rounded">
+                        Save Changes
+                    </button>
+                </div>
 
-            <div class="mb-4">
-                <label for="avatarInput"
-                    class="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded transition hover:bg-blue-500">Upload
-                    Avatar</label>
-                <input type="file" name="avatar" id="avatarInput" accept="image/jpeg,image/png,image/jpg"
-                    class="hidden">
-                <div class="w-32 h-32 rounded-full overflow-hidden shadow-md mt-4">
-                    <img id="avatar" referrerPolicy="no-referrer"
-                        src="{{#if adminInfo.avatar}}/user_images/{{adminInfo.avatar}}{{else if adminInfo.image}}{{adminInfo.image}}{{else}}/user_images/profile.png{{/if}}"
-                        alt="Admin Avatar" class="w-full h-full object-cover">
+                <!-- Form Fields Section (3/4 width) -->
+                <div class="w-2/3 mb-4 pl-2 flex flex-col space-y-4 justify-end">
+                    <div>
+                        <label for="lastName" class="block text-sm font-semibold text-black">Last Name</label>
+                        <input type="text" id="lastname" name="lastName"
+                            class="w-full px-3 py-2 border border-gray-300 rounded" value="{{adminInfo.lastName}}"
+                            required>
+                    </div>
+                    <div>
+                        <label for="firstName" class="block text-sm font-semibold text-black">First Name</label>
+                        <input type="text" id="firstname" name="firstName"
+                            class="w-full px-3 py-2 border border-gray-300 rounded" value="{{adminInfo.firstName}}"
+                            required>
+                    </div>
+                    <div>
+                        <label for="phone" class="block text-sm font-semibold text-black">Phone</label>
+                        <input type="text" id="phone" name="phone"
+                            class="w-full px-3 py-2 border border-gray-300 rounded" value="{{adminInfo.phone}}"
+                            required>
+                    </div>
+                    <div>
+                        <label for="address" class="block text-sm font-semibold text-black">Address</label>
+                        <input type="text" id="address" name="address"
+                            class="w-full px-3 py-2 border border-gray-300 rounded" value="{{adminInfo.address}}"
+                            required>
+                    </div>
                 </div>
             </div>
-
-            <div class="mb-0 flex justify-end space-x-3">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Save Changes
-                </button>
-                <button id="closeModalButton"
-                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                    Close
-                </button>
-            </div>
         </form>
+
     </div>
 </div>
 
