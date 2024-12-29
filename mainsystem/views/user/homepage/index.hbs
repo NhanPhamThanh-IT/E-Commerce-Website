@@ -62,7 +62,7 @@
         </footer>
     </section>
 </main>
-{{> user/footer dynamic="fixed bottom-0 w-full" }}
+{{!-- {{> user/footer dynamic="fixed bottom-0 w-full" }} --}}
 <div class="fixed bottom-4 left-6">
     <img src="/system_images/user_aside.gif" alt="sale_banner" class="h-48">
 </div>'
@@ -214,7 +214,7 @@
                                     </div>
                                     <button class="font-semibold bg-blue-500 text-white py-2 px-3 rounded-md hover:bg-blue-700 transition duration-300 transform hover:scale-105"
                                             data-product-id="${product._id}">
-                                        View
+                                        <i class="fa-solid fa-eye"></i>
                                     </button>
                                 </div>
                             </div>
@@ -225,7 +225,7 @@
                 // Render pagination
                 paginationContainer.innerHTML = `
                 <button 
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-1 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" 
+                    class="bg-zinc-600 hover:bg-black text-white font-bold py-2 px-4 rounded mx-1 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}" 
                     ${currentPage === 1 ? 'disabled' : ''} 
                     data-page="${currentPage - 1}">
                     Previous
@@ -238,7 +238,7 @@
                     `).join('')}
                 </select>
                 <button 
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-1 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" 
+                    class="bg-zinc-600 hover:bg-black text-white font-bold py-2 px-4 rounded mx-1 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}" 
                     ${currentPage === totalPages ? 'disabled' : ''} 
                     data-page="${currentPage + 1}">
                     Next
@@ -460,7 +460,7 @@ ${relatedDiscount > 0 ? `
             const minDiscount = document.getElementById('discount-filter').value || 0;
 
             // Build the URL and trigger fetch
-            const url = `/product/price?category=${category}&min=${minPrice}&max=${maxPrice}&minDiscount=${minDiscount}&page=1&limit=8`;
+            const url = `/product/price?category=${category}&min=${minPrice}&max=${maxPrice}&minDiscount=${minDiscount}&page=1`;
             fetchAndRenderProducts(url);
         });
     });
@@ -469,7 +469,7 @@ ${relatedDiscount > 0 ? `
         const minPrice = document.getElementById('price-filter-min').value || 0;
         const maxPrice = document.getElementById('price-filter-max').value || 1000000;
         const minDiscount = document.getElementById('discount-filter').value || 0;
-        const url = `/product/price?min=${minPrice}&max=${maxPrice}&minDiscount=${minDiscount}&page=1&limit=8`; // Adjust endpoint as needed
+        const url = `/product/price?min=${minPrice}&max=${maxPrice}&minDiscount=${minDiscount}&page=1`; // Adjust endpoint as needed
 
         fetchAndRenderProducts(url);
     });

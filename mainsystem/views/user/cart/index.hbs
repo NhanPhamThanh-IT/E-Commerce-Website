@@ -13,7 +13,7 @@
                 <!-- Pagination buttons  -->
             </div>
         </div>
-
+        {{#if user}}
         <!-- Address Form Section -->
         <div class="w-full md:w-1/2 bg-white px-6 py-2 rounded-lg shadow-lg transition-all hover:shadow-2xl">
             <h3 class="text-2xl font-semibold text-gray-900 my-4">Enter Your Information</h3>
@@ -31,12 +31,24 @@
                         class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required>{{user.address}}</textarea>
                 </div>
-
                 <button type="submit"
                     class="flex justify-center w-full bg-green-600 text-white py-3 rounded-xl shadow-md hover:bg-green-700 transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-400 focus:ring-opacity-50">
                     Confirm Order
                 </button>
             </form>
+        {{else}}
+               <!-- Login Info Section -->
+<div id="address-form" class="w-full md:w-1/2 bg-white p-6 rounded-lg shadow-lg transition-all hover:shadow-2xl flex flex-col justify-center items-center">
+    <div class="text-center">
+        <img src="/system_images/loginNow.gif" class=" mb-4">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Please Login To Order</h3>
+        <p class="text-gray-600 text-sm">
+            If you don’t have an account, you can
+            register in just a few steps!
+        </p>
+    </div>
+</div>
+        {{/if}}
         </div>
     </div>
 </main>

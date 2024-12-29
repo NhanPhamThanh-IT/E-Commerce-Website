@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     address: { type: String },
     role: { type: String, enum: ['admin', 'user'], default: 'user' },
     phone: { type: String },
-    gender: { type: String, enum: ['male', 'female', 'other'] },
+    gender: { type: String, enum: ['male', 'female', 'others'] },
     birthDate: { type: String },
     loginMethod: { type: String, enum: ['email', 'google', 'facebook'], required: true, default: 'email' },
     image: { type: String, default: "" },

@@ -99,7 +99,7 @@ const handleLogout = async (req, res, next) => {
         secure: process.env.NODE_ENV === 'production',
         maxAge: 0,
     });
-    res.redirect('/login');
+    res.redirect('/');
 };
 
 const getUserByID = async (req, res, next) => {
