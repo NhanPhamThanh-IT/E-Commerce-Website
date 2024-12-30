@@ -80,14 +80,16 @@ const handleLogout = async (req, res, next) => {
     const user = await User.findById(req.user._id);
     if (user){
         let cart = req.cookies.cart;
-        const parsedData = JSON.parse(cart);
-        const normalizedData = parsedData.map(item => ({
-            id: item.id,
-            quantity: item.quantity,
-            price: parseFloat(item.price) // Convert price from string to number
-        }));
-        user.cart = normalizedData;
-        await user.save();
+        if (cart){
+            const parsedData = JSON.parse(cart);
+            const normalizedData = parsedData.map(item => ({
+                id: item.id,
+                quantity: item.quantity,
+                price: parseFloat(item.price) // Convert price from string to number
+            }));
+            user.cart = normalizedData;
+            await user.save();
+        }
     }
     res.cookie('cart', '[]');
     res.clearCookie('connect.sid');
