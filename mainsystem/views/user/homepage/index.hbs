@@ -444,6 +444,7 @@ ${relatedDiscount > 0 ? `
         saveCartToCookie(cart);
 
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        numberOfItems.innerHTML = totalItems;
         alert(`You now have ${totalItems} item(s) in your cart.`);
     }
 
