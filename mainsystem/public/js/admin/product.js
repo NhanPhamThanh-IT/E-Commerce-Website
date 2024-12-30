@@ -484,85 +484,160 @@ function closeEditProductModal() {
 }
 
 // Open manage categories modal
+// Fetch categories data
+async function fetchCategories() {
+    const response = await fetch('/admin/products/categories', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to fetch categories: ${response.statusText}`);
+    }
+
+    return await response.json();
+}
+
+function createModalContent(categories) {
+    const modalContent = document.createElement('div');
+    modalContent.className = 'bg-white w-full md:w-2/3 lg:w-4/5 rounded-xl shadow-lg overflow-hidden flex flex-col';
+    modalContent.style.overflow = 'hidden';
+    const categoriesSection = createCategoriesSection(categories);
+    const statsSection = createStatsSection(categories.length);
+    modalContent.appendChild(categoriesSection);
+    modalContent.appendChild(statsSection);
+    return modalContent;
+}
+
+function createCategoriesSection(categories) {
+    const categoriesSection = document.createElement('div');
+    categoriesSection.className = 'w-full p-4 flex justify-between';
+    categoriesSection.style.overflowY = 'auto';
+    const gridContainer = document.createElement('div');
+    gridContainer.className = 'flex flex-wrap space-x-4 space-y-2 justify-begin';
+
+    categories.forEach(category => {
+        const categoryWrapper = document.createElement('div');
+        categoryWrapper.className = 'flex items-center justify-center';
+
+        const categoryCard = document.createElement('span');
+        categoryCard.className = 'rounded-2xl bg-blue-100 text-blue-600 px-4 py-3 text-sm font-medium flex items-center justify-center transition-transform transform hover:scale-105 hover:bg-blue-200 shadow-md';
+        categoryCard.textContent = category.name;
+
+        categoryCard.addEventListener('click', () => {
+            showConfirmDeleteModal(category.name);
+        });
+
+        categoryWrapper.appendChild(categoryCard);
+        gridContainer.appendChild(categoryWrapper);
+    });
+
+    categoriesSection.appendChild(gridContainer);
+    return categoriesSection;
+}
+
+async function showConfirmDeleteModal(categoryName) {
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50';
+
+    const modalContent = document.createElement('div');
+    modalContent.className = 'bg-white p-6 rounded-lg shadow-lg text-center';
+
+    const message = document.createElement('p');
+    message.textContent = `Are you sure you want to delete the category "${categoryName}"?`;
+
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.className = 'mt-4 flex justify-center space-x-4';
+
+    const confirmButton = document.createElement('button');
+    confirmButton.className = 'bg-red-500 text-white px-4 py-2 rounded-lg';
+    confirmButton.textContent = 'Delete';
+    confirmButton.addEventListener('click', async () => {
+        try {
+            const response = await fetch(`/admin/products/categories/delete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ categoryName })
+            });
+            const data = await response.json();
+            alert("Category deleted successfully!");
+            document.body.removeChild(modal);
+            const updatedCategories = await fetchCategories();
+            const modalContent = createModalContent(updatedCategories);
+            document.getElementById('modalContainer').innerHTML = '';
+            document.getElementById('modalContainer').appendChild(modalContent);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+    const cancelButton = document.createElement('button');
+    cancelButton.className = 'bg-gray-300 px-4 py-2 rounded-lg';
+    cancelButton.textContent = 'Cancel';
+    cancelButton.addEventListener('click', () => {
+        document.body.removeChild(modal);
+    });
+
+    buttonsContainer.appendChild(confirmButton);
+    buttonsContainer.appendChild(cancelButton);
+    modalContent.appendChild(message);
+    modalContent.appendChild(buttonsContainer);
+    modal.appendChild(modalContent);
+
+    document.body.appendChild(modal);
+}
+
+function createStatsSection(categoriesCount) {
+    const statsSection = document.createElement('div');
+    statsSection.className = 'basis-1/4 p-4 bg-gray-50 border-t-2 md:border-l-2 md:border-t-0 border-gray-200 flex flex-col justify-between space-y-4';
+    statsSection.innerHTML = `
+        <h4 class="text-xl font-semibold mb-2">Category Statistics</h4>
+        <div class="flex justify-between items-center">
+            <p class="text-sm text-gray-700">Number of categories</p>
+            <p>${categoriesCount}</p>
+        </div>
+    `;
+    const buttonContainer = createButtonContainer();
+    statsSection.appendChild(buttonContainer);
+    return statsSection;
+}
+
+function createButtonContainer() {
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'flex justify-between items-center space-x-4';
+    const closeButton = document.createElement('button');
+    closeButton.className = 'bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transform transition-all duration-200 ease-in-out';
+    closeButton.textContent = 'Close';
+    closeButton.onclick = () => {
+        document.getElementById('manageCategoriesModal').classList.add('hidden');
+    };
+    buttonContainer.appendChild(closeButton);
+    const addCategoryButton = document.createElement('button');
+    addCategoryButton.className = 'w-40 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transform transition-all duration-200 ease-in-out';
+    addCategoryButton.textContent = 'Add Category';
+    addCategoryButton.onclick = openAddCategoryModal;
+    buttonContainer.appendChild(addCategoryButton);
+    return buttonContainer;
+}
+
 async function openManageCategoriesModal() {
     try {
-        const response = await fetch('/admin/products/categories', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        if (!response.ok) {
-            throw new Error(`Failed to fetch categories: ${response.statusText}`);
-        }
-        const categories = await response.json();
-        const categoriesStat = categories.length;
-
+        const categories = await fetchCategories();
         const categoriesContainer = document.getElementById('manageCategoriesModal');
         categoriesContainer.classList.remove('hidden');
-        categoriesContainer.className = "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-all duration-300 ease-in-out";
         categoriesContainer.innerHTML = '';
-
-        const modalContent = document.createElement('div');
-        modalContent.className = 'bg-white w-full md:w-2/3 lg:w-4/5 rounded-xl shadow-lg overflow-hidden flex';
-
-        const categoriesSection = document.createElement('div');
-        categoriesSection.className = 'w-full p-4 overflow-y-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4';
-
-        const gridContainer = document.createElement('div');
-        gridContainer.className = 'flex justify-between';
-
-        categories.forEach(category => {
-            const categoryWrapper = document.createElement('div');
-            categoryWrapper.className = 'flex items-center justify-center';
-
-            const categoryCard = document.createElement('span');
-            categoryCard.className = 'rounded-2xl bg-blue-100 text-blue-600 px-4 py-3 text-sm font-medium flex items-center justify-center transition-transform transform hover:scale-105 hover:bg-blue-200 shadow-md';
-            categoryCard.textContent = category.name;
-
-            categoryWrapper.appendChild(categoryCard);
-            gridContainer.appendChild(categoryWrapper);
-        });
-
-        categoriesSection.appendChild(gridContainer);
-
-        const statsSection = document.createElement('div');
-        statsSection.className = 'basis-1/4 p-4 bg-gray-50 border-t-2 md:border-l-2 md:border-t-0 border-gray-200 flex flex-col justify-between space-y-4';
-        statsSection.innerHTML = `
-    <h4 class="text-xl font-semibold mb-2 ">Category Statistics</h4>
-    <div class="flex justify-between items-center">
-        <p class="text-sm text-gray-700">Number of categories</p>
-        <p>${categoriesStat}</p>
-    </div>
-`;
-
-        const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'flex justify-between items-center space-x-4';
-
-        const closeButton = document.createElement('button');
-        closeButton.className = 'bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transform transition-all duration-200 ease-in-out';
-        closeButton.textContent = 'Close';
-        closeButton.onclick = () => categoriesContainer.classList.add('hidden');
-        buttonContainer.appendChild(closeButton);
-
-        const addCategoryButton = document.createElement('button');
-        addCategoryButton.className = 'w-40 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transform transition-all duration-200 ease-in-out';
-        addCategoryButton.textContent = 'Add Category';
-        addCategoryButton.onclick = () => openAddCategoryModal();
-        buttonContainer.appendChild(addCategoryButton);
-
-        statsSection.appendChild(buttonContainer);
-
-        modalContent.appendChild(categoriesSection);
-        modalContent.appendChild(statsSection);
-
+        const modalContent = createModalContent(categories);
         categoriesContainer.appendChild(modalContent);
-
     } catch (error) {
         console.error('Error opening manage categories modal:', error);
         alert('Failed to open manage categories modal. Please try again.');
     }
-};
+}
+
 
 function closeManageCategoriesModal() {
     const modal = document.getElementById('manageCategoriesModal');

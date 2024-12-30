@@ -134,3 +134,20 @@ exports.addCategory = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.deleteCategory = async (req, res, next) => {
+    try {
+        const { categoryName } = req.body;
+        if (!categoryName) {
+            return res.status(400).json({ message: 'categoryName is required.' });
+        }
+        const deletedCategory = await CategoryService.deleteByName(categoryName);
+        if (!deletedCategory) {
+            return res.status(404).json({ message: 'Category not found.' });
+        }
+        return res.status(200).json({ message: 'Category deleted successfully.' });
+    } catch (error) {
+        console.error('Error deleting category:', error);
+        return res.status(500).json({ message: 'An error occurred while deleting the category.' });
+    }
+}
