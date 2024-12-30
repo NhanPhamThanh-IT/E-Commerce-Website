@@ -70,6 +70,9 @@
     <div
         class="fixed bottom-4 right-6 bg-white text-white rounded-full p-3 shadow-lg flex items-center justify-center border-[1px] border-gray-600 opacity-60 hover:opacity-100">
         <img src="/system_images/shopping-cart.gif" class="h-12">
+        <p id="number-of-items"
+            class="z-100 text-white font-bold absolute top-2 right-4 bg-blue-500 rounded-full w-5 h-5 flex items-center justify-center text-xs">
+        </p>
     </div>
 </a>
 <!-- Product Detail Modal -->
@@ -129,6 +132,8 @@
 <script src="/js/user/homepage.js"></script>
 
 <script>
+    let numberOfItems = document.getElementById('number-of-items');
+    numberOfItems.innerHTML = getCartFromCookie().reduce((sum, item) => sum + item.quantity, 0);
     document.addEventListener('DOMContentLoaded', () => {
         const quantityInput = document.getElementById('quantity-input');
         const incrementBtn = document.getElementById('increment-btn');
