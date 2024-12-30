@@ -42,7 +42,7 @@ const handleLogin = async (req, res, next) => {
             return next(new MyError(400, 'Login failed'));
         }
         const user = await User.findOne({email: req.body.email})
-        if (user){
+        if (user.role === 'user'){
             if (req.cookies.cart === "[]"){
                 res.cookie('cart', JSON.stringify(user.cart));
             }
