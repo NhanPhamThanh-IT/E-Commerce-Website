@@ -39,14 +39,14 @@ const configViewEngine = (app) => {
     hbs.create({}).handlebars.registerHelper('calculateItemTotal', (price, quantity, discount) => {
         const discountedPrice = price - (price * discount / 100);
         const total = discountedPrice * quantity;
-        return total.toFixed(2);
+        return total.toFixed(0);
     });
     hbs.create({}).handlebars.registerHelper('calculateDiscountPrice', (price, discount) => {
-        const discountedPrice = (price - (price * discount / 100)).toFixed(2);
+        const discountedPrice = (price - (price * discount / 100)).toFixed(0);
         return discountedPrice;
     });
     hbs.create({}).handlebars.registerHelper('calculateSubtotal', (totalAmount) => {
-        return (totalAmount).toFixed(2);
+        return (totalAmount).toFixed(0);
     });
 
     app.set('view engine', 'hbs');
