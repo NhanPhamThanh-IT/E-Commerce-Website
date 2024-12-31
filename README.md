@@ -50,7 +50,7 @@ E-Commerce-Website/
 ### Installation
 1. Clone the repository to your local machine:
    ```bash
-   git clone <repository-url>
+   git clone "https://github.com/NhanPhamThanh-IT/WEBDEV_2024-2025.git"
    ```
 2. Install dependencies for MainSystem:
    ```bash
